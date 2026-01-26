@@ -1,0 +1,14 @@
+[
+  {
+    "schoolName": "서울고등학교",
+    "backgroundColorId": 1
+  },
+  {
+    "schoolName": "부산중학교",
+    "backgroundColorId": 2
+  },
+  {
+    "schoolName": "부산여자중학교",
+    "backgroundColorId": 3
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "socialId": "kakao_12345",
+    "name": "김민호",
+    "grade": 3,
+    "birthday": "2009-01-15",
+    "gender": true,
+    "email": "minho@example.com",
+    "password": "password123",
+    "phone": "010-1234-5678"
+  },
+  {
+    "socialId": "naver_98765",
+    "name": "박지수",
+    "grade": 3,
+    "birthday": "2009-04-22",
+    "gender": false,
+    "email": "jisoo@example.com",
+    "password": "jisooPass!",
+    "phone": "010-9876-5432"
+  },
+  {
+    "socialId": "google_54321",
+    "name": "최유나",
+    "grade": 2,
+    "birthday": "2010-03-10",
+    "gender": false,
+    "email": "yuna@example.com",
+    "password": "yunaLove123",
+    "phone": "010-2345-6789"
+  },
+  {
+    "socialId": "facebook_54321",
+    "name": "이진호",
+    "grade": 2,
+    "birthday": "2010-05-19",
+    "gender": true,
+    "email": "jinho@example.com",
+    "password": "jinhoStrong!",
+    "phone": "010-4567-8901"
+  },
+  {
+    "socialId": "apple_32145",
+    "name": "김소연",
+    "grade": 3,
+    "birthday": "2009-07-30",
+    "gender": false,
+    "email": "soyeon@example.com",
+    "password": "soyeon!@#",
+    "phone": "010-6789-0123"
+  }
+]

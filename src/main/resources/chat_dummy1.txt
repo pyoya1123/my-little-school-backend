@@ -1,0 +1,802 @@
+[
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 공부할 때 집중 잘 돼? 난 진짜 힘들더라. 집중력 좋은 사람 비법 좀 알려줘!",
+    "timestamp": "2024-10-19 07:17:17",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "이번에 전국 대회 참가하는 사람 있어? 나도 도전해볼까 생각 중이야.",
+    "timestamp": "2024-04-07 01:33:47",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "이번에 전국 대회 참가하는 사람 있어? 나도 도전해볼까 생각 중이야.",
+    "timestamp": "2024-07-14 07:18:39",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "다들 여름 방학 때 어디 가고 싶어? 난 바다가 제일 좋아.",
+    "timestamp": "2024-05-01 15:35:57",
+    "channel": "games",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 2,
+    "receiverId": 4,
+    "message": "Jinho아, 넌 약간 차가운 스타일 같아 보이지만 사실은 엄청 따뜻하지?",
+    "timestamp": "2024-04-18 05:29:56",
+    "channel": "games",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 4,
+    "message": "Jinho아, 넌 약간 차가운 스타일 같아 보이지만 사실은 엄청 따뜻하지?",
+    "timestamp": "2024-06-29 19:07:37",
+    "channel": "games",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "새로 나온 스마트폰 중에 뭐가 제일 좋다고 생각해? 난 사진 잘 찍히는 게 중요하더라.",
+    "timestamp": "2024-03-17 19:09:01",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "우리 반 분위기 너무 좋아. 다들 서로 잘 지내는 것 같아.",
+    "timestamp": "2024-05-24 18:01:49",
+    "channel": "general",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "최근에 읽은 책 중에 가장 인상 깊은 책이 뭐였어? 나는 철학 책이 좋았어.",
+    "timestamp": "2024-01-10 18:55:39",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "우리 반에서 제일 열심히 하는 사람이 누구라고 생각해? 나 Jinho 열심히 하는 것 같아.",
+    "timestamp": "2024-07-15 02:24:46",
+    "channel": "sports",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "이번 학교 축제 때 다들 뭐 할 거야? 난 노래 부를까 생각 중이야.",
+    "timestamp": "2024-04-06 08:37:12",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": 2,
+    "message": "Jisoo아, 너 게임 진짜 좋아하는 것 같아. 요즘 뭐 해?",
+    "timestamp": "2024-10-08 18:03:49",
+    "channel": "general",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "우리 반 분위기 너무 좋아. 다들 서로 잘 지내는 것 같아.",
+    "timestamp": "2024-08-15 09:53:51",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 1,
+    "message": "Minho아, 너는 무슨 음식 제일 좋아해? 난 떡볶이가 최고야.",
+    "timestamp": "2024-05-25 00:02:57",
+    "channel": "hobbies",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "새로 나온 스마트폰 중에 뭐가 제일 좋다고 생각해? 난 사진 잘 찍히는 게 중요하더라.",
+    "timestamp": "2024-10-19 00:47:20",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "최근에 읽은 책 중에 가장 인상 깊은 책이 뭐였어? 나는 철학 책이 좋았어.",
+    "timestamp": "2024-08-31 21:35:11",
+    "channel": "games",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "최근에 읽은 책 중에 가장 인상 깊은 책이 뭐였어? 나는 철학 책이 좋았어.",
+    "timestamp": "2024-04-24 07:38:35",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 1,
+    "receiverId": 3,
+    "message": "Yuna아, 너는 농구보다는 축구를 더 좋아하지 않니?",
+    "timestamp": "2024-05-19 17:20:47",
+    "channel": "sports",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 공부할 때 어떤 음악 들어? 나는 클래식이 집중이 잘 되더라.",
+    "timestamp": "2024-03-26 20:50:25",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "새로 나온 스마트폰 중에 뭐가 제일 좋다고 생각해? 난 사진 잘 찍히는 게 중요하더라.",
+    "timestamp": "2024-06-14 01:05:57",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 5,
+    "message": "Soyeon, 너는 이번에 누구랑 친해지고 싶어? 나는 활발한 사람이 좋아.",
+    "timestamp": "2024-06-25 13:33:30",
+    "channel": "study",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "요즘 뭐 먹는 게 제일 맛있어? 난 요즘 초콜릿에 빠졌어.",
+    "timestamp": "2024-08-05 00:06:49",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "우리 반에서 제일 열심히 하는 사람이 누구라고 생각해? 나 내가 열심히 하는 것 같아.",
+    "timestamp": "2024-01-29 20:25:53",
+    "channel": "study",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "이번에 반에서 단체로 뭐 하면 좋을까? 나는 축제 준비 같이 하고 싶어.",
+    "timestamp": "2024-05-02 07:09:47",
+    "channel": "study",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": 4,
+    "message": "Jinho, 넌 항상 밝아서 좋아. 나도 너처럼 긍정적이고 싶어.",
+    "timestamp": "2024-08-22 14:24:37",
+    "channel": "general",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "이번에 전국 대회 참가하는 사람 있어? 나도 도전해볼까 생각 중이야.",
+    "timestamp": "2024-09-06 20:16:47",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 1,
+    "message": "Minho아, 너는 무슨 음식 제일 좋아해? 난 떡볶이가 최고야.",
+    "timestamp": "2024-05-29 22:12:20",
+    "channel": "sports",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "다들 여름 방학 때 어디 가고 싶어? 난 바다가 제일 좋아.",
+    "timestamp": "2024-01-08 15:30:01",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "이번 학교 축제 때 다들 뭐 할 거야? 난 노래 부를까 생각 중이야.",
+    "timestamp": "2024-02-27 09:21:14",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": 2,
+    "message": "Jisoo아, 너 게임 진짜 좋아하는 것 같아. 요즘 뭐 해?",
+    "timestamp": "2024-06-05 06:32:15",
+    "channel": "study",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "우리 반 분위기 너무 좋아. 다들 서로 잘 지내는 것 같아.",
+    "timestamp": "2024-03-19 12:40:04",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 4,
+    "receiverId": 5,
+    "message": "Soyeon아, 넌 공부할 때 어떻게 집중해? 난 음악 없으면 못 하겠어.",
+    "timestamp": "2024-07-29 08:29:20",
+    "channel": "study",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "요즘 뭐 먹는 게 제일 맛있어? 난 요즘 초콜릿에 빠졌어.",
+    "timestamp": "2024-04-03 11:52:34",
+    "channel": "games",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "이번 학교 축제 때 다들 뭐 할 거야? 난 노래 부를까 생각 중이야.",
+    "timestamp": "2024-04-27 14:46:44",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "우리 반에서 제일 열심히 하는 사람이 누구라고 생각해? 나 Jinho 열심히 하는 것 같아.",
+    "timestamp": "2024-04-24 06:50:31",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "요즘 뭐 먹는 게 제일 맛있어? 난 요즘 초콜릿에 빠졌어.",
+    "timestamp": "2024-07-24 18:54:44",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "우리 반 분위기 너무 좋아. 다들 서로 잘 지내는 것 같아.",
+    "timestamp": "2024-09-01 20:13:29",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "체육 시간에 다들 뭐가 제일 재미있어? 난 농구할 때가 제일 신나.",
+    "timestamp": "2024-06-18 15:24:29",
+    "channel": "study",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "학급 발표 때 다들 긴장하지? 나도 발표는 항상 떨려.",
+    "timestamp": "2024-06-01 20:16:59",
+    "channel": "sports",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 2,
+    "message": "Jisoo아, 너 게임 진짜 좋아하는 것 같아. 요즘 뭐 해?",
+    "timestamp": "2024-09-28 10:27:55",
+    "channel": "general",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "다들 이번 체육대회 때 뭐 할 생각이야? 난 축구가 제일 좋더라.",
+    "timestamp": "2024-07-27 08:15:12",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "다들 드라마보다는 영화를 더 좋아하는 것 같아. 맞지?",
+    "timestamp": "2024-08-23 17:39:58",
+    "channel": "games",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "여러분, 운동할 때 어떤 운동 제일 좋아해? 난 달리기가 최고야.",
+    "timestamp": "2024-05-20 08:42:13",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": 2,
+    "message": "Jisoo아, 너는 취미가 뭐야? 난 그림 그리는 거 좋아해.",
+    "timestamp": "2024-07-17 18:48:10",
+    "channel": "study",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 여름 방학 때 어디 가고 싶어? 난 바다가 제일 좋아.",
+    "timestamp": "2024-09-02 01:31:35",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "여러분, 운동할 때 어떤 운동 제일 좋아해? 난 달리기가 최고야.",
+    "timestamp": "2024-06-17 19:59:41",
+    "channel": "sports",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "학급 발표 때 다들 긴장하지? 나도 발표는 항상 떨려.",
+    "timestamp": "2024-07-15 21:47:47",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "최근에 읽은 책 중에 가장 인상 깊은 책이 뭐였어? 나는 철학 책이 좋았어.",
+    "timestamp": "2024-05-10 14:32:24",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "다들 요즘 어떤 게임 많이 해? 나는 FPS 게임에 빠져 있어.",
+    "timestamp": "2024-03-27 12:31:04",
+    "channel": "games",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 2,
+    "receiverId": 5,
+    "message": "Soyeon아, 넌 공부할 때 어떻게 집중해? 난 음악 없으면 못 하겠어.",
+    "timestamp": "2024-03-22 00:57:48",
+    "channel": "sports",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "우리 반에서 인기 제일 많은 사람이 누구일까? 난 Minho 인기가 많은 것 같아.",
+    "timestamp": "2024-10-06 17:08:11",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "학급 발표 때 다들 긴장하지? 나도 발표는 항상 떨려.",
+    "timestamp": "2024-04-24 13:36:33",
+    "channel": "general",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": 2,
+    "message": "Jisoo아, 너 게임 진짜 좋아하는 것 같아. 요즘 뭐 해?",
+    "timestamp": "2024-02-22 05:35:44",
+    "channel": "sports",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "이번에 전국 대회 참가하는 사람 있어? 나도 도전해볼까 생각 중이야.",
+    "timestamp": "2024-07-08 10:34:51",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": 4,
+    "message": "Jinho, 넌 약간 차가운 스타일 같아 보이지만 사실은 엄청 따뜻하지?",
+    "timestamp": "2024-02-06 14:30:15",
+    "channel": "study",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "여러분 이번에 새로 나온 영화 봤어? 진짜 재밌더라!",
+    "timestamp": "2024-04-24 23:40:32",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "다들 요즘 어떤 게임 많이 해? 나는 FPS 게임에 빠져 있어.",
+    "timestamp": "2024-10-03 09:04:43",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": 2,
+    "message": "Jisoo아, 너 게임 진짜 좋아하는 것 같아. 요즘 뭐 해?",
+    "timestamp": "2024-10-18 01:00:31",
+    "channel": "games",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "여러분 이번에 새로 나온 영화 봤어? 진짜 재밌더라!",
+    "timestamp": "2024-01-02 13:10:41",
+    "channel": "sports",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 2,
+    "message": "Jisoo아, 너는 취미가 뭐야? 난 그림 그리는 거 좋아해.",
+    "timestamp": "2024-06-21 01:26:16",
+    "channel": "study",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "여러분, 운동할 때 어떤 운동 제일 좋아해? 난 달리기가 최고야.",
+    "timestamp": "2024-07-21 04:47:01",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "최근에 읽은 책 중에 가장 인상 깊은 책이 뭐였어? 나는 철학 책이 좋았어.",
+    "timestamp": "2024-02-28 02:13:26",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 4,
+    "message": "Jinho아, 넌 항상 밝아서 좋아. 나도 너처럼 긍정적이고 싶어.",
+    "timestamp": "2024-01-14 02:45:54",
+    "channel": "general",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "최근에 읽은 책 중에 가장 인상 깊은 책이 뭐였어? 나는 철학 책이 좋았어.",
+    "timestamp": "2024-07-13 11:02:47",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 요즘 어떤 게임 많이 해? 나는 FPS 게임에 빠져 있어.",
+    "timestamp": "2024-08-06 13:00:57",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 2,
+    "message": "Jisoo아, 너는 취미가 뭐야? 난 그림 그리는 거 좋아해.",
+    "timestamp": "2024-10-18 22:22:08",
+    "channel": "hobbies",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "학급 발표 때 다들 긴장하지? 나도 발표는 항상 떨려.",
+    "timestamp": "2024-06-28 11:34:29",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "다들 공부할 때 어떤 음악 들어? 나는 클래식이 집중이 잘 되더라.",
+    "timestamp": "2024-09-19 23:04:23",
+    "channel": "general",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "우리 반 분위기 너무 좋아. 다들 서로 잘 지내는 것 같아.",
+    "timestamp": "2024-07-07 16:18:20",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 공부할 때 어떤 음악 들어? 나는 클래식이 집중이 잘 되더라.",
+    "timestamp": "2024-08-31 15:25:48",
+    "channel": "sports",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 요즘 뭐가 제일 고민이야? 난 진로 고민 때문에 스트레스야.",
+    "timestamp": "2024-02-18 16:30:45",
+    "channel": "study",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "여러분, 운동할 때 어떤 운동 제일 좋아해? 난 달리기가 최고야.",
+    "timestamp": "2024-01-27 22:30:59",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "이번에 반에서 단체로 뭐 하면 좋을까? 나는 축제 준비 같이 하고 싶어.",
+    "timestamp": "2024-05-25 23:51:36",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 이번 체육대회 때 뭐 할 생각이야? 난 축구가 제일 좋더라.",
+    "timestamp": "2024-05-07 21:59:08",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "우리 반에서 인기 제일 많은 사람이 누구일까? 난 Minho 인기가 많은 것 같아.",
+    "timestamp": "2024-04-28 02:53:49",
+    "channel": "general",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "우리 반에서 인기 제일 많은 사람이 누구일까? 난 Minho 인기가 많은 것 같아.",
+    "timestamp": "2024-02-06 14:03:37",
+    "channel": "study",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 2,
+    "receiverId": 2,
+    "message": "Jisoo아, 너 게임 진짜 좋아하는 것 같아. 요즘 뭐 해?",
+    "timestamp": "2024-09-06 05:13:05",
+    "channel": "hobbies",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 5,
+    "message": "Soyeon아, 넌 공부할 때 어떻게 집중해? 난 음악 없으면 못 하겠어.",
+    "timestamp": "2024-07-04 05:58:21",
+    "channel": "hobbies",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "우리 반 분위기 너무 좋아. 다들 서로 잘 지내는 것 같아.",
+    "timestamp": "2024-08-26 07:42:08",
+    "channel": "general",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 2,
+    "receiverId": 3,
+    "message": "Yuna아, 너는 농구보다는 축구를 더 좋아하지 않니?",
+    "timestamp": "2024-02-05 22:54:17",
+    "channel": "study",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 공부할 때 어떤 음악 들어? 나는 클래식이 집중이 잘 되더라.",
+    "timestamp": "2024-04-29 06:31:53",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "요즘 뭐 먹는 게 제일 맛있어? 난 요즘 초콜릿에 빠졌어.",
+    "timestamp": "2024-04-09 15:50:43",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "다들 드라마보다는 영화를 더 좋아하는 것 같아. 맞지?",
+    "timestamp": "2024-07-16 19:31:03",
+    "channel": "study",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": 3,
+    "message": "Yuna아, 너는 드라마보다 예능이 재밌지 않아?",
+    "timestamp": "2024-01-19 06:09:32",
+    "channel": "study",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "다들 이번 체육대회 때 뭐 할 생각이야? 난 축구가 제일 좋더라.",
+    "timestamp": "2024-08-13 08:58:41",
+    "channel": "general",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "다들 드라마보다는 영화를 더 좋아하는 것 같아. 맞지?",
+    "timestamp": "2024-07-08 08:06:50",
+    "channel": "sports",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 1,
+    "receiverId": 2,
+    "message": "Jisoo아, 너 게임 진짜 좋아하는 것 같아. 요즘 뭐 해?",
+    "timestamp": "2024-01-03 22:45:05",
+    "channel": "games",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "다들 이번 체육대회 때 뭐 할 생각이야? 난 축구가 제일 좋더라.",
+    "timestamp": "2024-05-22 05:35:14",
+    "channel": "general",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "다들 요즘 어떤 게임 많이 해? 나는 FPS 게임에 빠져 있어.",
+    "timestamp": "2024-06-03 11:31:33",
+    "channel": "sports",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "체육 시간에 다들 뭐가 제일 재미있어? 난 농구할 때가 제일 신나.",
+    "timestamp": "2024-09-16 03:52:14",
+    "channel": "hobbies",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "다들 이번 체육대회 때 뭐 할 생각이야? 난 축구가 제일 좋더라.",
+    "timestamp": "2024-08-18 01:01:30",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 5,
+    "receiverId": null,
+    "message": "다들 요즘 뭐가 제일 고민이야? 난 진로 고민 때문에 스트레스야.",
+    "timestamp": "2024-04-24 00:05:03",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "우리 반에서 인기 제일 많은 사람이 누구일까? 난 Minho 인기가 많은 것 같아.",
+    "timestamp": "2024-08-19 08:30:45",
+    "channel": "sports",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "다들 여름 방학 때 어디 가고 싶어? 난 바다가 제일 좋아.",
+    "timestamp": "2024-05-25 13:24:50",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 4,
+    "receiverId": null,
+    "message": "우리 반에서 인기 제일 많은 사람이 누구일까? 난 Minho 인기가 많은 것 같아.",
+    "timestamp": "2024-02-07 18:20:09",
+    "channel": "games",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "다들 이번 체육대회 때 뭐 할 생각이야? 난 축구가 제일 좋더라.",
+    "timestamp": "2024-03-05 09:05:25",
+    "channel": "sports",
+    "chatType": "GROUP"
+  },
+  {
+    "senderId": 1,
+    "receiverId": null,
+    "message": "여러분 이번에 새로 나온 영화 봤어? 진짜 재밌더라!",
+    "timestamp": "2024-03-19 17:29:43",
+    "channel": "games",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 3,
+    "receiverId": null,
+    "message": "이번에 전국 대회 참가하는 사람 있어? 나도 도전해볼까 생각 중이야.",
+    "timestamp": "2024-05-02 19:55:25",
+    "channel": "hobbies",
+    "chatType": "PUBLIC"
+  },
+  {
+    "senderId": 5,
+    "receiverId": 3,
+    "message": "Yuna아, 너는 드라마보다 예능이 재밌지 않아?",
+    "timestamp": "2024-06-27 05:26:52",
+    "channel": "games",
+    "chatType": "PRIVATE"
+  },
+  {
+    "senderId": 2,
+    "receiverId": null,
+    "message": "우리 반에서 제일 열심히 하는 사람이 누구라고 생각해? 나 Jinho 열심히 하는 것 같아.",
+    "timestamp": "2024-02-12 09:34:22",
+    "channel": "study",
+    "chatType": "GROUP"
+  }
+]

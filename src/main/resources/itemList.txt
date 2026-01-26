@@ -1,0 +1,268 @@
+[
+  {
+    "id": 0,
+    "itemIdx": 0,
+    "itemName": "소형 화분1",
+    "price": 200,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 1,
+    "itemIdx": 1,
+    "itemName": "소형 화분2",
+    "price": 200,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 2,
+    "itemIdx": 2,
+    "itemName": "소형 화분3",
+    "price": 200,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 3,
+    "itemIdx": 3,
+    "itemName": "소형 화분4",
+    "price": 200,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 4,
+    "itemIdx": 4,
+    "itemName": "대형 화분1",
+    "price": 200,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 5,
+    "itemIdx": 5,
+    "itemName": "대형 화분2",
+    "price": 400,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 6,
+    "itemIdx": 6,
+    "itemName": "대형 화분3",
+    "price": 400,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id":7,
+    "itemIdx": 7,
+    "itemName": "대형 화분4",
+    "price": 400,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 8,
+    "itemIdx": 8,
+    "itemName": "대형 화분5",
+    "price": 400,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 9,
+    "itemIdx": 9,
+    "itemName": "대형 화분6",
+    "price": 400,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 10,
+    "itemIdx": 10,
+    "itemName": "쇼파",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 11,
+    "itemIdx": 11,
+    "itemName": "책 더미1",
+    "price": 100,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 12,
+    "itemIdx": 12,
+    "itemName": "책 더미2",
+    "price": 100,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 13,
+    "itemIdx": 13,
+    "itemName": "책장 1",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 14,
+    "itemIdx": 14,
+    "itemName": "책장 2",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 15,
+    "itemIdx": 15,
+    "itemName": "의자",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 16,
+    "itemIdx": 16,
+    "itemName": "책상",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 17,
+    "itemIdx": 17,
+    "itemName": "지구본",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 18,
+    "itemIdx": 18,
+    "itemName": "사물함",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 19,
+    "itemIdx": 19,
+    "itemName": "장식 나무",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 20,
+    "itemIdx": 20,
+    "itemName": "미니 보드",
+    "price": 500,
+    "itemType": "MyClassRoom"
+  },
+  {
+    "id": 21,
+    "itemIdx": 21,
+    "itemName": "중형 화분1",
+    "price": 300,
+    "itemType": "Common"
+  },
+  {
+    "id": 22,
+    "itemIdx": 22,
+    "itemName": "중형 화분2",
+    "price": 300,
+    "itemType": "Common"
+  },
+  {
+    "id": 23,
+    "itemIdx": 23,
+    "itemName": "중형 화분3",
+    "price": 300,
+    "itemType": "Common"
+  },
+  {
+    "id": 24,
+    "itemIdx": 24,
+    "itemName": "덤불1",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 25,
+    "itemIdx": 25,
+    "itemName": "덤불2",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 26,
+    "itemIdx": 26,
+    "itemName": "덤불3",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 27,
+    "itemIdx": 27,
+    "itemName": "불가사리1",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 28,
+    "itemIdx": 28,
+    "itemName": "불가사리2",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 29,
+    "itemIdx": 29,
+    "itemName": "벚꽃 덤불1",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 30,
+    "itemIdx": 30,
+    "itemName": "벚꽃 덤불2",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 31,
+    "itemIdx": 31,
+    "itemName": "벚꽃 덤불3",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 32,
+    "itemIdx": 32,
+    "itemName": "벚꽃 덤불4",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 33,
+    "itemIdx": 33,
+    "itemName": "벚꽃 덤불5",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 34,
+    "itemIdx": 34,
+    "itemName": "벚꽃 덤불6",
+    "price": 200,
+    "itemType": "Common"
+  },
+  {
+    "id": 35,
+    "itemIdx": 35,
+    "itemName": "벚꽃 나무1",
+    "price": 600,
+    "itemType": "Common"
+  },
+  {
+    "id": 36,
+    "itemIdx": 36,
+    "itemName": "벚꽃 나무2",
+    "price": 600,
+    "itemType": "Common"
+  },
+  {
+    "id": 37,
+    "itemIdx": 37,
+    "itemName": "벚꽃 나무3",
+    "price": 600,
+    "itemType": "Common"
+  }
+]
