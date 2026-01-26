@@ -1,6 +1,5 @@
 package com.project.final_project.common.config;
 
-import com.project.final_project.airecommendation.service.AIRecommendationService;
 import com.project.final_project.chatlog.domain.lastprocessedstatus.LastProcessedStatus;
 import com.project.final_project.chatlog.repository.lastprocessedstatus.LastProcessedStatusRepository;
 import com.project.final_project.user.dto.UserDTO;

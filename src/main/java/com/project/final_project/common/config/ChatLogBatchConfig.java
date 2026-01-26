@@ -1,11 +1,6 @@
 package com.project.final_project.common.config;
 
-import com.project.final_project.airecommendation.dto.AIResponseDTO;
-import com.project.final_project.airecommendation.service.AIRecommendationService;
 import com.project.final_project.chatlog.domain.ChatLog;
-import com.project.final_project.chatlog.dto.ChatLogDTO;
-import com.project.final_project.emotionanalysis.dto.EmotionAnalysisResponseDTO;
-import com.project.final_project.emotionanalysis.service.EmotionAnalysisService;
 import java.util.Map;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -45,8 +40,6 @@ import java.util.List;
 public class ChatLogBatchConfig {
 
   private final DataSource dataSource;
-  private final AIRecommendationService aiRecommendationService;
-  private final EmotionAnalysisService emotionAnalysisSerivce;
 
   @Bean
   public Job chatLogJob(JobRepository jobRepository, PlatformTransactionManager transactionManager) throws Exception {
@@ -95,38 +88,12 @@ public class ChatLogBatchConfig {
       @Value("#{jobParameters['userId']}") Long userId) {
     return items -> {
 
-      // 메시지 및 타임스탬프 변환
-      List<ChatLogDTO> chatLogs = items.getItems().stream().map(ChatLogDTO::new).toList();
-
-      // AI 서버에 채팅 로그 보내기
-      AIResponseDTO aiSendChatLogResponse = aiRecommendationService.sendChatLogToAI(chatLogs);
-      log.debug("AI send chat log response: userId={}", userId);
-
       // 마지막 처리한 ID 저장
       Long lastProcessedId = items.getItems().get(items.size() - 1).getId().longValue();
       StepExecution stepExecution =
           Objects.requireNonNull(StepSynchronizationManager.getContext()).getStepExecution();
       stepExecution.getJobExecution().getExecutionContext().put("lastProcessedId", lastProcessedId);
       log.info("Updated lastProcessedId: {}", lastProcessedId);
-
-      // 추천 결과 처리
-      AIResponseDTO recommendation = aiRecommendationService.getRecommendation(userId.intValue());
-      log.debug("Recommendation for userId={}: {}", userId, recommendation);
-      if (recommendation != null) {
-        aiRecommendationService.inputRecommendation(userId.intValue(), recommendation);
-      }
-
-      // 감성 분석 처리
-      EmotionAnalysisResponseDTO emotionAnalysisResponse =
-          emotionAnalysisSerivce.RequestEmotionAnalysis(userId.intValue());
-      log.debug("Emotion analysis response: userId={}", userId);
-
-      if (recommendation != null) {
-        aiRecommendationService.inputRecommendation(userId.intValue(), recommendation);
-        log.info("Recommendation for userId {}: {}", userId, recommendation);
-      } else {
-        log.warn("No recommendation available for userId {}", userId);
-      }
     };
   }
 

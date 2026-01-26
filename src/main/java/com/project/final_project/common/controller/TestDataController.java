@@ -131,7 +131,7 @@ public class TestDataController {
         );
 
         var createdBoard = boardService.registerBoard(dto);
-        createdBoardIds.add(createdBoard.getId());
+        createdBoardIds.add(createdBoard.getBoardId());
       } catch (Exception e) {
         errors.add("Board " + i + ": " + e.getMessage());
       }

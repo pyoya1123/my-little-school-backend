@@ -50,7 +50,7 @@ public class MockDataGenerator {
   public static BoardRegisterData generateBoardRegisterData(Integer userId) {
     BoardRegisterData data = new BoardRegisterData();
     data.title = faker.lorem().sentence(3, 8);
-    data.content = faker.lorem().paragraph(3, 5);
+    data.content = faker.lorem().paragraph();
     data.userId = userId;
     return data;
   }

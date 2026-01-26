@@ -2,15 +2,11 @@ package com.project.final_project.user.service;
 
 import static com.project.final_project.common.global.HttpResponseEntity.success;
 
-import com.project.final_project.airecommendation.dto.UserRecomendByInterestRequestDTO;
-import com.project.final_project.airecommendation.service.AIRecommendationService;
 import com.project.final_project.avatar.service.AvatarService;
 import com.project.final_project.board.service.BoardService;
 import com.project.final_project.boardlikemanager.service.BoardLikeService;
-import com.project.final_project.chatbotlog.service.ChatBotLogService;
 import com.project.final_project.chatlog.service.ChatLogService;
 import com.project.final_project.common.global.HttpResponseEntity.ResponseResult;
-import com.project.final_project.emotionanalysis.service.EmotionAnalysisService;
 import com.project.final_project.friendship.service.FriendshipService;
 import com.project.final_project.furniture.service.FurnitureService;
 import com.project.final_project.gallery.service.GalleryService;
@@ -54,14 +50,12 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final SchoolRepository schoolRepository;
-  private final AIRecommendationService aiRecommendationService;
   private final QuestService questService;
   private final UserQuestService userQuestService;
   private final InventoryService inventoryService;
   private final AvatarService avatarService;
   private final BoardService boardService;
   private final ChatLogService chatLogService;
-  private final ChatBotLogService chatBotLogService;
   private final FriendshipService friendshipService;
   private final FurnitureService furnitureService;
   private final GalleryService galleryService;
@@ -70,7 +64,6 @@ public class UserService {
   private final NoteService noteService;
   private final BoardLikeService boardLikeService;
   private final SchoolService schoolService;
-  private final EmotionAnalysisService emotionAnalysisService;
 
   public User getUser(Integer id) {
     return userRepository.findById(id)
@@ -95,15 +88,6 @@ public class UserService {
       User newUser = createUser(dto);
       User savedUser = userRepository.save(newUser);
 
-      // 관심사가 존재하면 AI 추천 서비스 호출
-      if (savedUser.getInterest() != null && !savedUser.getInterest().isEmpty()) {
-        try {
-          aiRecommendationService.sendInterestToAI(new UserRecomendByInterestRequestDTO(savedUser));
-        } catch (Exception e) {
-          // AI 서비스 호출 실패 시 로그 남기기
-          log.warn("Failed to send user interest to AI service: {}", e.getMessage());
-        }
-      }
 
       //== 유저 생성할 때 초기 퀘스트 등록 ==//
       // TUTORIAL 퀘스트 가져오기
@@ -131,8 +115,11 @@ public class UserService {
       // 유저 DTO 반환
       return new UserDTO(savedUser);
 
-    } catch (ConflictException | RuntimeException e) {
+    } catch (ConflictException e) {
       // 이미 처리된 예외는 그대로 전파
+      throw e;
+    } catch (RuntimeException e) {
+      // RuntimeException도 그대로 전파
       throw e;
     } catch (Exception e) {
       // 전체 프로세스에서 발생한 예외 처리
@@ -164,7 +151,6 @@ public class UserService {
     }
     if(dto.getInterest() != null){
       foundUser.setInterest(new ArrayList<>(dto.getInterest()));
-      aiRecommendationService.sendInterestToAI(new UserRecomendByInterestRequestDTO(foundUser));
     }
     if(dto.getStatusMesasge() != null) {
       foundUser.setStatusMessage(dto.getStatusMesasge());
@@ -187,9 +173,6 @@ public class UserService {
     User user = userRepository.findById(id)
         .orElseThrow(() -> new NotFoundException("User not found: " + id));
 
-    // 친구 추천 정보 삭제
-    aiRecommendationService.deleteRecommendationListByUserId(id);
-
     // 아바타 삭제
     if(avatarService.isExistAvatar(id)) {
       avatarService.deleteAvatar(id);
@@ -200,9 +183,6 @@ public class UserService {
 
     // 게시판 좋아요 로그 삭제
     boardLikeService.deleteBoardLikeListByUserId(id);
-
-    // 챗봇 로그 삭제
-    chatBotLogService.deleteChatBotLogListByUserId(id);
 
     // 채팅 삭제
     chatLogService.deleteChatLogListByUserId(id);
@@ -244,9 +224,6 @@ public class UserService {
     if(user.getSchool() != null) {
       user.removeFromSchool();
     }
-
-    // 감정 분석 로그 삭제
-    emotionAnalysisService.deleteUserLogsByUserId(id);
 
     userRepository.deleteById(id);
   }

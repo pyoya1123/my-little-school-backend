@@ -64,6 +64,8 @@ public class QUser extends EntityPathBase<User> {
 
     public final ListPath<com.project.final_project.quest.domain.UserQuest, com.project.final_project.quest.domain.QUserQuest> userQuests = this.<com.project.final_project.quest.domain.UserQuest, com.project.final_project.quest.domain.QUserQuest>createList("userQuests", com.project.final_project.quest.domain.UserQuest.class, com.project.final_project.quest.domain.QUserQuest.class, PathInits.DIRECT2);
 
+    public final MapPath<String, Integer, NumberPath<Integer>> visitCounts = this.<String, Integer, NumberPath<Integer>>createMap("visitCounts", String.class, Integer.class, NumberPath.class);
+
     public QUser(String variable) {
         this(User.class, forVariable(variable), INITS);
     }

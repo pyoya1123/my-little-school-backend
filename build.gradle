@@ -74,7 +74,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-aop'
     
     // Faker (목업 데이터 생성용)
-    implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation('com.github.javafaker:javafaker:1.0.2') {
+        exclude group: 'org.yaml', module: 'snakeyaml'
+    }
+    
+    // snakeyaml 버전 명시적 지정 (Spring Boot가 관리하는 버전 사용)
+    implementation 'org.yaml:snakeyaml'
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -91,6 +96,10 @@ dependencies {
 
     // Spring Security (비밀번호 암호화용)
     implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // YAML 처리 (snakeyaml 버전 충돌 해결)
+    // Spring Boot 3.3.4와 호환되는 버전 사용
+    implementation 'org.yaml:snakeyaml'
 
     // Spring WebSocket 의존성
     implementation 'org.springframework.boot:spring-boot-starter-websocket'

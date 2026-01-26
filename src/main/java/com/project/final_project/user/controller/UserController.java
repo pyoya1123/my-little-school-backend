@@ -2,9 +2,6 @@ package com.project.final_project.user.controller;
 
 import static com.project.final_project.common.global.HttpResponseEntity.success;
 
-import com.project.final_project.airecommendation.dto.AIResponseDTO;
-import com.project.final_project.airecommendation.dto.UserRecomendByInterestRequestDTO;
-import com.project.final_project.airecommendation.service.AIRecommendationService;
 import com.project.final_project.common.global.HttpResponseEntity.ResponseResult;
 import com.project.final_project.schedule.service.ScheduleService;
 import com.project.final_project.user.domain.User;
@@ -37,7 +34,6 @@ public class UserController {
 
   private final UserService userService;
   private final ScheduleService scheduleService;
-  private final AIRecommendationService aiRecommendationService;
 
   @GetMapping("/{userId}")
   public UserDTO getUserById(@PathVariable("userId") Integer userId) {
