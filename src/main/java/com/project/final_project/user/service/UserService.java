@@ -33,17 +33,21 @@ import com.project.final_project.user.dto.UserProfileDTO;
 import com.project.final_project.user.dto.UserRegisterDTO;
 import com.project.final_project.user.dto.UserRegisterSchoolDTO;
 import com.project.final_project.user.dto.UserUpdateDTO;
+import com.project.final_project.common.constants.UserConstants;
+import com.project.final_project.common.exception.ConflictException;
+import com.project.final_project.common.exception.NotFoundException;
 import com.project.final_project.user.repository.UserRepository;
-import com.project.final_project.userposvisitcount.service.UserPosVisitCountService;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -64,13 +68,13 @@ public class UserService {
   private final GuestBookService guestBookService;
   private final MapContestService mapContestService;
   private final NoteService noteService;
-  private final UserPosVisitCountService userPosVisitCountService;
   private final BoardLikeService boardLikeService;
   private final SchoolService schoolService;
   private final EmotionAnalysisService emotionAnalysisService;
 
   public User getUser(Integer id) {
-    return userRepository.findById(id).orElse(null);
+    return userRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("User not found: " + id));
   }
 
   public List<UserDTO> getAllUser() {
@@ -84,7 +88,7 @@ public class UserService {
     try {
       User foundUser = userRepository.getUserByEmail(dto.getEmail());
       if(foundUser != null) {
-        throw new IllegalArgumentException("해당 이메일은 이미 존재합니다.");
+        throw new ConflictException("해당 이메일은 이미 존재합니다.");
       }
 
       // 유저 생성 및 저장
@@ -97,7 +101,7 @@ public class UserService {
           aiRecommendationService.sendInterestToAI(new UserRecomendByInterestRequestDTO(savedUser));
         } catch (Exception e) {
           // AI 서비스 호출 실패 시 로그 남기기
-          System.err.println("Failed to send user interest to AI service: " + e.getMessage());
+          log.warn("Failed to send user interest to AI service: {}", e.getMessage());
         }
       }
 
@@ -117,8 +121,7 @@ public class UserService {
               new UserQuestRegisterRequestDTO(questDTO.getQuestId(), savedUser.getId()));
         } catch (Exception e) {
           // 개별 퀘스트 등록 실패 시 로그 남기기
-          System.err.println(
-              "Failed to register quest for user: " + questDTO + ", Error: " + e.getMessage());
+          log.warn("Failed to register quest for user: {}, Error: {}", questDTO, e.getMessage());
         }
       }
 
@@ -128,9 +131,12 @@ public class UserService {
       // 유저 DTO 반환
       return new UserDTO(savedUser);
 
+    } catch (ConflictException | RuntimeException e) {
+      // 이미 처리된 예외는 그대로 전파
+      throw e;
     } catch (Exception e) {
       // 전체 프로세스에서 발생한 예외 처리
-      System.err.println("Failed to register user: " + e.getMessage());
+      log.error("Failed to register user: {}", e.getMessage(), e);
       throw new RuntimeException("User registration failed: " + e.getMessage(), e);
     }
   }
@@ -138,9 +144,8 @@ public class UserService {
 
   @Transactional
   public UserDTO updateUser(UserUpdateDTO dto) {
-    User foundUser = userRepository.findById(dto.getId()).orElseThrow(
-        () -> new IllegalStateException("not found user id:" + dto.getId())
-    );
+    User foundUser = userRepository.findById(dto.getId())
+        .orElseThrow(() -> new NotFoundException("User not found: " + dto.getId()));
 
     if (dto.getName() != null) {
       foundUser.setName(dto.getName());
@@ -168,8 +173,10 @@ public class UserService {
       foundUser.setGold(dto.getGold());
     }
     if(dto.getSchoolId() != null){
-      School school = schoolRepository.findById(dto.getSchoolId()).orElseThrow(() -> new IllegalStateException("not found school id:" + dto.getSchoolId()));
-      foundUser.setSchool(school);
+      School school = schoolRepository.findById(dto.getSchoolId())
+          .orElseThrow(() -> new NotFoundException("School not found: " + dto.getSchoolId()));
+      // 헬퍼 메서드를 사용하여 양방향 관계 일관성 유지
+      foundUser.changeSchool(school);
     }
 
     return new UserDTO(foundUser);
@@ -177,8 +184,8 @@ public class UserService {
 
   @Transactional
   public void removeUser(Integer id) {
-    User user = userRepository.findById(id).orElseThrow(
-        () -> new IllegalStateException("not found user id:" + id));
+    User user = userRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("User not found: " + id));
 
     // 친구 추천 정보 삭제
     aiRecommendationService.deleteRecommendationListByUserId(id);
@@ -227,15 +234,15 @@ public class UserService {
     // 쪽지 삭제
     noteService.deleteNoteListByUserId(id);
 
-    // 유저 방문 횟수 db 삭제
-    userPosVisitCountService.deleteUserPosVisitCountListByUserId(id);
+    // 유저 방문 횟수 삭제 (User 엔티티의 visitCounts 필드가 자동으로 삭제됨)
+    // 별도 삭제 로직 불필요 - User 삭제 시 자동 삭제
 
     // 유저 퀘스트 DB 삭제
     userQuestService.deleteUserQuestListByUserId(id);
 
-    // 삭제하려는 유저의 학교에 존재하는 유저 리스트에서 해당 유저를 제거
+    // 삭제하려는 유저를 학교에서 제거 (헬퍼 메서드 사용)
     if(user.getSchool() != null) {
-      schoolService.deleteUserInUserList(user.getSchool().getId(), id);
+      user.removeFromSchool();
     }
 
     // 감정 분석 로그 삭제
@@ -244,10 +251,11 @@ public class UserService {
     userRepository.deleteById(id);
   }
 
+  @Transactional
   public void gainExp(Integer id, Integer exp) {
-    User foundUser = userRepository.findById(id).orElseThrow(() -> new IllegalStateException("not found user id:" + id));
+    User foundUser = userRepository.findById(id)
+        .orElseThrow(() -> new NotFoundException("User not found: " + id));
     foundUser.gainExp(exp);
-    userRepository.save(foundUser);
   }
 
   public boolean existUserDatas() {
@@ -266,31 +274,38 @@ public class UserService {
     user.setPhone(dto.getPhone());
     user.setInterest(new ArrayList<>(dto.getInterest()));
     user.setStatusMessage(dto.getStatusMessage());
-    user.setGold(100000);
+    user.setGold(UserConstants.INITIAL_GOLD);
 
-    user.setLevel(1);
-    user.setExp(0);
-    user.setMaxExp(100);
+    user.setLevel(UserConstants.INITIAL_LEVEL);
+    user.setExp(UserConstants.INITIAL_EXP);
+    user.setMaxExp(UserConstants.INITIAL_MAX_EXP);
 
     // SchoolService를 사용해 schoolId로 School 객체를 조회
     if(dto.getSchoolId() != null) {
-      School school = schoolRepository.findById(dto.getSchoolId()).orElse(null);
-      user.setSchool(school); // 조회한 School 객체를 User에 설정
+      School school = schoolRepository.findById(dto.getSchoolId())
+          .orElseThrow(() -> new NotFoundException("School not found: " + dto.getSchoolId()));
+      // 헬퍼 메서드를 사용하여 양방향 관계 일관성 유지
+      user.changeSchool(school);
     }
 
-    User savedUser = userRepository.save(user);// 저장
+    User savedUser = userRepository.save(user);
 
     savedUser.setMapId(savedUser.getId());
-    savedUser.setMapType("MyClassroom");
+    savedUser.setMapType(UserConstants.DEFAULT_MAP_TYPE);
 
     return savedUser;
   }
 
   @Transactional
   public UserDTO registerSchoolToUser(UserRegisterSchoolDTO dto) {
-    User foundUser = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalStateException("not found registerSchoolForUser id:" + dto.getUserId()));
-    School foundSchool = schoolRepository.findById(dto.getSchoolId()).orElseThrow(() -> new IllegalStateException("not found school id:" + dto.getSchoolId()));
-    foundUser.setSchool(foundSchool);
+    User foundUser = userRepository.findById(dto.getUserId())
+        .orElseThrow(() -> new NotFoundException("User not found: " + dto.getUserId()));
+    School foundSchool = schoolRepository.findById(dto.getSchoolId())
+        .orElseThrow(() -> new NotFoundException("School not found: " + dto.getSchoolId()));
+    
+    // 헬퍼 메서드를 사용하여 양방향 관계 일관성 유지
+    foundUser.changeSchool(foundSchool);
+    
     return new UserDTO(foundUser);
   }
 
@@ -299,15 +314,15 @@ public class UserService {
   }
 
   public UserProfileDTO getProfile(Integer userId) {
-    return new UserProfileDTO(userRepository.findById(userId).orElseThrow(
-        () -> new IllegalStateException("not found user id : " + userId))
-    );
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new NotFoundException("User not found: " + userId));
+    return new UserProfileDTO(user);
   }
 
   @Transactional
   public UserProfileDTO updateProfile(UserProfileDTO dto) {
-    User foundUser = userRepository.findById(dto.getId()).orElseThrow(
-        () -> new IllegalArgumentException("not found user id : " + dto.getId()));
+    User foundUser = userRepository.findById(dto.getId())
+        .orElseThrow(() -> new NotFoundException("User not found: " + dto.getId()));
 
     foundUser.setName(dto.getName());
     foundUser.setInterest(dto.getInterest());
@@ -330,7 +345,7 @@ public class UserService {
   @Transactional
   public void setUserStatusToOnline(Integer userId) {
     User user = userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalStateException("not found user id : " + userId));
+        .orElseThrow(() -> new NotFoundException("User not found: " + userId));
 
     // 현재 날짜 및 시간을 ISO 8601 형식으로 포맷
     DateTimeFormatter isoFormatter = DateTimeFormatter.ISO_DATE_TIME;
@@ -343,21 +358,21 @@ public class UserService {
   @Transactional
   public void setUserStatusToOffline(Integer userId) {
     User user = userRepository.findById(userId)
-        .orElseThrow(() -> new IllegalStateException("not found user id : " + userId));
+        .orElseThrow(() -> new NotFoundException("User not found: " + userId));
 
     user.setIsOnline(false);
   }
 
   public UserPosDTO getPosition(Integer userId) {
-    User user = userRepository.findById(userId).orElseThrow(
-        () -> new IllegalStateException("not found user id : " + userId));
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new NotFoundException("User not found: " + userId));
     return new UserPosDTO(user);
   }
 
   @Transactional
   public ResponseResult<UserPosDTO> updatePosition(UserPosUpdateDTO dto) {
-    User user = userRepository.findById(dto.getUserId()).orElseThrow(
-        () -> new IllegalStateException("not found user id : " + dto.getUserId()));
+    User user = userRepository.findById(dto.getUserId())
+        .orElseThrow(() -> new NotFoundException("User not found: " + dto.getUserId()));
 
     if(dto.getMapId() != null) {
       user.setMapId(dto.getMapId());

@@ -80,7 +80,7 @@ public class AIRecommendationService {
     try {
       // JSON 문자열로 변환
       String jsonRequestBody = objectMapper.writeValueAsString(requestBody);
-      System.out.println("requestBody (JSON) = " + jsonRequestBody);
+      log.debug("Request body (JSON): {}", jsonRequestBody);
 
       // HTTP 헤더 설정
       HttpHeaders headers = new HttpHeaders();
@@ -91,7 +91,7 @@ public class AIRecommendationService {
 
       // REST API 요청
       String responseBody = restTemplate.postForObject(AI_CHAT_URL, entity, String.class);
-      System.out.println("responseBody = " + responseBody);
+      log.debug("Response body: {}", responseBody);
 
       // JSON 응답 처리
       AIResponseDTO aiResponse = null;
@@ -113,7 +113,7 @@ public class AIRecommendationService {
       log.error("AI 서버 오류 발생: {}", e.getResponseBodyAsString());
       throw new RuntimeException("AI 서버 오류 발생", e);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("예상치 못한 오류 발생", e);
       throw new RuntimeException("예상치 못한 오류 발생", e);
     }
   }
@@ -128,7 +128,7 @@ public class AIRecommendationService {
     String responseBody;
     try {
       responseBody = restTemplate.postForObject(AI_INTEREST_URL, requestBody, String.class);
-      System.out.println("responseBody = " + responseBody);
+      log.debug("Response body: {}", responseBody);
       // 응답 본문 처리 코드
     } catch (HttpServerErrorException e) {
       log.error("AI 서버 오류 발생: {}", e.getResponseBodyAsString());
@@ -151,11 +151,11 @@ public class AIRecommendationService {
       );
 
       AIResponseDTO aiResponse = response.getBody();
-      System.out.println("aiResponse = " + aiResponse);
+      log.debug("AI response: {}", aiResponse);
 
       return aiResponse;
     } catch (Exception e) {
-      System.err.println("추천 데이터를 가져오는 중 오류 발생: " + e.getMessage());
+      log.error("추천 데이터를 가져오는 중 오류 발생: userId={}", userId, e);
       return null; // 실패 시 null 반환 또는 에러 처리 로직
     }
   }
@@ -166,7 +166,7 @@ public class AIRecommendationService {
     for (RecommendedUser recommendedUser : recommendation.getRecommended_users()) {
 
       if(friendshipService.isFriend(userId, recommendedUser.getSenderId())){
-        System.out.println(userId + ", " + recommendedUser.getSenderId());
+        log.debug("User {} and {} are already friends, skipping recommendation", userId, recommendedUser.getSenderId());
         continue;
       }
 
@@ -213,8 +213,8 @@ public class AIRecommendationService {
 
     all.forEach(ar -> {
       // 추천된 사용자를 조회
-      User recommendedUser = userRepository.findById(ar.getRecommendedUserId()).orElseThrow(
-          () -> new IllegalStateException("not found user id: " + ar.getRecommendedUserId()));
+      User recommendedUser = userRepository.findById(ar.getRecommendedUserId())
+          .orElseThrow(() -> new RuntimeException("User not found: " + ar.getRecommendedUserId()));
 
       // 친구 관계 확인
       Boolean isFriend = friendshipService.isFriend(userId, recommendedUser.getId());

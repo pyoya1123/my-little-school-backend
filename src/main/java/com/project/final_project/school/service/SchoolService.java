@@ -20,10 +20,13 @@ import com.project.final_project.websocket.service.UserStatusService;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import com.project.final_project.common.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SchoolService {
@@ -47,29 +50,29 @@ public class SchoolService {
 
   @Transactional
   public SchoolDTO addUserToSchool(Integer schoolId, Integer userId, Integer gradeId) {
-    School foundSchool = schoolRepository.findById(schoolId).orElseThrow(
-        () -> new IllegalArgumentException("not found school id : " + schoolId));
+    School foundSchool = schoolRepository.findById(schoolId)
+        .orElseThrow(() -> new NotFoundException("School not found: " + schoolId));
 
-    User foundUser = userRepository.findById(userId).orElseThrow(
-        () -> new IllegalArgumentException("not found user id : " + userId));
+    User foundUser = userRepository.findById(userId)
+        .orElseThrow(() -> new NotFoundException("User not found: " + userId));
 
-    foundSchool.getUserList().add(foundUser);
-    foundUser.setSchool(foundSchool);
+    // 헬퍼 메서드를 사용하여 양방향 관계 일관성 유지
+    foundUser.changeSchool(foundSchool);
     foundUser.setGrade(gradeId);
 
     return new SchoolDTO(foundSchool);
   }
 
   public List<User> getUserListBySchoolId(Integer schoolId) {
-    School foundSchool = schoolRepository.findById(schoolId).orElseThrow(
-        () -> new IllegalArgumentException("not found school id : " + schoolId));
+    School foundSchool = schoolRepository.findById(schoolId)
+        .orElseThrow(() -> new NotFoundException("School not found: " + schoolId));
 
     return foundSchool.getUserList();
   }
 
   public School getSchoolById(Integer schoolId) {
-    return schoolRepository.findById(schoolId).orElseThrow(
-        () -> new IllegalArgumentException("not found school id : " + schoolId));
+    return schoolRepository.findById(schoolId)
+        .orElseThrow(() -> new NotFoundException("School not found: " + schoolId));
   }
 
   public List<SchoolDTO> getAllSchool() {
@@ -85,16 +88,16 @@ public class SchoolService {
 
   @Transactional
   public void deleteUserInUserList(Integer schoolId, Integer userId) {
-    School school = schoolRepository.findById(schoolId).orElseThrow(
-        () -> new IllegalArgumentException("NOT FOUND School ID : " + schoolId)
-    );
+    User user = userRepository.findById(userId)
+        .orElseThrow(() -> new NotFoundException("User not found: " + userId));
 
-    // UserList에서 userId에 해당하는 유저 제거
-    boolean removed = school.getUserList().removeIf(user -> user.getId().equals(userId));
-
-    if (!removed) {
-      throw new IllegalArgumentException("NOT FOUND User ID : " + userId + " in School ID : " + schoolId);
+    // User가 해당 학교에 속해있는지 확인
+    if (user.getSchool() == null || !user.getSchool().getId().equals(schoolId)) {
+      throw new NotFoundException("User ID : " + userId + " is not in School ID : " + schoolId);
     }
+
+    // 헬퍼 메서드를 사용하여 양방향 관계 일관성 유지
+    user.removeFromSchool();
   }
 
 

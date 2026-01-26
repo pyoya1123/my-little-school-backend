@@ -279,3 +279,292 @@ Caused by: java.net.ConnectException: Connection refused: getsockopt
 2026-01-26T21:46:40.823+09:00  INFO 2540 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
 2026-01-26T21:46:40.824+09:00  INFO 2540 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
 2026-01-26T21:46:40.833+09:00  INFO 2540 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2026-01-26T21:49:05.356+09:00  INFO 20268 --- [main] c.p.f.FinalProjectApplication            : Starting FinalProjectApplication using Java 17.0.13 with PID 20268 (C:\Users\pyoya\Desktop\MyLittleSchool-backend-dev\build\classes\java\main started by pyoya in C:\Users\pyoya\Desktop\MyLittleSchool-backend-dev)
+2026-01-26T21:49:05.359+09:00  INFO 20268 --- [main] c.p.f.FinalProjectApplication            : The following 1 profile is active: "dev"
+2026-01-26T21:49:06.777+09:00  INFO 20268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-26T21:49:06.779+09:00  INFO 20268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-01-26T21:49:07.040+09:00  INFO 20268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 255 ms. Found 23 JPA repository interfaces.
+2026-01-26T21:49:07.059+09:00  INFO 20268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-01-26T21:49:07.060+09:00  INFO 20268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-01-26T21:49:07.106+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.airecommendation.repository.AIRecommendationRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.107+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.avatar.repository.AvatarRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.107+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.boardlikemanager.repository.BoardLikeRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.108+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.board.repository.BoardRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.108+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.chatbotlog.repository.ChatBotLogRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.108+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.chatlog.repository.ChatLogRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.108+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.chatlog.repository.lastprocessedstatus.LastProcessedStatusRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.108+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.comment.repository.CommentRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.108+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.emotionanalysis.repository.EmotionRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.108+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.friendship.repository.FriendshipRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.109+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.furniture.repository.FurnitureRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.109+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.gallery.repository.GalleryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.109+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.guestbook.repository.GuestBookRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.109+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.inventory.repository.InventoryRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.110+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.item.repository.ItemRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.110+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.mapcontest.repository.MapContestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.110+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.note.repository.NoteRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.111+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.quest.repository.QuestItemRewardInfoRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.111+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.quest.repository.QuestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.111+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.quest.repository.UserQuestRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.111+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.school.repository.SchoolRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.112+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.userposvisitcount.repository.UserPosVisitCountRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.112+09:00  INFO 20268 --- [main] .RepositoryConfigurationExtensionSupport : Spring Data Redis - Could not safely identify store assignment for repository candidate interface com.project.final_project.user.repository.UserRepository; If you want this repository to be a Redis repository, consider annotating your entities with one of these annotations: org.springframework.data.redis.core.RedisHash (preferred), or consider extending one of the following types with your repository: org.springframework.data.keyvalue.repository.KeyValueRepository
+2026-01-26T21:49:07.112+09:00  INFO 20268 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 42 ms. Found 0 Redis repository interfaces.
+2026-01-26T21:49:07.536+09:00  WARN 20268 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.ws.config.annotation.DelegatingWsConfiguration' of type [org.springframework.ws.config.annotation.DelegatingWsConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [annotationActionEndpointMapping] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2026-01-26T21:49:07.599+09:00  INFO 20268 --- [main] .w.s.a.s.AnnotationActionEndpointMapping : Supporting [WS-Addressing August 2004, WS-Addressing 1.0]
+2026-01-26T21:49:07.787+09:00  WARN 20268 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'jobRegistry' of type [org.springframework.batch.core.configuration.support.MapJobRegistry] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). Is this bean getting eagerly injected into a currently created BeanPostProcessor [jobRegistryBeanPostProcessor]? Check the corresponding BeanPostProcessor declaration and its dependencies.
+2026-01-26T21:49:08.235+09:00  INFO 20268 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-01-26T21:49:08.252+09:00  INFO 20268 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-01-26T21:49:08.252+09:00  INFO 20268 --- [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.30]
+2026-01-26T21:49:08.342+09:00  INFO 20268 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-01-26T21:49:08.343+09:00  INFO 20268 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2934 ms
+2026-01-26T21:49:09.205+09:00  INFO 20268 --- [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-01-26T21:49:09.240+09:00  INFO 20268 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-01-26T21:49:09.534+09:00  INFO 20268 --- [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4f5df012
+2026-01-26T21:49:09.536+09:00  INFO 20268 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-01-26T21:49:09.586+09:00  WARN 20268 --- [main] org.hibernate.orm.deprecation            : HHH90000025: MySQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-01-26T21:49:10.989+09:00  INFO 20268 --- [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-01-26T21:49:11.331+09:00  INFO 20268 --- [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-01-26T21:49:12.861+09:00  INFO 20268 --- [main] c.p.f.c.c.HibernateStatisticsConfig      : Hibernate 통계 수집이 활성화되었습니다.
+2026-01-26T21:49:13.689+09:00  WARN 20268 --- [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-01-26T21:49:13.753+09:00  WARN 20268 --- [main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: b7644f2b-1d4f-4c1b-886b-cf642167faaf
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-01-26T21:49:13.776+09:00  INFO 20268 --- [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-01-26T21:49:13.971+09:00  INFO 20268 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2026-01-26T21:49:14.418+09:00  INFO 20268 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 5 endpoints beneath base path '/actuator'
+2026-01-26T21:49:15.686+09:00  INFO 20268 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-01-26T21:49:15.706+09:00  INFO 20268 --- [main] c.p.f.FinalProjectApplication            : Started FinalProjectApplication in 10.948 seconds (process running for 11.907)
+2026-01-26T21:49:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : === Hibernate 통계 정보 ===
+2026-01-26T21:49:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 횟수: 3
+2026-01-26T21:49:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 시간: 95ms
+2026-01-26T21:49:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 평균 쿼리 실행 시간: 31ms
+2026-01-26T21:49:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 로드 횟수: 3336
+2026-01-26T21:49:15.713+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 페치 횟수: 0
+2026-01-26T21:49:15.713+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 로드 횟수: 0
+2026-01-26T21:49:15.713+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 페치 횟수: 0
+2026-01-26T21:49:15.713+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 열기 횟수: 186
+2026-01-26T21:49:15.713+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 닫기 횟수: 186
+2026-01-26T21:49:15.713+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 트랜잭션 횟수: 3
+2026-01-26T21:49:15.713+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 성공한 트랜잭션 횟수: 3
+2026-01-26T21:49:15.714+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 연결 횟수: 3
+2026-01-26T21:49:15.714+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 히트: 1
+2026-01-26T21:49:15.714+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 미스: 43
+2026-01-26T21:49:15.715+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 실행된 고유 쿼리 수: 46
+2026-01-26T21:49:15.715+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : ========================
+2026-01-26T21:49:16.397+09:00  INFO 20268 --- [RMI TCP Connection(3)-172.30.1.79] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-01-26T21:49:16.398+09:00  INFO 20268 --- [RMI TCP Connection(3)-172.30.1.79] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-01-26T21:49:16.403+09:00  INFO 20268 --- [RMI TCP Connection(3)-172.30.1.79] o.s.web.servlet.DispatcherServlet        : Completed initialization in 5 ms
+2026-01-26T21:49:16.852+09:00  WARN 20268 --- [RMI TCP Connection(2)-172.30.1.79] o.s.b.a.data.redis.RedisHealthIndicator  : Redis health check failed
+
+org.springframework.data.redis.RedisConnectionFailureException: Unable to connect to Redis
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$ExceptionTranslatingConnectionProvider.translateException(LettuceConnectionFactory.java:1849) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$ExceptionTranslatingConnectionProvider.getConnection(LettuceConnectionFactory.java:1780) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$SharedConnection.getNativeConnection(LettuceConnectionFactory.java:1582) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$SharedConnection.lambda$getConnection$0(LettuceConnectionFactory.java:1562) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory.doInLock(LettuceConnectionFactory.java:1523) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$SharedConnection.getConnection(LettuceConnectionFactory.java:1559) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory.getSharedConnection(LettuceConnectionFactory.java:1245) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory.getConnection(LettuceConnectionFactory.java:1051) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.core.RedisConnectionUtils.fetchConnection(RedisConnectionUtils.java:195) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.core.RedisConnectionUtils.doGetConnection(RedisConnectionUtils.java:144) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.core.RedisConnectionUtils.getConnection(RedisConnectionUtils.java:105) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.core.RedisConnectionUtils.getConnection(RedisConnectionUtils.java:92) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.data.redis.RedisHealthIndicator.doHealthCheck(RedisHealthIndicator.java:49) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.AbstractHealthIndicator.health(AbstractHealthIndicator.java:82) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthIndicator.getHealth(HealthIndicator.java:37) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpoint.getHealth(HealthEndpoint.java:82) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpoint.getHealth(HealthEndpoint.java:41) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getLoggedHealth(HealthEndpointSupport.java:172) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getContribution(HealthEndpointSupport.java:145) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getAggregateContribution(HealthEndpointSupport.java:156) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getContribution(HealthEndpointSupport.java:141) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getHealth(HealthEndpointSupport.java:110) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpointSupport.getHealth(HealthEndpointSupport.java:81) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpoint.health(HealthEndpoint.java:76) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.health.HealthEndpoint.health(HealthEndpoint.java:66) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at org.springframework.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:281) ~[spring-core-6.1.13.jar:6.1.13]
+	at org.springframework.boot.actuate.endpoint.invoke.reflect.ReflectiveOperationInvoker.invoke(ReflectiveOperationInvoker.java:74) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.endpoint.annotation.AbstractDiscoveredOperation.invoke(AbstractDiscoveredOperation.java:60) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.endpoint.jmx.EndpointMBean.invoke(EndpointMBean.java:124) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at org.springframework.boot.actuate.endpoint.jmx.EndpointMBean.invoke(EndpointMBean.java:97) ~[spring-boot-actuator-3.3.4.jar:3.3.4]
+	at java.management/com.sun.jmx.interceptor.DefaultMBeanServerInterceptor.invoke(DefaultMBeanServerInterceptor.java:814) ~[na:na]
+	at java.management/com.sun.jmx.mbeanserver.JmxMBeanServer.invoke(JmxMBeanServer.java:802) ~[na:na]
+	at java.management.rmi/javax.management.remote.rmi.RMIConnectionImpl.doOperation(RMIConnectionImpl.java:1472) ~[na:na]
+	at java.management.rmi/javax.management.remote.rmi.RMIConnectionImpl$PrivilegedOperation.run(RMIConnectionImpl.java:1310) ~[na:na]
+	at java.management.rmi/javax.management.remote.rmi.RMIConnectionImpl.doPrivilegedOperation(RMIConnectionImpl.java:1405) ~[na:na]
+	at java.management.rmi/javax.management.remote.rmi.RMIConnectionImpl.invoke(RMIConnectionImpl.java:829) ~[na:na]
+	at java.base/jdk.internal.reflect.GeneratedMethodAccessor82.invoke(Unknown Source) ~[na:na]
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569) ~[na:na]
+	at java.rmi/sun.rmi.server.UnicastServerRef.dispatch(UnicastServerRef.java:360) ~[na:na]
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:200) ~[na:na]
+	at java.rmi/sun.rmi.transport.Transport$1.run(Transport.java:197) ~[na:na]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:712) ~[na:na]
+	at java.rmi/sun.rmi.transport.Transport.serviceCall(Transport.java:196) ~[na:na]
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport.handleMessages(TCPTransport.java:587) ~[na:na]
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run0(TCPTransport.java:828) ~[na:na]
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.lambda$run$0(TCPTransport.java:705) ~[na:na]
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:399) ~[na:na]
+	at java.rmi/sun.rmi.transport.tcp.TCPTransport$ConnectionHandler.run(TCPTransport.java:704) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136) ~[na:na]
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635) ~[na:na]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+Caused by: io.lettuce.core.RedisConnectionException: Unable to connect to localhost/<unresolved>:6379
+	at io.lettuce.core.RedisConnectionException.create(RedisConnectionException.java:78) ~[lettuce-core-6.3.2.RELEASE.jar:6.3.2.RELEASE/8941aea]
+	at io.lettuce.core.RedisConnectionException.create(RedisConnectionException.java:56) ~[lettuce-core-6.3.2.RELEASE.jar:6.3.2.RELEASE/8941aea]
+	at io.lettuce.core.AbstractRedisClient.getConnection(AbstractRedisClient.java:350) ~[lettuce-core-6.3.2.RELEASE.jar:6.3.2.RELEASE/8941aea]
+	at io.lettuce.core.RedisClient.connect(RedisClient.java:215) ~[lettuce-core-6.3.2.RELEASE.jar:6.3.2.RELEASE/8941aea]
+	at org.springframework.data.redis.connection.lettuce.StandaloneConnectionProvider.lambda$getConnection$1(StandaloneConnectionProvider.java:112) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at java.base/java.util.Optional.orElseGet(Optional.java:364) ~[na:na]
+	at org.springframework.data.redis.connection.lettuce.StandaloneConnectionProvider.getConnection(StandaloneConnectionProvider.java:112) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	at org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory$ExceptionTranslatingConnectionProvider.getConnection(LettuceConnectionFactory.java:1778) ~[spring-data-redis-3.3.4.jar:3.3.4]
+	... 54 common frames omitted
+Caused by: io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection refused: getsockopt: localhost/127.0.0.1:6379
+Caused by: java.net.ConnectException: Connection refused: getsockopt
+	at java.base/sun.nio.ch.Net.pollConnect(Native Method) ~[na:na]
+	at java.base/sun.nio.ch.Net.pollConnectNow(Net.java:672) ~[na:na]
+	at java.base/sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:946) ~[na:na]
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:336) ~[netty-transport-4.1.113.Final.jar:4.1.113.Final]
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:339) ~[netty-transport-4.1.113.Final.jar:4.1.113.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:776) ~[netty-transport-4.1.113.Final.jar:4.1.113.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724) ~[netty-transport-4.1.113.Final.jar:4.1.113.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650) ~[netty-transport-4.1.113.Final.jar:4.1.113.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562) ~[netty-transport-4.1.113.Final.jar:4.1.113.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997) ~[netty-common-4.1.113.Final.jar:4.1.113.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) ~[netty-common-4.1.113.Final.jar:4.1.113.Final]
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30) ~[netty-common-4.1.113.Final.jar:4.1.113.Final]
+	at java.base/java.lang.Thread.run(Thread.java:840) ~[na:na]
+
+2026-01-26T21:50:54.200+09:00  INFO 20268 --- [http-nio-8080-exec-5] o.springdoc.api.AbstractOpenApiResource  : Init duration for springdoc-openapi is: 593 ms
+2026-01-26T21:51:23.564+09:00  WARN 20268 --- [http-nio-8080-exec-7] c.p.f.c.i.PerformanceInterceptor         : Slow request detected: GET /school/list took 1262ms
+2026-01-26T21:52:08.802+09:00  INFO 20268 --- [http-nio-8080-exec-9] c.p.f.i.service.InventoryService         : New inventory created for userId=19 and itemType=MyClassRoom
+2026-01-26T21:52:08.808+09:00  INFO 20268 --- [http-nio-8080-exec-9] c.p.f.i.service.InventoryService         : New inventory created for userId=19 and itemType=Common
+2026-01-26T21:52:08.862+09:00  WARN 20268 --- [http-nio-8080-exec-9] c.p.f.c.i.PerformanceInterceptor         : Slow request detected: POST /user took 539ms
+2026-01-26T21:54:15.715+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : === Hibernate 통계 정보 ===
+2026-01-26T21:54:15.715+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 횟수: 123
+2026-01-26T21:54:15.716+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 시간: 95ms
+2026-01-26T21:54:15.716+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 평균 쿼리 실행 시간: 0ms
+2026-01-26T21:54:15.716+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 로드 횟수: 6908
+2026-01-26T21:54:15.716+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 페치 횟수: 74
+2026-01-26T21:54:15.716+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 로드 횟수: 3412
+2026-01-26T21:54:15.716+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 페치 횟수: 3412
+2026-01-26T21:54:15.716+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 열기 횟수: 1660
+2026-01-26T21:54:15.717+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 닫기 횟수: 1660
+2026-01-26T21:54:15.717+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 트랜잭션 횟수: 1368
+2026-01-26T21:54:15.717+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 성공한 트랜잭션 횟수: 1368
+2026-01-26T21:54:15.717+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 연결 횟수: 1472
+2026-01-26T21:54:15.717+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 히트: 213
+2026-01-26T21:54:15.717+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 미스: 47
+2026-01-26T21:54:15.717+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 실행된 고유 쿼리 수: 47
+2026-01-26T21:54:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : ========================
+2026-01-26T21:55:00.671+09:00  INFO 20268 --- [http-nio-8080-exec-3] c.p.f.c.c.HibernateStatisticsConfig      : Hibernate 통계 정보가 리셋되었습니다.
+2026-01-26T21:59:15.706+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : === Hibernate 통계 정보 ===
+2026-01-26T21:59:15.707+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 횟수: 96
+2026-01-26T21:59:15.707+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 시간: 24ms
+2026-01-26T21:59:15.707+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 평균 쿼리 실행 시간: 0ms
+2026-01-26T21:59:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 로드 횟수: 176
+2026-01-26T21:59:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 페치 횟수: 64
+2026-01-26T21:59:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 로드 횟수: 88
+2026-01-26T21:59:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 페치 횟수: 88
+2026-01-26T21:59:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 열기 횟수: 1241
+2026-01-26T21:59:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 닫기 횟수: 1242
+2026-01-26T21:59:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 트랜잭션 횟수: 1152
+2026-01-26T21:59:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 성공한 트랜잭션 횟수: 1152
+2026-01-26T21:59:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 연결 횟수: 1240
+2026-01-26T21:59:15.710+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 히트: 176
+2026-01-26T21:59:15.710+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 미스: 0
+2026-01-26T21:59:15.710+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 실행된 고유 쿼리 수: 2
+2026-01-26T21:59:15.710+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : ========================
+2026-01-26T22:04:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : === Hibernate 통계 정보 ===
+2026-01-26T22:04:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 횟수: 216
+2026-01-26T22:04:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 시간: 24ms
+2026-01-26T22:04:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 평균 쿼리 실행 시간: 0ms
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 로드 횟수: 396
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 페치 횟수: 144
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 로드 횟수: 198
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 페치 횟수: 198
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 열기 횟수: 2791
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 닫기 횟수: 2792
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 트랜잭션 횟수: 2592
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 성공한 트랜잭션 횟수: 2592
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 연결 횟수: 2790
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 히트: 396
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 미스: 0
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 실행된 고유 쿼리 수: 2
+2026-01-26T22:04:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : ========================
+2026-01-26T22:09:15.704+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : === Hibernate 통계 정보 ===
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 횟수: 336
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 시간: 24ms
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 평균 쿼리 실행 시간: 0ms
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 로드 횟수: 616
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 페치 횟수: 224
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 로드 횟수: 308
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 페치 횟수: 308
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 열기 횟수: 4341
+2026-01-26T22:09:15.705+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 닫기 횟수: 4342
+2026-01-26T22:09:15.706+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 트랜잭션 횟수: 4032
+2026-01-26T22:09:15.706+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 성공한 트랜잭션 횟수: 4032
+2026-01-26T22:09:15.706+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 연결 횟수: 4340
+2026-01-26T22:09:15.706+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 히트: 616
+2026-01-26T22:09:15.706+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 미스: 0
+2026-01-26T22:09:15.706+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 실행된 고유 쿼리 수: 2
+2026-01-26T22:09:15.706+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : ========================
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : === Hibernate 통계 정보 ===
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 횟수: 456
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 시간: 24ms
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 평균 쿼리 실행 시간: 0ms
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 로드 횟수: 836
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 페치 횟수: 304
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 로드 횟수: 418
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 페치 횟수: 418
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 열기 횟수: 5891
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 닫기 횟수: 5892
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 트랜잭션 횟수: 5472
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 성공한 트랜잭션 횟수: 5472
+2026-01-26T22:14:15.708+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 연결 횟수: 5890
+2026-01-26T22:14:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 히트: 836
+2026-01-26T22:14:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 미스: 0
+2026-01-26T22:14:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 실행된 고유 쿼리 수: 2
+2026-01-26T22:14:15.709+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : ========================
+2026-01-26T22:19:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : === Hibernate 통계 정보 ===
+2026-01-26T22:19:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 횟수: 576
+2026-01-26T22:19:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 시간: 24ms
+2026-01-26T22:19:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 평균 쿼리 실행 시간: 0ms
+2026-01-26T22:19:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 로드 횟수: 1056
+2026-01-26T22:19:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 페치 횟수: 384
+2026-01-26T22:19:15.711+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 로드 횟수: 528
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 페치 횟수: 528
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 열기 횟수: 7441
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 닫기 횟수: 7442
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 트랜잭션 횟수: 6912
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 성공한 트랜잭션 횟수: 6912
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 연결 횟수: 7440
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 히트: 1056
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 미스: 0
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 실행된 고유 쿼리 수: 2
+2026-01-26T22:19:15.712+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : ========================
+2026-01-26T22:24:15.717+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : === Hibernate 통계 정보 ===
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 횟수: 684
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 쿼리 실행 시간: 24ms
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 평균 쿼리 실행 시간: 0ms
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 로드 횟수: 1254
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 엔티티 페치 횟수: 456
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 로드 횟수: 627
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 컬렉션 페치 횟수: 627
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 열기 횟수: 8836
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 세션 닫기 횟수: 8837
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 트랜잭션 횟수: 8208
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 총 성공한 트랜잭션 횟수: 8208
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 연결 횟수: 8835
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 히트: 1254
+2026-01-26T22:24:15.718+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 준비된 문장 캐시 미스: 0
+2026-01-26T22:24:15.719+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : 실행된 고유 쿼리 수: 2
+2026-01-26T22:24:15.719+09:00  INFO 20268 --- [scheduling-1] c.p.f.c.c.HibernateStatisticsConfig      : ========================

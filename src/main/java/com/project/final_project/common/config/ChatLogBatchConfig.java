@@ -100,7 +100,7 @@ public class ChatLogBatchConfig {
 
       // AI 서버에 채팅 로그 보내기
       AIResponseDTO aiSendChatLogResponse = aiRecommendationService.sendChatLogToAI(chatLogs);
-      System.out.println("aiSendChatLogResponse = " + aiSendChatLogResponse);
+      log.debug("AI send chat log response: userId={}", userId);
 
       // 마지막 처리한 ID 저장
       Long lastProcessedId = items.getItems().get(items.size() - 1).getId().longValue();
@@ -111,13 +111,15 @@ public class ChatLogBatchConfig {
 
       // 추천 결과 처리
       AIResponseDTO recommendation = aiRecommendationService.getRecommendation(userId.intValue());
-      System.out.println("recommendation = " + recommendation);
-      aiRecommendationService.inputRecommendation(userId.intValue(), recommendation);
+      log.debug("Recommendation for userId={}: {}", userId, recommendation);
+      if (recommendation != null) {
+        aiRecommendationService.inputRecommendation(userId.intValue(), recommendation);
+      }
 
       // 감성 분석 처리
       EmotionAnalysisResponseDTO emotionAnalysisResponse =
           emotionAnalysisSerivce.RequestEmotionAnalysis(userId.intValue());
-      System.out.println("emotionAnalysisResponse = " + emotionAnalysisResponse);
+      log.debug("Emotion analysis response: userId={}", userId);
 
       if (recommendation != null) {
         aiRecommendationService.inputRecommendation(userId.intValue(), recommendation);

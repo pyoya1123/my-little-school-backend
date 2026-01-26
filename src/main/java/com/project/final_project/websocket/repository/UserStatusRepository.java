@@ -7,9 +7,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 public class UserStatusRepository {
 
@@ -20,7 +22,7 @@ public class UserStatusRepository {
 
   // 유저 상태 저장
   public void setUserStatus(Integer userId, String status) {
-    System.out.println("status = " + status);
+    log.debug("Setting user status for userId: {}, status: {}", userId, status);
     userStatuses.put(userId, status);
   }
   /*
@@ -57,7 +59,7 @@ public class UserStatusRepository {
 
 
   public List<Map<String, Object>> getUserStatusByMapIdAndMapType(Integer mapId, String mapType) {
-    System.out.println("userStatuses = " + userStatuses);
+    log.debug("Getting user statuses by mapId: {}, mapType: {}", mapId, mapType);
 
     List<Map<String, Object>> matchingUsers = new ArrayList<>();
 
@@ -71,7 +73,7 @@ public class UserStatusRepository {
           matchingUsers.add(userStatus);
         }
       } catch (JsonProcessingException e) {
-        System.err.println("JSON 파싱 중 오류 발생: " + e.getMessage());
+        log.error("JSON 파싱 중 오류 발생: userId={}, error={}", entry.getKey(), e.getMessage());
       }
     }
 

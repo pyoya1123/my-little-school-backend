@@ -11,9 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserStatusService {
@@ -27,8 +28,7 @@ public class UserStatusService {
       // 유저 상태 업데이트 처리 (예: 브로드캐스트 또는 저장)
       userStatusRepository.setUserStatus(userId, response);
     } catch (Exception e) {
-      e.printStackTrace();
-      System.out.println("Failed to update user status for userId: " + userId);
+      log.error("Failed to update user status for userId: {}", userId, e);
     }
   }
 

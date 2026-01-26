@@ -43,7 +43,7 @@ public class School {
   @Column(name = "latitude")
   private Double latitude;
 
-  @OneToMany(mappedBy = "school", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "school", cascade = {})
   @JsonIgnore
   private List<User> userList = new ArrayList<>();
 

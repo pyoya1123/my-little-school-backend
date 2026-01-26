@@ -38,13 +38,13 @@ public class EmotionAnalysisService {
     Map<String, Object> requestBody = new HashMap<>();
     requestBody.put("senderId", userId);
 
-    System.out.println("request emotion analysis requestBody = " + requestBody);
+    log.debug("Request emotion analysis for userId: {}", userId);
 
     String responseBody;
     try {
       // JSON 문자열로 변환
       String jsonRequestBody = objectMapper.writeValueAsString(requestBody);
-      System.out.println("requestBody emotion (JSON) = " + jsonRequestBody);
+      log.debug("Request body (JSON): {}", jsonRequestBody);
 
       // HTTP 헤더 설정
       HttpHeaders headers = new HttpHeaders();
@@ -55,7 +55,7 @@ public class EmotionAnalysisService {
 
       // REST API 요청
       responseBody = restTemplate.postForObject(AI_EMOTION_ANALYSIS_URL, entity, String.class);
-      System.out.println("responseBody = " + responseBody);
+      log.debug("Response body: {}", responseBody);
 
     } catch (HttpServerErrorException e) {
       log.error("AI 서버 오류 발생: {}", e.getResponseBodyAsString());

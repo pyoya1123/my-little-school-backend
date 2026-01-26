@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class Init {
@@ -43,7 +45,7 @@ public class Init {
       File excelFile = new File("src/main/resources/schools.xlsx");
 
       if (!excelFile.exists()) {
-        System.out.println("엑셀 파일이 존재하지 않습니다: " + excelFile.getPath());
+        log.warn("엑셀 파일이 존재하지 않습니다: {}", excelFile.getPath());
         return;
       }
 
@@ -56,13 +58,13 @@ public class Init {
           schoolService.registerSchool(school); // 학교 데이터 등록
         }
 
-        System.out.println("학교 데이터가 성공적으로 저장되었습니다.");
+        log.info("학교 데이터가 성공적으로 저장되었습니다.");
 
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("학교 데이터 초기화 중 오류 발생", e);
       }
     } else {
-      System.out.println("학교 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
+      log.info("학교 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
     }
 
 
@@ -70,7 +72,7 @@ public class Init {
       File itemFile = new File("src/main/resources/itemList.txt");
 
       if (!itemFile.exists()) {
-        System.out.println("아이템 파일이 존재하지 않습니다: " + itemFile.getPath());
+        log.warn("아이템 파일이 존재하지 않습니다: {}", itemFile.getPath());
         return;
       }
 
@@ -82,13 +84,13 @@ public class Init {
           itemService.registerItem(item); // 아이템 데이터 등록
         }
 
-        System.out.println("아이템 데이터가 성공적으로 저장되었습니다.");
+        log.info("아이템 데이터가 성공적으로 저장되었습니다.");
 
       } catch (IOException e) {
-        e.printStackTrace();
+        log.error("아이템 데이터 초기화 중 오류 발생", e);
       }
     } else {
-      System.out.println("아이템 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
+      log.info("아이템 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
     }
 
 
@@ -101,9 +103,9 @@ public class Init {
         questService.saveQuest(quest);
       }
 
-      System.out.println("퀘스트 데이터가 성공적으로 저장되었습니다.");
+      log.info("퀘스트 데이터가 성공적으로 저장되었습니다.");
     } else {
-      System.out.println("퀘스트 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
+      log.info("퀘스트 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
     }
 
 
@@ -126,7 +128,7 @@ public class Init {
     try {
       items = objectMapper.readValue(jsonBuilder.toString(), new TypeReference<List<ItemRegisterDTO>>() {});
     } catch (Exception e) {
-      System.out.println("JSON 데이터 파싱 오류: " + e.getMessage());
+      log.error("JSON 데이터 파싱 오류", e);
       items = new ArrayList<>(); // 오류 발생 시 빈 리스트 반환
     }
 

@@ -12,7 +12,7 @@ import com.project.final_project.common.global.HttpResponseEntity.ResponseResult
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+@Slf4j
 @Service
 public class ChatBotLogService {
   private ChatBotLogRepository chatBotLogRepository;
@@ -53,7 +54,7 @@ public class ChatBotLogService {
       // FastAPI 서버로 요청 보내기
       ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
 
-      System.out.println(responseEntity);
+      log.debug("ChatBot response: {}", responseEntity);
 
       // 응답 본문에서 content 값 추출
       String aiMessage;
@@ -67,12 +68,12 @@ public class ChatBotLogService {
       ChatBotLog chatBotLog = new ChatBotLog(dto.getMessage(), aiMessage, dto.getUserId());
       ChatBotLog savedChatBotLog = chatBotLogRepository.save(chatBotLog);
 
-      System.out.println("Saved ChatBotLog: " + savedChatBotLog);
+      log.debug("Saved ChatBotLog: userId={}, message={}", dto.getUserId(), dto.getMessage());
 
       return new ChatBotLogDTO(savedChatBotLog);
 
     } catch (RestClientException e) {
-      System.err.println("Error during FastAPI request: " + e.getMessage());
+      log.error("Error during FastAPI request: userId={}", dto.getUserId(), e);
       return new ChatBotLogDTO(dto.getMessage(), "Error: FastAPI request failed", dto.getUserId());
     } catch (JsonProcessingException e) {
       throw new RuntimeException(e);

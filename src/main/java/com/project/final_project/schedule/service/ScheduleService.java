@@ -11,9 +11,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
 public class ScheduleService {
   private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(5);
@@ -46,8 +48,7 @@ public class ScheduleService {
         setUserStatus();
 
       } catch (Exception e) {
-        System.err.println("Scheduled task error: " + e.getMessage());
-        e.printStackTrace();
+        log.error("Scheduled task error", e);
       }
     }, 0, 5, TimeUnit.SECONDS); // 60초 타이머
   }

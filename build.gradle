@@ -72,6 +72,9 @@ dependencies {
     
     // AOP (성능 측정용)
     implementation 'org.springframework.boot:spring-boot-starter-aop'
+    
+    // Faker (목업 데이터 생성용)
+    implementation 'com.github.javafaker:javafaker:1.0.2'
 
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

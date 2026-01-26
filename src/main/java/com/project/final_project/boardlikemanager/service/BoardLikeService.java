@@ -8,9 +8,11 @@ import com.project.final_project.boardlikemanager.dto.BoardGetLikeDTO;
 import com.project.final_project.boardlikemanager.dto.BoardRemoveLikeDTO;
 import com.project.final_project.boardlikemanager.repository.BoardLikeRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BoardLikeService {
@@ -40,16 +42,13 @@ public class BoardLikeService {
   }
 
   public void removeLIke(BoardRemoveLikeDTO dto){
-
-    System.out.println(dto);
+    log.debug("Removing like: boardId={}, userId={}", dto.getBoardId(), dto.getUserId());
 
     BoardLike bl = boardLikeRepository.getBoardLikeByBoardIdAndUserId(
         dto.getBoardId(), dto.getUserId());
     if(bl == null) {
       throw new IllegalArgumentException("좋아요를 누르지 않았습니다.");
     }
-
-    System.out.println(bl);
 
     Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(
         () -> new IllegalArgumentException("not found board id : " + dto.getBoardId()));
