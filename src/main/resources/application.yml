@@ -12,6 +12,14 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        # 프로파일링을 위한 Hibernate 통계 활성화
+        generate_statistics: true
+        # 쿼리 성능 로깅
+        jdbc:
+          batch_size: 20
+        # 쿼리 실행 계획 캐싱
+        query:
+          plan_cache_max_size: 2048
     database: mysql
     show-sql: false
   batch:
@@ -30,6 +38,10 @@ logging:
     root: INFO
     org.springframework.batch: ERROR
     org.hibernate: WARN
+    # 프로파일링을 위한 로깅 레벨 설정
+    com.project.final_project.common.config.HibernateStatisticsConfig: INFO
+    com.project.final_project.common.interceptor.PerformanceInterceptor: INFO
+    com.project.final_project.common.aspect.PerformanceAspect: INFO
   file:
     name: logs/spring-boot-app.log
     encoding: UTF-8
@@ -54,4 +66,48 @@ kakao:
     secret: ${KAKAO_CLIENT_SECRET}
   redirect:
     url: ${KAKAO_REDIRECT_URL}
+
+# Spring Boot Actuator 설정 (프로파일링 및 모니터링)
+management:
+  endpoints:
+    web:
+      exposure:
+        # 프로파일링에 필요한 엔드포인트 노출
+        include: health,info,metrics,prometheus,httptrace,env
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+    # 커스텀 메트릭 태그 설정
+    tags:
+      application: ${spring.application.name:final_project}
+      environment: ${spring.profiles.active:dev}
+    # JVM 메트릭 수집
+    jvm:
+      enabled: true
+    # HTTP 메트릭 수집
+    http:
+      server:
+        requests:
+          enabled: true
+    # 데이터베이스 연결 풀 메트릭
+    datasource:
+      enabled: true
+    # Hibernate 메트릭 수집
+    hibernate:
+      enabled: true
+    # 시스템 메트릭 수집
+    system:
+      enabled: true
+    # 프로세스 메트릭 수집
+    process:
+      enabled: true
 

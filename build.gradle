@@ -64,6 +64,15 @@ dependencies {
     // OpenAPI
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
 
+    // Spring Boot Actuator (프로파일링 및 모니터링)
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    
+    // Micrometer Prometheus (메트릭 수집)
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+    
+    // AOP (성능 측정용)
+    implementation 'org.springframework.boot:spring-boot-starter-aop'
+
     // Testing
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
@@ -76,6 +85,9 @@ dependencies {
 
     // dotenv-java 라이브러리
     implementation 'me.paulschwarz:spring-dotenv:4.0.0'
+
+    // Spring Security (비밀번호 암호화용)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     // Spring WebSocket 의존성
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
