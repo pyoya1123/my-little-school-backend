@@ -78,9 +78,9 @@ public class User {
   @Column(name ="user_gold")
   Integer gold;
 
-  @ElementCollection(fetch = FetchType.EAGER)
-  @Column(name = "interest")
-  List<String> interest = new ArrayList<>();
+//  @ElementCollection(fetch = FetchType.EAGER)
+//  @Column(name = "interest")
+//  List<String> interest = new ArrayList<>();
 
   @ManyToOne
   @JoinColumn(name = "school_id")

@@ -86,13 +86,17 @@ public class BoardService {
 
 
   public List<BoardListResponseDTO> getAllBoards(Integer userId) {
-    return boardRepository.findAll()
-        .stream().map(b -> new BoardListResponseDTO(
+    List<BoardListResponseDTO> a =  boardRepository.findAll()
+        .stream()
+            .filter(b -> b.getUserId().equals(userId))
+            .map(b -> new BoardListResponseDTO(
                 b,
                 commentService.getCommentCountByBoardId(b.getId()),
                 boardLikeService.isExistLike(new BoardGetLikeDTO(b.getId(), userId))
             )
         )
         .toList();
+    System.out.println(a + "@#####@##@");
+    return a;
   }
 }

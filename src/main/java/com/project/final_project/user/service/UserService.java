@@ -149,9 +149,9 @@ public class UserService {
     if (dto.getPhone() != null) {
       foundUser.setPhone(dto.getPhone());
     }
-    if(dto.getInterest() != null){
-      foundUser.setInterest(new ArrayList<>(dto.getInterest()));
-    }
+//    if(dto.getInterest() != null){
+//      foundUser.setInterest(new ArrayList<>(dto.getInterest()));
+//    }
     if(dto.getStatusMesasge() != null) {
       foundUser.setStatusMessage(dto.getStatusMesasge());
     }
@@ -249,7 +249,7 @@ public class UserService {
     user.setEmail(dto.getEmail());
     user.setPassword(dto.getPassword());
     user.setPhone(dto.getPhone());
-    user.setInterest(new ArrayList<>(dto.getInterest()));
+//    user.setInterest(new ArrayList<>(dto.getInterest()));
     user.setStatusMessage(dto.getStatusMessage());
     user.setGold(UserConstants.INITIAL_GOLD);
 
@@ -302,7 +302,7 @@ public class UserService {
         .orElseThrow(() -> new NotFoundException("User not found: " + dto.getId()));
 
     foundUser.setName(dto.getName());
-    foundUser.setInterest(dto.getInterest());
+//    foundUser.setInterest(dto.getInterest());
     foundUser.setStatusMessage(dto.getStatusMessage());
 
     return dto;

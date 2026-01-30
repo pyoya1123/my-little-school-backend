@@ -38,3 +38,4 @@ out/
 
 .env
 .firebase_account_key.json
+.cursorrules

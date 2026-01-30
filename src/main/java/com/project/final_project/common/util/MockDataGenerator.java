@@ -56,6 +56,16 @@ public class MockDataGenerator {
   }
 
   /**
+   * 댓글 등록 DTO 생성
+   */
+  public static CommentRegisterData generateCommentRegisterData(Integer boardId) {
+    CommentRegisterData data = new CommentRegisterData();
+    data.content = faker.lorem().sentence(5, 15);
+    data.boardId = boardId;
+    return data;
+  }
+
+  /**
    * 관심사 리스트 생성 (1~3개)
    */
   private static List<String> generateInterests() {
@@ -94,6 +104,14 @@ public class MockDataGenerator {
     public String title;
     public String content;
     public Integer userId;
+  }
+
+  /**
+   * 댓글 등록 데이터 클래스
+   */
+  public static class CommentRegisterData {
+    public String content;
+    public Integer boardId;
   }
 }
 

@@ -40,8 +40,6 @@ public class QUser extends EntityPathBase<User> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final ListPath<String, StringPath> interest = this.<String, StringPath>createList("interest", String.class, StringPath.class, PathInits.DIRECT2);
-
     public final BooleanPath isOnline = createBoolean("isOnline");
 
     public final NumberPath<Integer> level = createNumber("level", Integer.class);

@@ -19,7 +19,7 @@ public class UserProfileDTO {
   public UserProfileDTO(User user) {
     this.id = user.getId();
     this.name = user.getName();
-    this.interest = user.getInterest();
+//    this.interest = user.getInterest();
     this.statusMessage = user.getStatusMessage();
   }
 
