@@ -15,5 +15,5 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
   List<Comment> getCommentListByBoardId(@Param("boardId") Integer boardId);
 
   @Query("select count(*) from Comment c where c.boardId = :boardId")
-  Integer getCommentCountByBoardId(@Param("boardId") Integer boardId);
+  Long getCommentCountByBoardId(@Param("boardId") Integer boardId);
 }

@@ -43,7 +43,7 @@ public class CommentService {
     commentRepository.deleteById(commentId);
   }
 
-  public Integer getCommentCountByBoardId(Integer boardId) {
+  public Long getCommentCountByBoardId(Integer boardId) {
     return commentRepository.getCommentCountByBoardId(boardId);
   }
 

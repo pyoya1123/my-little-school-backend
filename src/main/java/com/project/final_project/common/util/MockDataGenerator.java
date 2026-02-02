@@ -33,7 +33,8 @@ public class MockDataGenerator {
         faker.number().numberBetween(1, 13),
         faker.number().numberBetween(1, 29));
     data.gender = random.nextBoolean();
-    data.email = faker.internet().emailAddress();
+    // 이메일 중복 방지를 위해 timestamp 추가
+    data.email = System.nanoTime() + "_" + faker.internet().emailAddress();
     data.password = "test1234";
     data.phone = String.format("010-%04d-%04d",
         faker.number().numberBetween(1000, 10000),

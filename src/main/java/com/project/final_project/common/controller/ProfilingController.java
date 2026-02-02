@@ -106,11 +106,22 @@ public class ProfilingController {
         QueryStatistics queryStats = statistics.getQueryStatistics(query);
         
         if (queryStats != null) {
+          long executionCount = queryStats.getExecutionCount();
+          
+          // 실행 횟수가 0인 쿼리는 제외 (한 번도 실행되지 않은 쿼리)
+          if (executionCount == 0) {
+            continue;
+          }
+          
+          long executionMinTime = queryStats.getExecutionMinTime();
+          // Long.MAX_VALUE는 "아직 측정되지 않음"을 의미하므로 null로 처리
+          Long minTime = (executionMinTime == Long.MAX_VALUE) ? null : executionMinTime;
+          
           Map<String, Object> queryInfo = new HashMap<>();
           queryInfo.put("query", query);
-          queryInfo.put("executionCount", queryStats.getExecutionCount()); // 실행 횟수
+          queryInfo.put("executionCount", executionCount); // 실행 횟수
           queryInfo.put("executionMaxTime", queryStats.getExecutionMaxTime()); // 최대 실행 시간
-          queryInfo.put("executionMinTime", queryStats.getExecutionMinTime()); // 최소 실행 시간
+          queryInfo.put("executionMinTime", minTime); // 최소 실행 시간 (null 가능)
           queryInfo.put("executionAvgTime", queryStats.getExecutionAvgTime()); // 평균 실행 시간
           queryInfo.put("cacheHitCount", queryStats.getCacheHitCount()); // 캐시 히트 횟수
           queryInfo.put("cacheMissCount", queryStats.getCacheMissCount()); // 캐시 미스 횟수

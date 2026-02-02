@@ -14,10 +14,10 @@ public class BoardListResponseDTO {
   String title;
   String content;
   Integer likeCount;
-  Integer commentCount;
+  Long commentCount;
   Boolean isExistLike;
 
-  public BoardListResponseDTO(Board board, Integer commentCount, Boolean isExistLike){
+  public BoardListResponseDTO(Board board, Long commentCount, Boolean isExistLike){
     this.boardId = board.getId();
     this.title = board.getTitle();
     this.content = board.getContent();

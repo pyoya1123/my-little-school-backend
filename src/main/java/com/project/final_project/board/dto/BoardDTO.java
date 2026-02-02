@@ -13,9 +13,9 @@ public class BoardDTO {
   String title;
   String content;
   Integer likeCount;
-  Integer commentCount;
+  Long commentCount;
 
-  public BoardDTO(Board board, Integer commentCount) {
+  public BoardDTO(Board board, Long commentCount) {
     this.boardId = board.getId();
     this.title = board.getTitle();
     this.content = board.getContent();

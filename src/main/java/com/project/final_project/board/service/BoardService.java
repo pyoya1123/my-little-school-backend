@@ -25,7 +25,7 @@ public class BoardService {
 
   public BoardDTO registerBoard(BoardRegisterDTO dto) {
     Board board = new Board(dto.getTitle(), dto.getContent(), dto.getUserId());
-    return new BoardDTO(boardRepository.save(board), 0);
+    return new BoardDTO(boardRepository.save(board), 0L);
   }
 
 
@@ -85,18 +85,27 @@ public class BoardService {
   }
 
 
-  public List<BoardListResponseDTO> getAllBoards(Integer userId) {
-    List<BoardListResponseDTO> a =  boardRepository.findAll()
-        .stream()
-            .filter(b -> b.getUserId().equals(userId))
-            .map(b -> new BoardListResponseDTO(
-                b,
-                commentService.getCommentCountByBoardId(b.getId()),
-                boardLikeService.isExistLike(new BoardGetLikeDTO(b.getId(), userId))
-            )
-        )
-        .toList();
-    System.out.println(a + "@#####@##@");
-    return a;
+  public List<BoardListResponseDTO> getBoardListWithCommentAndBoardLikeByUserId(Integer userId) {
+    List<Object[]> a =  boardRepository.getBoardListWithCommentAndBoardLikeByUserId(userId);
+    return a.stream().map(o -> {
+      Board b = (Board) o[0];
+      Long commentCount = (Long)o[1];
+      Boolean isExistLike = o[2] != null;
+      return new BoardListResponseDTO(b, commentCount, isExistLike);
+    }).toList();
   }
+
+//  public List<BoardListResponseDTO> getAllBoards(Integer userId) {
+//    List<BoardListResponseDTO> a =  boardRepository.findAll()
+//            .stream()
+//            .filter(b -> b.getUserId().equals(userId))
+//            .map(b -> new BoardListResponseDTO(
+//                            b,
+//                            commentService.getCommentCountByBoardId(b.getId()),
+//                            boardLikeService.isExistLike(new BoardGetLikeDTO(b.getId(), userId))
+//                    )
+//            )
+//            .toList();
+//    return a;
+//  }
 }
