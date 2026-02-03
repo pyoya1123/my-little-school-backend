@@ -1,6 +1,6 @@
 # 🏫 마이 리틀 스쿨 (My Little School) - Backend
 
-> **중학생을 위한 메타버스 기반 소셜 학습 플랫폼**
+> **소규모 학교 학생들을 위한 메타버스 기반 소셜 학습 플랫폼**
 
 학생들이 가상 공간에서 친구를 사귀고, 나만의 교실을 꾸미며, 퀴즈와 골든벨 등 다양한 활동에 참여할 수 있는 메타버스 서비스입니다.
 
@@ -22,19 +22,19 @@
 ## 🎯 프로젝트 소개
 
 ### 배경
-코로나19 이후 비대면 환경에 익숙해진 학생들을 위해, **온라인에서도 친밀한 학교생활**을 경험할 수 있는 메타버스 플랫폼을 개발했습니다.
+지방의 소규모 학교 학생들의 사회화 부족 문제를 해결하기 위해 메타버스 환경에서 다른 학교 친구들과 만나 다양한 경험을 할 수 있는 메타버스 플랫폼을 개발했습니다.
+#### 프로젝트 종료 후, 주도적인 성능 개선과 풀스택 마이그레이션을 위해 퍼블릭 리포지토리로 새롭게 이관하여 개발을 이어나가고 있습니다!
 
 ### 목표
 - 학생들이 재미있게 소통할 수 있는 **소셜 기능** 제공
 - 나만의 공간을 꾸미는 **커스터마이징 기능** 구현
 - **퀘스트 시스템**을 통한 자연스러운 서비스 온보딩
-- **대규모 트래픽**을 처리할 수 있는 안정적인 백엔드 구축
 
 ### 개발 기간
 - 2024.09 ~ 2024.12 (4개월)
 
 ### 팀 구성
-- Backend 2명, Frontend 3명, 기획 1명
+- Backend 1명, Unity 3명, 기획 1명, TA 1명
 
 ---
 
@@ -46,8 +46,6 @@
 | **Java** | 17 | 프로그래밍 언어 |
 | **Spring Boot** | 3.3.4 | 웹 프레임워크 |
 | **Spring Data JPA** | - | ORM |
-| **QueryDSL** | 5.0.0 | 타입 안전한 동적 쿼리 |
-| **Spring Security** | - | 인증/인가 |
 | **Spring WebSocket** | - | 실시간 통신 |
 
 ### Database & Cache
@@ -105,48 +103,10 @@
 ## 📊 ERD
 
 ```
-┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│    User     │──────│  Friendship │──────│    User     │
-└─────────────┘      └─────────────┘      └─────────────┘
-       │
-       ├──────────────────────┬───────────────────────┐
-       │                      │                       │
-       ▼                      ▼                       ▼
-┌─────────────┐      ┌─────────────┐      ┌─────────────┐
-│    Board    │      │  Inventory  │      │   Avatar    │
-└─────────────┘      └─────────────┘      └─────────────┘
-       │                      │
-       ▼                      ▼
-┌─────────────┐      ┌─────────────┐
-│   Comment   │      │    Item     │
-└─────────────┘      └─────────────┘
+
 ```
 
 **주요 테이블**: User, Board, Comment, Friendship, Note, Furniture, Inventory, Item, Quest, UserQuest, School, Gallery, GuestBook, ChatLog, MapContest
-
----
-
-## 📚 API 문서
-
-Swagger UI를 통해 API 문서를 확인할 수 있습니다.
-
-```
-http://localhost:8080/swagger-ui/index.html
-```
-
-### 주요 API 엔드포인트
-
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| POST | `/user` | 회원가입 |
-| GET | `/user/profile/{userId}` | 프로필 조회 |
-| GET | `/board/all-list/{userId}` | 게시글 목록 조회 |
-| POST | `/board` | 게시글 작성 |
-| GET | `/comment/{boardId}` | 댓글 목록 조회 |
-| POST | `/friendship` | 친구 추가 |
-| GET | `/furniture/list/{userId}` | 가구 목록 조회 |
-
----
 
 ## ⚡ 성능 최적화
 
@@ -286,64 +246,6 @@ BASE_URL=http://localhost:8080 k6 run load-test-script.js
 
 ---
 
-## 🚀 프로젝트 실행 방법
-
-### 사전 요구사항
-
-- Java 17+
-- MySQL 8.0+
-- Redis (선택사항)
-
-### 1. 저장소 클론
-
-```bash
-git clone https://github.com/your-username/my-little-school-backend.git
-cd my-little-school-backend
-```
-
-### 2. 환경변수 설정
-
-`.env` 파일 생성:
-
-```env
-# Database
-DB_URL=jdbc:mysql://localhost:3306/my_little_school
-DB_USERNAME=root
-DB_PASSWORD=your_password
-
-# AWS S3
-AWS_ACCESS_KEY=your_access_key
-AWS_SECRET_KEY=your_secret_key
-AWS_S3_BUCKET=your_bucket_name
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
-```
-
-### 3. 빌드 및 실행
-
-```bash
-# 빌드
-./gradlew build
-
-# 실행
-./gradlew bootRun
-
-# 또는 JAR 파일로 실행
-java -jar build/libs/final_project-0.0.1-SNAPSHOT.jar
-```
-
-### 4. Docker로 실행 (선택사항)
-
-```bash
-# Docker Compose로 실행
-docker-compose up -d
-```
-
----
-
 ## 📁 프로젝트 구조
 
 ```
@@ -398,10 +300,7 @@ src/main/java/com/project/final_project/
 
 | 이름 | 역할 | GitHub |
 |------|------|--------|
-| **전성표** | Backend Developer | [@jeonseongpyo](https://github.com/jeonseongpyo) |
+| **전성표** | Backend Developer | [@pyoya1123](https://github.com/pyoya1123) |
 
 ---
 
-## 📝 라이센스
-
-This project is licensed under the MIT License.
