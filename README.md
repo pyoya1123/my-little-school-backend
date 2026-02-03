@@ -12,10 +12,8 @@
 2. [기술 스택](#-기술-스택)
 3. [주요 기능](#-주요-기능)
 4. [ERD](#-erd)
-5. [API 문서](#-api-문서)
-6. [성능 최적화](#-성능-최적화)
-7. [부하 테스트 결과](#-부하-테스트-결과)
-8. [프로젝트 실행 방법](#-프로젝트-실행-방법)
+5. [성능 최적화](#-성능-최적화)
+6. [부하 테스트 결과](#-부하-테스트-결과)
 
 ---
 
@@ -245,14 +243,18 @@ Long getCommentCountByBoardId(@Param("boardId") Integer boardId);
 </summary>
 
 ## 부하 테스트 진행중
-
 - 유저 수 : 10
 - 게시글 수 : 유저 당 5 → 50
 - 댓글 수 : 게시글 당 3 → 150
+<img width="2702" height="1187" alt="image" src="https://github.com/user-attachments/assets/c7a71ec1-dd20-451b-9a67-34b01572aa1c" />
+
 
 ## 부하 테스트 완료
+<img width="2734" height="1182" alt="image (1)" src="https://github.com/user-attachments/assets/b81ed4f2-134e-4ffe-ac7d-7eba7fe1c0b9" />
+<img width="2720" height="1983" alt="image (2)" src="https://github.com/user-attachments/assets/40159ead-5408-4e42-b5cf-fab08f3e3b68" />
+<img width="2715" height="521" alt="image (3)" src="https://github.com/user-attachments/assets/7bbbb0c1-08ce-4c98-872c-38243ac5bfa2" />
 
-<!-- 이미지는 GitHub에 업로드 후 경로 수정 필요 -->
+
 
 ## 분석
 
