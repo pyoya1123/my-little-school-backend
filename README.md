@@ -110,79 +110,663 @@
 
 ## ⚡ 성능 최적화
 
-### 1. N+1 문제 해결
+## 📈 부하 테스트 결과
+# 부하 테스트
 
-**문제 상황**
-- 게시글 목록 조회 시 각 게시글의 댓글/좋아요를 개별 쿼리로 조회
-- 게시글 100개 조회 시 → 301번의 쿼리 발생 (1 + 100 + 100 + 100)
+<details>
 
-**해결 방법**
-```java
-// Before: Lazy Loading으로 N+1 발생
-@OneToMany(mappedBy = "board", fetch = FetchType.LAZY)
-private List<Comment> comments;
+<summary>개선 전 코드</summary>
 
-// After: Fetch Join으로 한 번에 조회
-@Query("SELECT b FROM Board b " +
-       "LEFT JOIN FETCH b.comments " +
-       "LEFT JOIN FETCH b.boardLikes " +
-       "WHERE b.userId = :userId")
-List<Board> findAllWithCommentsAndLikesByUserId(@Param("userId") Integer userId);
+</summary>
+
+## Board
+
+```json
+public List<BoardListResponseDTO> getAllBoards(Integer userId) {
+  List<BoardListResponseDTO> a =  boardRepository.findAll()
+      .stream()
+          .filter(b -> b.getUserId().equals(userId))
+          .map(b -> new BoardListResponseDTO(
+              b,
+              commentService.getCommentCountByBoardId(b.getId()),
+              boardLikeService.isExistLike(new BoardGetLikeDTO(b.getId(), userId))
+          )
+      )
+      .toList();
+  return a;
+}
+
+public Boolean isExistLike(BoardGetLikeDTO dto){
+  return boardLikeRepository.getBoardLikeByBoardIdAndUserId(
+      dto.getBoardId(), dto.getUserId()) != null;
+}
 ```
 
-**결과**
-| 지표 | 최적화 전 | 최적화 후 | 개선율 |
-|------|-----------|-----------|--------|
-| 쿼리 수 | 301회 | 1회 | **99.7% 감소** |
-| 응답 시간 | 850ms | 45ms | **94.7% 감소** |
-
-### 2. 인덱스 최적화
-
-자주 조회되는 컬럼에 인덱스 추가:
-
-```sql
--- 게시글 조회 최적화
-CREATE INDEX idx_board_user_id ON board(user_id);
-CREATE INDEX idx_board_created_at ON board(created_at DESC);
-
--- 댓글 조회 최적화
-CREATE INDEX idx_comment_board_id ON comment(board_id);
-
--- 친구 관계 조회 최적화
-CREATE INDEX idx_friendship_user_id ON friendship(user_id);
-```
-
-### 3. QueryDSL 도입
-
-복잡한 동적 쿼리를 타입 안전하게 작성:
-
-```java
-public List<BoardListResponseDTO> getBoardListWithFilters(Integer userId, String keyword) {
-    return queryFactory
-        .select(Projections.constructor(BoardListResponseDTO.class,
-            board.id,
-            board.title,
-            board.content,
-            board.createdAt,
-            comment.count(),
-            boardLike.count()
-        ))
-        .from(board)
-        .leftJoin(comment).on(comment.boardId.eq(board.id))
-        .leftJoin(boardLike).on(boardLike.boardId.eq(board.id))
-        .where(
-            board.userId.eq(userId),
-            keyword != null ? board.title.contains(keyword) : null
-        )
-        .groupBy(board.id)
-        .orderBy(board.createdAt.desc())
-        .fetch();
+```json
+@Repository
+public interface BoardRepository extends JpaRepository<Board, Integer> {
+		// 위 코드에서 내부 findAll() 함수 사용
 }
 ```
 
 ---
 
-## 📈 부하 테스트 결과
+## Comment
+
+```json
+public Integer getCommentCountByBoardId(Integer boardId) {
+  return commentRepository.getCommentCountByBoardId(boardId);
+}
+```
+
+```json
+@Query("select count(*) from Comment c where c.boardId = :boardId")
+Integer getCommentCountByBoardId(@Param("boardId") Integer boardId);
+```
+
+</details>
+
+<details>
+
+<summary>개선 후 코드</summary>
+
+## Board
+
+```json
+/*
+  public List<BoardListResponseDTO> getAllBoards(Integer userId) {
+  List<BoardListResponseDTO> a =  boardRepository.findAll()
+      .stream()
+          .filter(b -> b.getUserId().equals(userId))
+          .map(b -> new BoardListResponseDTO(
+              b,
+              commentService.getCommentCountByBoardId(b.getId()),
+              boardLikeService.isExistLike(new BoardGetLikeDTO(b.getId(), userId))
+          )
+      )
+      .toList();
+  return a;
+}
+
+public Boolean isExistLike(BoardGetLikeDTO dto){
+  return boardLikeRepository.getBoardLikeByBoardIdAndUserId(
+      dto.getBoardId(), dto.getUserId()) != null;
+}
+*/
+
+public List<BoardListResponseDTO> getBoardListWithCommentAndBoardLikeByUserId(Integer userId) {
+  List<Object[]> a =  boardRepository.getBoardListWithCommentAndBoardLikeByUserId(userId);
+  return a.stream().map(o -> {
+    Board b = (Board) o[0];
+    Long commentCount = (Long)o[1];
+    Boolean isExistLike = o[2] != null;
+    return new BoardListResponseDTO(b, commentCount, isExistLike);
+  }).toList();
+}
+```
+
+```json
+@Repository
+public interface BoardRepository extends JpaRepository<Board, Integer> {
+
+  @Query("SELECT b, count(c), bl" +
+          " FROM Board b" +
+          " LEFT JOIN Comment c ON c.boardId = b.id " +
+          " LEFT JOIN BoardLike bl ON bl.boardId = b.id AND bl.userId = :userId " +
+          " WHERE b.userId = :userId" +
+          " GROUP BY b, bl")
+  List<Object[]> getBoardListWithCommentAndBoardLikeByUserId(
+      @Param("userId") Integer userId
+  );
+}
+```
+
+---
+
+## Comment
+
+```json
+public Long getCommentCountByBoardId(Integer boardId) {
+  return commentRepository.getCommentCountByBoardId(boardId);
+}
+```
+
+```json
+@Query("select count(*) from Comment c where c.boardId = :boardId")
+Long getCommentCountByBoardId(@Param("boardId") Integer boardId);
+```
+
+</details>
+
+<details>
+
+<summary>개선 전 (유저 수: 10, 유저 당 게시글 수: 5, 게시글 당 댓글 수: 3)</summary>
+
+</summary>
+
+## 부하 테스트 진행중
+
+- 유저 수 : 10
+- 게시글 수 : 유저 당 5 → 50
+- 댓글 수 : 게시글 당 3 → 150
+
+## 부하 테스트 완료
+
+<!-- 이미지는 GitHub에 업로드 후 경로 수정 필요 -->
+
+## 분석
+
+```markdown
+1. 테스트 개요
+사용자 수: 10명 (목표 10명 달성)
+게시판 수: 50개 (사용자당 5개, 목표 달성)
+동시 접속자(VU): 최대 10명 (1:1 매칭 테스트)
+테스트 시간: 2분 10초
+
+2. 응답 시간
+평균 응답 시간: 8.46ms
+p(95) (95% 요청): 15.88ms
+p(99) (99% 요청): 25ms
+최대 응답 시간: 342.36ms
+
+분석:
+응답 시간이 매우 빠름 (대부분 10ms 이내).
+N+1 문제가 발생하더라도 데이터 양이 적어서(게시판 50개, 댓글 150개) 성능 저하가 눈에 띄지 않음.
+
+3. 처리량
+초당 요청 수 (RPS): 약 5.0req/s
+총 요청 수: 685건
+```
+
+---
+
+## Hibernate Stats
+
+```json
+{
+  "queryExecutionMaxTime": 106,
+  "queryExecutionCount": 2660,
+  "queryCount": 42,
+  "queryPlanCacheMissCount": 40,
+  "queryPlanCacheHitCount": 4873,
+  "queryExecutionMaxTimeQueryString": "[CRITERIA] select s1_0.id,s1_0.latitude,s1_0.school_location,s1_0.longitude,s1_0.school_name from school s1_0",
+  "entityLoadCount": 15021
+}
+```
+
+> 💡 **용어 설명**
+> 
+
+> - queryExecutionMaxTime → 가장 느린 쿼리의 실행 시간 (ms)
+> 
+
+> - queryExecutionCount → 총 쿼리 실행 횟수(실제로 실행된 모든 SQL 쿼리의 총합)
+> 
+
+> - queryCount → 고유 쿼리수(서로 다른 쿼리 패턴의 개수)
+> 
+
+> - queryPlanCacheMissCount → 쿼리 실행 계획 캐시 미스 횟수
+> 
+
+> - queryPlanCacheHitCount → 쿼리 실행 계획 캐시 히트 횟수
+> 
+
+> - queryExecutionMaxTimeQueryString → 가장 느린 쿼리의 SQL 문
+> 
+
+> - entityLoadCount → 데이터베이스에서 엔티티를 로드한 총 횟수
+> 
+
+### 쿼리 별 실행 횟수
+
+```json
+{
+  "totalQueries": 42,
+  "queries": [
+    {
+      "executionMaxTime": 6,
+      "executionAvgTime": 0,
+      "executionMinTime": 0,
+      "cacheHitCount": 0,
+      "query": "select count(*) from Comment c where c.boardId = :boardId",
+      "executionCount": 1298,
+      "cacheMissCount": 0
+    },
+    {
+      "executionMaxTime": 2,
+      "executionAvgTime": 0,
+      "executionMinTime": 0,
+      "cacheHitCount": 0,
+      "query": "select bl from BoardLike bl where bl.boardId = :boardId and bl.userId = :userId",
+      "executionCount": 1090,
+      "cacheMissCount": 0
+    },
+    {
+      "executionMaxTime": 15,
+      "executionAvgTime": 1,
+      "executionMinTime": 0,
+      "cacheHitCount": 0,
+      "query": "[CRITERIA] select b1_0.id,b1_0.board_content,b1_0.board_like_count,b1_0.board_title,b1_0.user_id from board b1_0",
+      "executionCount": 218,
+      "cacheMissCount": 0
+    }
+  ]
+}
+```
+
+### 1. N+1 문제
+
+- **queryExecutionCount**: 2,660 (총 쿼리 실행 횟수)
+- **queryCount**: 42 (고유 쿼리 수)
+- **반복 비율** = 2,660 ÷ 42 = **약 63.3회/쿼리**
+- 42개의 서로 다른 쿼리가 평균적으로 각각 63번씩 반복 실행되었습니다.
+- 총 HTTP 요청 수가 685건인 점을 감안할 때, 요청당 쿼리 수가 많아 **N+1 문제가 발생하고 있음**을 보여줍니다.
+
+### 2. 쿼리 성능 분석
+
+- **가장 느린 쿼리**
+    - **실행 시간**: 106ms
+    - **쿼리**: select s1_[0.id](http://0.id), s1_0.latitude, s1_[0.school](http://0.school)*location, s1_0.longitude, s1*[0.school](http://0.school)_name from school s1_0
+    - **의미**: School 테이블 전체 조회 쿼리
+
+### 3. 엔티티 로드 분석
+
+- **entityLoadCount**: 15,021 (엔티티 로드 횟수)
+- **쿼리 대비 로드 비율**: 15,021 ÷ 2,660 ≈ **5.65**
+- 쿼리 실행 1회당 평균 5.65개의 엔티티가 로드되었습니다.
+
+### 4. 쿼리 캐시 효율
+
+- **queryPlanCacheHitCount**: 4,873 (캐시 히트)
+- **queryPlanCacheMissCount**: 40 (캐시 미스)
+- **캐시 효율** = 4,873 ÷ (4,873 + 40) = **약 99.19%**
+
+</details>
+
+<details>
+
+<summary>개선 전 (유저 수: 100, 유저 당 게시글 수: 5, 게시글 당 댓글 수: 3)</summary>
+
+</summary>
+
+## 부하 테스트 진행중
+
+- 유저 수 : 100
+- 게시글 수 : 유저 당 5 → 500
+- 댓글 수 : 게시글 당 3 → 1500
+
+## 부하 테스트 완료
+
+<!-- 이미지는 GitHub에 업로드 후 경로 수정 필요 -->
+
+## 분석
+
+```markdown
+1. 테스트 개요
+사용자 수: 100명 (목표 100명 달성)
+게시판 수: 500개 (사용자당 5개, 목표 달성)
+동시 접속자(VU): 최대 100명
+테스트 시간: 2분 31초
+
+2. 응답 시간
+평균 응답 시간: 11.69ms
+p(95): 24.7ms
+p(99): 29.3ms
+최대 응답 시간: 10.65s
+
+3. 처리량
+초당 요청 수 (RPS): 약 32.8req/s
+총 요청 수: 4,979건
+```
+
+### 1. N+1 문제
+
+- **queryExecutionCount**: 19,160 (총 쿼리 실행 횟수)
+- **반복 비율** = 19,160 ÷ 42 = **약 456회/쿼리**
+- 특히 다음 쿼리들의 실행 횟수가 압도적으로 높습니다:
+    1. **댓글 수 조회**: **9,022회**
+    2. **좋아요 여부 조회**: **7,535회**
+    3. **게시판 목록 조회**: **1,597회**
+
+### 3. 엔티티 로드 분석
+
+- **entityLoadCount**: 686,907
+- **쿼리 대비 로드 비율**: 686,907 ÷ 19,160 ≈ **35.85**
+
+</details>
+
+<details>
+
+<summary>개선 전 (유저 수: 500, 유저 당 게시글 수: 5, 게시글 당 댓글 수: 3)</summary>
+
+</summary>
+
+## 부하 테스트 진행중
+
+- 유저 수 : 500
+- 게시글 수 : 유저 당 5 → 2500
+- 댓글 수 : 게시글 당 3 → 7500
+
+## 분석
+
+```markdown
+1. 테스트 개요
+사용자 수: 500명
+게시판 수: 2,500개
+동시 접속자(VU): 최대 500명
+테스트 시간: 3분 58초
+
+2. 응답 시간
+평균 응답 시간: 410.4ms
+p(95): 1.94s
+p(99): 2.37s
+최대 응답 시간: 3.74s
+
+3. 처리량
+초당 요청 수 (RPS): 약 91.9req/s
+총 요청 수: 21,910건
+```
+
+### 1. N+1 문제
+
+- **queryExecutionCount**: 445,144
+- **반복 비율** = 445,144 ÷ 42 = **약 10,598회/쿼리**
+- 특히 다음 쿼리들의 실행 횟수가 압도적:
+    1. **댓글 수 조회**: **209,626회**
+    2. **좋아요 여부 조회**: **177,690회**
+    3. **게시판 목록 조회**: **36,328회**
+
+### 3. 엔티티 로드 분석
+
+- **entityLoadCount**: 158,851,775 (약 1.5억 회)
+- **쿼리 대비 로드 비율**: **356.8**
+- **메모리 부족(OOM) 위험이 매우 높습니다.**
+
+</details>
+
+---
+
+<details>
+
+<summary>개선 후 (유저 수: 10, 유저 당 게시글 수: 5, 게시글 당 댓글 수: 3)</summary>
+
+## 부하 테스트 진행중
+
+- 유저 수 : 10
+- 게시판 수 : 유저 당 5 → 50
+- 댓글 수 : 게시판 당 3 → 150
+
+## 부하 테스트 완료
+
+<!-- 이미지는 GitHub에 업로드 후 경로 수정 필요 -->
+
+## 분석
+
+### **1. 테스트 개요**
+
+- **사용자 수**: 10명 (목표 10명 달성)
+- **게시판 수**: 50개 (사용자당 5개, 목표 달성)
+- **동시 접속자(VU)**: 최대 10명 (1:1 매칭 테스트)
+- **테스트 시간**: 2분 11초 (이전과 동일)
+
+### 2. 응답 시간 분석
+
+| 지표 | 이전 테스트 (최적화 전) | 현재 테스트 (최적화 전 재확인) | 변화 |
+| --- | --- | --- | --- |
+| **평균 응답 시간** | 8.46ms | 11.72ms | ▲ 3.26ms |
+| **중앙값** | 6.13ms | 8.52ms | ▲ 2.39ms |
+| **p(95)** | 15.88ms | 24.13ms | ▲ 8.25ms |
+| **최대 응답 시간** | 342.36ms | 199.99ms | ▼ 142.37ms |
+
+**분석**
+
+- 두 테스트 모두 **평균 10ms 내외**의 매우 빠른 응답 속도를 보여줍니다.
+- 현재 테스트가 약 3ms 느리게 측정되었으나, 이는 로컬 환경의 일시적 부하나 네트워크 노이즈에 의한 오차 범위 내입니다.
+- **결론**: 데이터가 적은 상황(유저 10명)에서는 N+1 문제가 성능에 큰 영향을 주지 않음을 재확인했습니다.
+
+### 3. 처리량
+
+| 지표 | 이전 테스트 | 현재 테스트 | 변화 |
+| --- | --- | --- | --- |
+| **초당 요청 수 (RPS)** | 약 5.0req/s | 약 5.2req/s | ▲ 0.2req/s |
+| **총 요청 수** | 685건 | 685건 | 동일 |
+
+**분석**
+
+- 처리량은 거의 동일하며, 시스템이 안정적으로 요청을 처리했습니다.
+
+### **4. 종합 평가**
+
+- 유저 10명 규모에서는 **N+1 문제의 유무가 응답 속도에 미치는 영향이 미미**합니다.
+
+---
+
+## Hibernate Stats
+
+```json
+{
+  "queryExecutionMaxTime": 86,
+  "queryExecutionCount": 480,
+  "queryCount": 42,
+  "queryPlanCacheMissCount": 41,
+  "queryPlanCacheHitCount": 949,
+  "queryExecutionMaxTimeQueryString": "[CRITERIA] select s1_0.id,s1_0.latitude,s1_0.school_location,s1_0.longitude,s1_0.school_name from school s1_0",
+  "entityLoadCount": 6090
+}
+```
+
+### 1. N+1 문제 확인
+
+- **queryExecutionCount**:
+    - 최적화 전: **2,660회**
+    - 최적화 후: **480회**
+    - 변화: **약 82% 감소** (약 5.5배 감소)
+- **주요 쿼리 변화**:
+    - **게시판 목록 조회 (Main)**: 218회 (동일)
+    - **댓글 수 조회 (N+1)**: 전: 1,298회 → 후: **208회** (약 84% 감소)
+    - **좋아요 여부 조회 (N+1)**: 전: 1,090회 → 후: **0회** (완전 제거)
+
+### 2. 쿼리 성능 분석
+
+- **가장 느린 쿼리**: 전: 106ms → 후: 86ms (select ... from school)
+- **최적화 쿼리 성능**: SELECT b, count(c), bl ...: 평균 **16ms**
+
+### 3. 엔티티 로드 분석
+
+- **entityLoadCount**: 전: **15,021개** → 후: **6,090개** → 변화: **약 59.5% 감소**
+
+### 4. 쿼리 캐시 효율
+
+- 전: 캐시 히트 4,873회 (효율 99.19%)
+- 후: 캐시 히트 949회 (효율 95.86%)
+
+**종합 결론**: 최적화 적용 후 **쿼리 실행 횟수가 82% 감소**하고, **엔티티 로딩이 60% 감소**했습니다.
+
+</details>
+
+<details>
+
+<summary>개선 후 (유저 수: 100, 유저 당 게시글 수: 5, 게시글 당 댓글 수: 3)</summary>
+
+## 부하 테스트 진행중
+
+- 유저 수 : 100
+- 게시판 수 : 유저 당 5 → 500
+- 댓글 수 : 게시판 당 3 → 1500
+
+## 부하 테스트 완료
+
+<!-- 이미지는 GitHub에 업로드 후 경로 수정 필요 -->
+
+## 분석
+
+### **1. 테스트 개요**
+
+- **사용자 수**: 100명 (목표 100명 달성)
+- **게시판 수**: 500개 (사용자당 5개, 목표 달성)
+- **동시 접속자(VU)**: 최대 100명 (1:1 매칭 테스트)
+- **테스트 시간**: 약 2분 20초 내외 (동일 조건)
+
+### 2. 응답 시간 분석
+
+| 지표 | 이전 테스트 (최적화 전) | 현재 테스트 (최적화 후) | 변화 |
+| --- | --- | --- | --- |
+| **평균 응답 시간** | 11.69ms | 10.63ms | ▼ 1.06ms |
+| **중앙값** | 5.39ms | 7.02ms | ▲ 1.63ms |
+| **p(95)** | 24.7ms | 24.01ms | ▼ 0.69ms |
+| **최대 응답 시간** | 10.65s | 53.2ms | ▼ 10.59s |
+
+**분석**
+
+- 평균 응답 시간과 상위 95%(p95) 응답 시간은 **최적화 전후가 거의 비슷**합니다 (10~11ms 수준).
+- **최대 응답 시간**이 10.65초에서 **53.2ms**로 획기적으로 줄어들었습니다.
+- **결론**: 100명 규모에서도 **평균 응답 속도의 드라마틱한 개선은 나타나지 않았습니다.** 하지만 **응답의 안정성(최대 지연 감소)은 크게 향상**되었습니다.
+
+### 3. 처리량
+
+| 지표 | 이전 테스트 (최적화 전) | 현재 테스트 (최적화 후) | 변화 |
+| --- | --- | --- | --- |
+| **초당 요청 수 (RPS)** | 약 32.8req/s | 약 49.1req/s | ▲ 16.3req/s |
+| **총 요청 수** | 4,979건 | 6,865건 | ▲ 1,886건 |
+
+**분석**
+
+- **처리량(RPS)이 약 50% 증가**했습니다.
+- 동일한 시간 동안 처리한 총 요청 수가 약 1,900건 늘어났습니다.
+
+### **4. 종합 평가**
+
+- **응답 속도**: 평균 속도는 비슷하지만, **최대 지연 시간이 획기적으로 감소**
+- **처리 용량**: 동일 하드웨어에서 **처리 가능한 트래픽(Throughput)이 50% 증가**
+
+---
+
+## Hibernate Stats
+
+```json
+{
+  "queryExecutionMaxTime": 86,
+  "queryExecutionCount": 5257,
+  "queryCount": 42,
+  "queryPlanCacheMissCount": 41,
+  "queryPlanCacheHitCount": 10501,
+  "queryExecutionMaxTimeQueryString": "[CRITERIA] select s1_0.id,s1_0.latitude,s1_0.school_location,s1_0.longitude,s1_0.school_name from school s1_0",
+  "entityLoadCount": 25684
+}
+```
+
+### 1. N+1 문제 확인
+
+- **queryExecutionCount**: 최적화 전: **19,160회** → 최적화 후: **5,257회** → 변화: **약 72.5% 감소**
+- **주요 쿼리 변화**:
+    - **댓글 수 조회 (N+1)**: 전: 9,022회 → 후: **2,296회** (약 74.5% 감소)
+    - **좋아요 여부 조회 (N+1)**: 전: 7,535회 → 후: **0회** (완전 제거)
+
+### 3. 엔티티 로드 분석
+
+- **entityLoadCount**: 전: **686,907개** → 후: **25,684개** → 변화: **약 96.2% 감소**
+
+**종합 결론**: 최적화 적용 후 **쿼리 실행 횟수가 72.5% 감소**하고, **엔티티 로딩이 96.2% 감소**했습니다.
+
+</details>
+
+<details>
+
+<summary>개선 후 (유저 수: 500, 유저 당 게시글 수: 5, 게시글 당 댓글 수: 3)</summary>
+
+## 부하 테스트 진행중
+
+- 유저 수 : 500
+- 게시판 수 : 유저 당 5 → 2500
+- 댓글 수 : 게시판 당 3 → 7500
+
+## 부하 테스트 완료
+
+<!-- 이미지는 GitHub에 업로드 후 경로 수정 필요 -->
+
+## 분석
+
+### **1. 테스트 개요**
+
+- **사용자 수**: 500명 (동일)
+- **게시판 수**: 2,500개 (동일)
+- **동시 접속자(VU)**: 최대 500명 (동일)
+- **테스트 시간**: 약 3분 20초 (동일)
+
+### 2. 응답 시간
+
+| 지표 | 이전 테스트 (최적화 전) | 현재 테스트 (최적화 후) | 변화 |
+| --- | --- | --- | --- |
+| **평균 응답 시간** | 410.4ms | 13.56ms | ▼ 396.84ms (**약 97% 개선**) |
+| **중앙값** | 124.66ms | 7.61ms | ▼ 117.05ms |
+| **p(95)** | 1.94s | 36.89ms | ▼ 1.90s |
+| **최대 응답 시간** | 3.74s | 211.66ms | ▼ 3.53s |
+
+**분석**
+
+- **평균 응답 시간**이 410ms에서 **13.56ms**로 획기적으로 단축되었습니다.
+- **p(95)** 지표가 1.94초에서 **36.89ms**로 개선되어, 대다수 사용자가 느끼던 지연(Latency)이 완전히 사라졌습니다.
+
+### 3. 처리량
+
+| 지표 | 이전 테스트 (최적화 전) | 현재 테스트 (최적화 후) | 변화 |
+| --- | --- | --- | --- |
+| **초당 요청 수 (RPS)** | 약 91.9req/s | 약 135.5req/s | ▲ 43.6req/s (**약 47% 증가**) |
+| **총 요청 수** | 21,910건 | 27,352건 | ▲ 5,442건 |
+
+**분석**
+
+- **처리량(RPS)**이 약 92req/s에서 **135.5req/s**로 **47% 이상 증가**했습니다.
+
+### **4. 종합 평가**
+
+- **응답 속도**: N+1 문제 해결을 통해 **평균 응답 속도가 30배 이상 빨라졌습니다.**
+- **처리 용량**: 동일한 하드웨어 리소스로 **약 47% 더 많은 트래픽을 처리**할 수 있게 되었습니다.
+- **시스템 안정성**: 최대 응답 시간이 3.7초에서 0.2초대로 줄어들어 안정적인 서비스를 제공할 수 있음을 입증했습니다.
+
+---
+
+## Hibernate Stats
+
+```json
+{
+  "queryExecutionMaxTime": 185,
+  "queryExecutionCount": 39321,
+  "queryCount": 42,
+  "queryPlanCacheMissCount": 41,
+  "queryPlanCacheHitCount": 78625,
+  "queryExecutionMaxTimeQueryString": "SELECT b, count(c), bl FROM Board b LEFT JOIN Comment c ON c.boardId = b.id  LEFT JOIN BoardLike bl ON bl.boardId = b.id AND bl.userId = :userId  WHERE b.userId = :userId GROUP BY b, bl",
+  "entityLoadCount": 159712
+}
+```
+
+### 1. N+1 문제 확인
+
+- **queryExecutionCount**: 최적화 전: **445,144회** → 최적화 후: **39,321회** → 변화: **약 91.2% 감소**
+- **주요 쿼리 변화**:
+    - **댓글 수 조회 (N+1)**: 전: 209,626회 → 후: **16,327회** (약 92% 감소)
+    - **좋아요 여부 조회 (N+1)**: 전: 177,690회 → 후: **0회** (완전 제거)
+
+### 2. 쿼리 성능 분석
+
+- **가장 느린 쿼리**: 전: 410ms (select ... from board) → 후: 185ms (SELECT b, count(c), bl ...)
+- **최적화 쿼리 성능**: SELECT b, count(c), bl ...: 평균 **24ms**
+
+### 3. 엔티티 로드 분석
+
+- **entityLoadCount**: 전: **158,851,775개** (약 1.5억 개) → 후: **159,712개** → 변화: **약 99.9% 감소**
+
+### 4. 쿼리 캐시 효율
+
+- 전: 캐시 히트 816,022회 (효율 99.99%)
+- 후: 캐시 히트 78,625회 (효율 99.95%)
+
+**종합 결론**: 최적화 적용 후 **쿼리 실행 횟수가 91.2% 감소**하고, **엔티티 로딩이 99.9% 감소**하는 압도적인 성능 개선을 달성했습니다.
+
+</details>
+
+---
 
 ### 테스트 환경
 
