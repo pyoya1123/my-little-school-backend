@@ -36,7 +36,6 @@ public class BoardController {
     return boardService.getBoardListWithCommentAndBoardLikeByUserId(userId);
   }
 
-
   @GetMapping("/list/{userId}")
   public List<BoardListResponseDTO> getBoardListByUserId(@PathVariable("userId") Integer userId) {
     return boardService.getBoardListByUserId(userId);

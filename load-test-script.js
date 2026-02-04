@@ -10,15 +10,14 @@ const requestCount = new Counter('request_count');
 
 // 테스트 설정
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080';
-// 테스트에 사용할 사용자 수 (데이터 10만 개 생성을 위해 2000명 설정)
-const TARGET_USER_COUNT = 2000;
-// 각 사용자당 목표 게시판 수 (2000 * 50 = 100,000 게시판)
-const TARGET_BOARD_COUNT_PER_USER = 50;
-// 각 게시판당 목표 댓글 수
-const TARGET_COMMENT_COUNT_PER_BOARD = 3;
+// 목표 데이터 스펙: 유저 20,000명, 유저당 게시글 5개(=10만), 게시글당 댓글 3개(=30만)
+const TARGET_USER_COUNT = 20000;
+const TARGET_BOARD_COUNT_PER_USER = 5;
+const TARGET_COMMENT_COUNT_PER_BOARD = 3; // 총 300,000개 목표
 
-// 데이터 수집 로직 활성화 (true: 수집함, false: 스킵함)
-const ENABLE_DATA_COLLECTION = true;
+// 배치 처리 설정
+const USER_BATCH_SIZE = 500;    // 유저 단위 처리 배치 크기
+const BOARD_BATCH_SIZE = 1000;  // 게시글/댓글 생성 배치 묶음 크기
 
 export const options = {
   // setup 함수 타임아웃 설정 (대량 데이터 생성을 위해 1시간으로 설정)
@@ -32,104 +31,63 @@ export const options = {
 
   // 임계치 설정 
   thresholds: {
-    // N+1 문제로 응답 시간이 길어질 수 있으므로 임계값 완화
+
     http_req_duration: ['p(95)<10000', 'p(99)<20000'],
     // 5% 미만의 요청만 실패 허용
     http_req_failed: ['rate<0.05'],
-    // 에러율 50% 미만 (N+1 문제로 인한 성능 저하 고려)
+    // 에러율 50% 미만 
     errors: ['rate<0.5'],
   },
 };
+
+function parseJsonSafe(body, fallback) {
+  try {
+    return JSON.parse(body);
+  } catch (e) {
+    return fallback;
+  }
+}
+
+function uniq(arr) {
+  const s = new Set(arr);
+  return Array.from(s);
+}
 
 /**
  * 테스트 데이터 초기화
  * 실제 테스트 전에 사용자와 게시판 데이터를 생성합니다.
  */
 export function setup() {
-  console.log('=== 테스트 데이터 생성 시작 ===');
+  console.log('=== [SETUP] 기존 데이터 로드 (생성/확인 스킵) ===');
 
-  // 1. 기존 사용자 확인
-  const userList = http.get(`${BASE_URL}/user/list`, {
-    tags: { name: 'UserList' },
-    timeout: '60s'
+  // 1) 사용자 목록 조회만
+  let usersRes = http.get(`${BASE_URL}/user/list`, { tags: { name: 'Setup_UserList' }, timeout: '120s' });
+  let allUsers = [];
+  if (usersRes.status === 200) {
+    const parsed = parseJsonSafe(usersRes.body, {});
+    allUsers = parsed?.response || [];
+  }
+  let userIds = allUsers.map(u => u.id);
+  console.log(`[SETUP] 사용자 로드 완료: ${userIds.length}명`);
+
+  // 2) 게시글 목록 조회만
+  let boardListRes = http.get(`${BASE_URL}/test-data/board/list`, {
+    tags: { name: 'Setup_BoardList_All' },
+    timeout: '600s'
   });
-  let allUserIds = [];
-
-  if (userList.status === 200) {
-    const users = JSON.parse(userList.body);
-    allUserIds = users.response?.map(u => u.id) || [];
-    console.log(`전체 기존 사용자 수: ${allUserIds.length}`);
+  let allBoards = [];
+  if (boardListRes.status === 200) {
+    allBoards = parseJsonSafe(boardListRes.body, []);
   }
+  let boardIds = allBoards.map(b => b.id || b.boardId || b.boardID).filter(Boolean);
+  boardIds = uniq(boardIds);
+  console.log(`[SETUP] 게시글 로드 완료: ${boardIds.length}개`);
 
-  // 데이터 생성 스킵을 위해 기존 사용자 전체 사용
-  let userIds = [...allUserIds];
-  console.log(`사용자 수: ${userIds.length}명 (생성 스킵)`);
-
-  // 2. 사용자별 게시글 및 댓글 데이터 확인
-  // DB에 있는 데이터를 실제 조회하여 테스트에 사용할 ID 목록을 구성합니다.
-  let boardIds = [];
-  let totalCommentsFound = 0;
-
-  if (ENABLE_DATA_COLLECTION) {
-    console.log('기존 데이터 수집을 시작합니다...');
-
-    // API 부하를 줄이기 위해 유저 중 일부만 샘플링하거나, 전체를 조회하되 배치로 처리
-    // 여기서는 전체 유저의 게시글을 조회합니다.
-    const userBatchSize = 20;
-
-    for (let i = 0; i < userIds.length; i += userBatchSize) {
-      const userBatch = userIds.slice(i, i + userBatchSize);
-
-      for (const userId of userBatch) {
-        // 유저가 작성한 게시글 목록 조회
-        const boardListRes = http.get(`${BASE_URL}/board/all-list/${userId}`, {
-          tags: { name: 'Setup_BoardList' },
-          timeout: '60s'
-        });
-
-        if (boardListRes.status === 200) {
-          const boards = JSON.parse(boardListRes.body);
-          if (Array.isArray(boards)) {
-            // 게시글 ID 수집
-            const ids = boards.map(b => b.boardId);
-            boardIds = boardIds.concat(ids);
-
-            // (선택 사항) 댓글 수집 로직
-            // 실제 댓글 ID까지 다 수집하면 메모리가 부족할 수 있으므로,
-            // "댓글이 존재하는지" 정도만 체크하거나, 
-            // 게시글 객체에 commentCount 같은 필드가 있다면 그걸로 집계하는 것이 효율적입니다.
-            // 만약 개별 댓글 조회가 필요하다면 아래 로직을 활성화하세요.
-
-            /*
-            for (const bId of ids) {
-               // 상세 조회로 댓글 확인 (너무 오래 걸릴 수 있음 주의)
-               // const detail = http.get(`${BASE_URL}/board/${bId}`);
-               // ...
-            }
-            */
-
-            // 여기서는 단순히 게시글 수 * 예상 댓글 수로 추산하거나, 
-            // 응답에 댓글 수가 포함되어 있다면 그것을 더합니다.
-            // (현재 API 응답 구조를 모르므로 일단 게시글 수집에 집중)
-          }
-        }
-      }
-
-      if ((i + userBatchSize) % 200 === 0) {
-        console.log(`데이터 수집 진행중: 유저 ${Math.min(i + userBatchSize, userIds.length)}/${userIds.length} 완료. (수집된 게시글: ${boardIds.length})`);
-      }
-    }
-
-    console.log(`총 수집된 게시글 수: ${boardIds.length}`);
-  } else {
-    console.log('데이터 수집 단계를 건너뜁니다. (ENABLE_DATA_COLLECTION = false)');
-  }
-
-  console.log('=== 테스트 데이터 셋업 완료 ===');
+  console.log('=== [SETUP] 데이터 로드 완료 - 부하 테스트 시작 ===');
 
   return {
     userIds: userIds,
-    boardIds: boardIds, // 수집된 실제 ID 목록 반환
+    boardIds: boardIds
   };
 }
 

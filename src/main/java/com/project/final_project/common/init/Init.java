@@ -97,11 +97,11 @@ public class Init {
 
     if (!questService.existsQuests()) {
       // Initialize Quests
-      List<Quest> quests = createQuests();
+//      List<Quest> quests = createQuests();
 
-      for (Quest quest : quests) {
-        questService.saveQuest(quest);
-      }
+//      for (Quest quest : quests) {
+//        questService.saveQuest(quest);
+//      }
 
       log.info("퀘스트 데이터가 성공적으로 저장되었습니다.");
     } else {

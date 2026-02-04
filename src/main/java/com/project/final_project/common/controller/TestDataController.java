@@ -6,8 +6,11 @@ import com.project.final_project.board.dto.BoardListResponseDTO;
 import com.project.final_project.board.dto.BoardRegisterDTO;
 import com.project.final_project.board.repository.BoardRepository;
 import com.project.final_project.board.service.BoardService;
+import com.project.final_project.comment.domain.Comment;
 import com.project.final_project.comment.dto.CommentRequestDTO;
+import com.project.final_project.comment.repository.CommentRepository;
 import com.project.final_project.comment.service.CommentService;
+import com.project.final_project.common.dto.BulkCommentRequest;
 import com.project.final_project.common.util.MockDataGenerator;
 import com.project.final_project.school.repository.SchoolRepository;
 import com.project.final_project.user.dto.UserDTO;
@@ -37,6 +40,7 @@ public class TestDataController {
   private final BoardService boardService;
   private final BoardRepository boardRepository;
   private final CommentService commentService;
+  private final CommentRepository commentRepository;
   private final SchoolRepository schoolRepository;
 
   /**
@@ -175,13 +179,12 @@ public class TestDataController {
     // boardId가 없으면 기존 게시판 중 랜덤 선택
     Integer targetBoardId = boardId;
     if (targetBoardId == null) {
-      var boards = boardRepository.findAll();
-      if (boards.isEmpty()) {
-        return ResponseEntity.badRequest()
+//      var boards = boardRepository.findAll();
+      return ResponseEntity.badRequest()
             .body(Map.of("error", "게시판이 없습니다. 먼저 게시판을 생성해주세요."));
-      }
+
       // 랜덤 게시판 선택
-      targetBoardId = boards.get((int) (Math.random() * boards.size())).getId();
+//      targetBoardId = boards.get((int) (Math.random() * boards.size())).getId();
     }
 
     for (int i = 0; i < count; i++) {
@@ -222,6 +225,179 @@ public class TestDataController {
   @GetMapping("/board/list")
   public ResponseEntity<List<Board>> getAllBoards() {
     return ResponseEntity.ok(boardRepository.findAll());
+  }
+
+  /**
+   * 여러 게시글의 댓글 수 일괄 조회 (Bulk)
+   * 대량의 게시글 댓글 수를 한 번에 조회합니다.
+   * 
+   * @param boardIds 조회할 게시글 ID 목록 (쉼표 구분)
+   * @return boardId를 key, 댓글 수를 value로 하는 Map
+   */
+  @GetMapping("/comments/count-by-boards")
+  public ResponseEntity<Map<String, Object>> getCommentCountsBulk(
+      @RequestParam String boardIds) {
+    
+    if (boardIds == null || boardIds.trim().isEmpty()) {
+      return ResponseEntity.badRequest()
+          .body(Map.of("error", "boardIds 파라미터가 필요합니다."));
+    }
+
+    try {
+      // 쉼표로 구분된 문자열을 Integer 리스트로 변환
+      List<Integer> boardIdList = List.of(boardIds.split(","))
+          .stream()
+          .map(String::trim)
+          .map(Integer::parseInt)
+          .collect(Collectors.toList());
+
+      if (boardIdList.isEmpty()) {
+        return ResponseEntity.badRequest()
+            .body(Map.of("error", "유효한 boardId가 없습니다."));
+      }
+
+      // DB에서 GROUP BY로 한 번에 조회
+      List<Object[]> results = commentRepository.getCommentCountsByBoardIds(boardIdList);
+      
+      // boardId -> commentCount 매핑
+      Map<Integer, Long> commentCounts = new HashMap<>();
+      for (Object[] row : results) {
+        Integer boardId = (Integer) row[0];
+        Long count = (Long) row[1];
+        commentCounts.put(boardId, count);
+      }
+
+      // 요청한 모든 boardId에 대해 결과 생성 (댓글 없으면 0)
+      Map<Integer, Long> response = new HashMap<>();
+      for (Integer boardId : boardIdList) {
+        response.put(boardId, commentCounts.getOrDefault(boardId, 0L));
+      }
+
+      Map<String, Object> result = new HashMap<>();
+      result.put("requestedCount", boardIdList.size());
+      result.put("commentCounts", response);
+
+      return ResponseEntity.ok(result);
+      
+    } catch (NumberFormatException e) {
+      return ResponseEntity.badRequest()
+          .body(Map.of("error", "잘못된 boardId 형식입니다: " + e.getMessage()));
+    }
+  }
+
+  /**
+   * 여러 게시글의 댓글 수 일괄 조회 (Bulk - POST 버전)
+   * 대량의 게시글 댓글 수를 한 번에 조회합니다. (URL 길이 제한 없음)
+   * 
+   * @param request boardIds 리스트
+   * @return boardId를 key, 댓글 수를 value로 하는 Map
+   */
+  @PostMapping("/comments/count-by-boards")
+  public ResponseEntity<Map<String, Object>> getCommentCountsBulkPost(
+      @RequestBody Map<String, List<Integer>> request) {
+    
+    List<Integer> boardIdList = request.get("boardIds");
+    
+    if (boardIdList == null || boardIdList.isEmpty()) {
+      return ResponseEntity.badRequest()
+          .body(Map.of("error", "boardIds 리스트가 필요합니다."));
+    }
+
+    try {
+      // DB에서 GROUP BY로 한 번에 조회
+      List<Object[]> results = commentRepository.getCommentCountsByBoardIds(boardIdList);
+      
+      // boardId -> commentCount 매핑
+      Map<Integer, Long> commentCounts = new HashMap<>();
+      for (Object[] row : results) {
+        Integer boardId = (Integer) row[0];
+        Long count = (Long) row[1];
+        commentCounts.put(boardId, count);
+      }
+
+      // 요청한 모든 boardId에 대해 결과 생성 (댓글 없으면 0)
+      Map<Integer, Long> response = new HashMap<>();
+      for (Integer boardId : boardIdList) {
+        response.put(boardId, commentCounts.getOrDefault(boardId, 0L));
+      }
+
+      Map<String, Object> result = new HashMap<>();
+      result.put("requestedCount", boardIdList.size());
+      result.put("commentCounts", response);
+
+      return ResponseEntity.ok(result);
+      
+    } catch (Exception e) {
+      return ResponseEntity.badRequest()
+          .body(Map.of("error", "처리 중 오류 발생: " + e.getMessage()));
+    }
+  }
+
+  /**
+   * 게시글별 댓글 일괄 생성 (Bulk)
+   * 대량의 게시글에 댓글을 한 번에 생성합니다.
+   * 
+   * @param request 게시글별 생성할 댓글 수 목록
+   * @return 생성된 총 댓글 수 및 처리 결과
+   */
+  @PostMapping("/comments/bulk-by-boards")
+  public ResponseEntity<Map<String, Object>> generateCommentsBulk(
+      @RequestBody BulkCommentRequest request) {
+    
+    if (request.getItems() == null || request.getItems().isEmpty()) {
+      return ResponseEntity.badRequest()
+          .body(Map.of("error", "items 목록이 비어있습니다."));
+    }
+
+    List<Comment> commentsToSave = new ArrayList<>();
+    int totalRequestedCount = 0;
+    int processedBoards = 0;
+    List<String> errors = new ArrayList<>();
+
+    // 각 게시글별로 댓글 생성
+    for (BulkCommentRequest.BoardCommentItem item : request.getItems()) {
+      try {
+        Integer boardId = item.getBoardId();
+        Integer count = item.getCount();
+        
+        if (boardId == null || count == null || count <= 0) {
+          errors.add("Invalid item: boardId=" + boardId + ", count=" + count);
+          continue;
+        }
+
+        totalRequestedCount += count;
+
+        // count 개수만큼 댓글 생성
+        for (int i = 0; i < count; i++) {
+          MockDataGenerator.CommentRegisterData mockData = 
+              MockDataGenerator.generateCommentRegisterData(boardId);
+          
+          Comment comment = new Comment(mockData.content, mockData.boardId);
+          commentsToSave.add(comment);
+        }
+        
+        processedBoards++;
+        
+      } catch (Exception e) {
+        errors.add("BoardId " + item.getBoardId() + ": " + e.getMessage());
+      }
+    }
+
+    // 배치 인서트 (JPA saveAll 사용)
+    List<Comment> savedComments = commentRepository.saveAll(commentsToSave);
+
+    Map<String, Object> response = new HashMap<>();
+    response.put("requestedBoards", request.getItems().size());
+    response.put("processedBoards", processedBoards);
+    response.put("requestedComments", totalRequestedCount);
+    response.put("createdComments", savedComments.size());
+    
+    if (!errors.isEmpty()) {
+      response.put("errors", errors);
+      response.put("errorCount", errors.size());
+    }
+
+    return ResponseEntity.ok(response);
   }
 
   /**

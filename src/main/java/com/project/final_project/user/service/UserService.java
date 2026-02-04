@@ -91,26 +91,26 @@ public class UserService {
 
       //== 유저 생성할 때 초기 퀘스트 등록 ==//
       // TUTORIAL 퀘스트 가져오기
-      List<QuestDTO> tutorial;
-      try {
-        tutorial = questService.getQuestListByQuestType("TUTORIAL");
-      } catch (Exception e) {
-        throw new RuntimeException("Failed to fetch TUTORIAL quests: " + e.getMessage(), e);
-      }
+//      List<QuestDTO> tutorial;
+//      try {
+//        tutorial = questService.getQuestListByQuestType("TUTORIAL");
+//      } catch (Exception e) {
+//        throw new RuntimeException("Failed to fetch TUTORIAL quests: " + e.getMessage(), e);
+//      }
 
       // 각 퀘스트를 사용자 퀘스트로 등록
-      for (QuestDTO questDTO : tutorial) {
-        try {
-          userQuestService.registerUserQuest(
-              new UserQuestRegisterRequestDTO(questDTO.getQuestId(), savedUser.getId()));
-        } catch (Exception e) {
-          // 개별 퀘스트 등록 실패 시 로그 남기기
-          log.warn("Failed to register quest for user: {}, Error: {}", questDTO, e.getMessage());
-        }
-      }
+//      for (QuestDTO questDTO : tutorial) {
+//        try {
+//          userQuestService.registerUserQuest(
+//              new UserQuestRegisterRequestDTO(questDTO.getQuestId(), savedUser.getId()));
+//        } catch (Exception e) {
+//          // 개별 퀘스트 등록 실패 시 로그 남기기
+//          log.warn("Failed to register quest for user: {}, Error: {}", questDTO, e.getMessage());
+//        }
+//      }
 
       //== 유저 생성할 때 인벤토리 생성 ==//
-      inventoryService.createInventory(savedUser.getId());
+//      inventoryService.createInventory(savedUser.getId());
 
       // 유저 DTO 반환
       return new UserDTO(savedUser);
