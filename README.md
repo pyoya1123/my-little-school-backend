@@ -1590,13 +1590,3 @@ src/main/java/com/project/final_project/
 **원인**: Tomcat 기본 스레드 풀 한계  
 **해결**: 스레드 풀 크기 조정 및 비동기 처리 적용
 
----
-
-## 👨‍💻 개발자
-
-| 이름 | 역할 | GitHub |
-|------|------|--------|
-| **전성표** | Backend Developer | [@pyoya1123](https://github.com/pyoya1123) |
-
----
-
