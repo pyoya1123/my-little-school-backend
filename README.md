@@ -6,7 +6,7 @@
 
 ---
 
-## 📋 목차
+# 📋 목차
 
 1. [프로젝트 소개](#-프로젝트-소개)
 2. [기술 스택](#-기술-스택)
@@ -17,28 +17,28 @@
 
 ---
 
-## 🎯 프로젝트 소개
+# 🎯 프로젝트 소개
 
-### 배경
+## 배경
 지방의 소규모 학교 학생들의 사회화 부족 문제를 해결하기 위해 메타버스 환경에서 다른 학교 친구들과 만나 다양한 경험을 할 수 있는 메타버스 플랫폼을 개발했습니다.
 #### 프로젝트 종료 후, 주도적인 성능 개선과 풀스택 마이그레이션을 위해 퍼블릭 리포지토리로 새롭게 이관하여 개발을 이어나가고 있습니다!
 
-### 목표
+## 목표
 - 학생들이 재미있게 소통할 수 있는 **소셜 기능** 제공
 - 나만의 공간을 꾸미는 **커스터마이징 기능** 구현
 - **퀘스트 시스템**을 통한 자연스러운 서비스 온보딩
 
-### 개발 기간
+## 개발 기간
 - 2024.09 ~ 2024.12 (4개월)
 
-### 팀 구성
+## 팀 구성
 - Backend 1명, Unity 3명, 기획 1명, TA 1명
 
 ---
 
-## 🛠 기술 스택
+# 🛠 기술 스택
 
-### Backend
+## Backend
 | 기술 | 버전 | 설명 |
 |------|------|------|
 | **Java** | 17 | 프로그래밍 언어 |
@@ -46,13 +46,13 @@
 | **Spring Data JPA** | - | ORM |
 | **Spring WebSocket** | - | 실시간 통신 |
 
-### Database & Cache
+## Database & Cache
 | 기술 | 설명 |
 |------|------|
 | **MySQL** | 메인 데이터베이스 |
 | **Redis** | 세션 캐시, 실시간 데이터 |
 
-### Infra & DevOps
+## Infra & DevOps
 | 기술 | 설명 |
 |------|------|
 | **AWS S3** | 이미지/파일 스토리지 |
@@ -60,7 +60,7 @@
 | **Docker** | 컨테이너화 |
 | **k6** | 부하 테스트 |
 
-### Monitoring
+## Monitoring
 | 기술 | 설명 |
 |------|------|
 | **Spring Actuator** | 애플리케이션 모니터링 |
@@ -69,29 +69,29 @@
 
 ---
 
-## 💡 주요 기능
+# 💡 주요 기능
 
-### 1. 사용자 관리
+## 1. 사용자 관리
 - 회원가입/로그인 (Spring Security)
 - 프로필 관리 (아바타, 상태메시지)
 - 레벨/경험치 시스템
 
-### 2. 소셜 기능
+## 2. 소셜 기능
 - **친구 시스템**: 친구 추가/삭제, 친구 목록
 - **쪽지 시스템**: 1:1 비동기 메시지
 - **실시간 채팅**: WebSocket 기반 채팅
 - **방명록**: 친구 교실에 메시지 남기기
 
-### 3. 커뮤니티
+## 3. 커뮤니티
 - **게시판**: CRUD, 좋아요, 댓글
 - **갤러리**: 이미지 업로드 (S3/Cloudinary)
 
-### 4. 교실 꾸미기
+## 4. 교실 꾸미기
 - **가구 배치**: 드래그 앤 드롭으로 가구 배치
 - **인벤토리 시스템**: 아이템 구매/관리
 - **맵 콘테스트**: 내 교실 자랑하기
 
-### 5. 퀘스트 시스템
+## 5. 퀘스트 시스템
 - 튜토리얼 퀘스트로 자연스러운 온보딩
 - 퀘스트 완료 시 골드/경험치 보상
 - 아이템 보상 지급
@@ -110,20 +110,20 @@
 실제 운영 환경은 아니지만, 대규모 트래픽 상황을 가정하여 서버의 한계를 직접 시험해보고 성능 병목을 눈으로 확인하고 싶었습니다.
 테스트 결과, 데이터가 적을 땐 보이지 않던 N+1 문제가 동시 접속자가 늘어날수록 시스템 성능에 치명적인 부하를 준다는 사실을 데이터로 확인했고, 이를 개선했습니다.
 
-### 테스트 환경 및 도구
+## 테스트 환경 및 도구
 - Tool: k6 (부하 테스트), Hibernate Statistics (쿼리 분석), Spring Actuator
 - Server: Mac Mini M4 (Local), MySQL 8.0
 - Dataset: User 20,000명, Board 100,000개, Comment 300,000개 (Dump Data)
 - Scenario: 메인 피드(게시글 목록) 조회 API를 대상으로 동시 접속자(VU)를 단계별로 증가
 ---
 
-### 1. 문제 상황 (As-Is)
+## 1. 문제 상황 (As-Is)
 초기 코드는 Board(게시글)를 조회할 때 연관된 Comment(댓글)와 BoardLike(좋아요)를 지연 로딩(Lazy Loading)으로 가져오고 있었습니다.
 
 <details>
 <summary>🔻 [코드 보기] 개선 전: N+1 발생 코드</summary>
 ```json
-Java// BoardService.java
+// BoardService.java
 public List<BoardListResponseDTO> getAllBoards(Integer userId) {
     return boardRepository.findAll()
         .stream()
@@ -155,7 +155,7 @@ public List<BoardListResponseDTO> getAllBoards(Integer userId) {
 
 ```
 
-### 2. 해결 과정 (Solution)
+## 2. 해결 과정 (Solution)
 반복되는 하위 엔티티 조회 쿼리를 하나로 합치기 위해 Fetch Join을 적용하여 최적화했습니다. 
 단순히 데이터를 가져오는 것을 넘어, 불필요한 조인을 줄이고 필요한 데이터만 한 번에 조회하도록 쿼리를 튜닝했습니다.
 
@@ -174,7 +174,7 @@ List<Object[]> getBoardListWithCommentAndBoardLikeByUserId(@Param("userId") Inte
 ```
 </details>
 
-### 3. 개선 결과 (To-Be)
+## 3. 개선 결과 (To-Be)
 최적화 코드 배포 후 동일한 조건(VU 500)에서 다시 테스트를 진행했습니다.
 - 쿼리 실행 횟수: 445,144회 → 39,321회 (약 91% 감소)
 - 엔티티 로딩: 1.5억 개 → 16만 개 (약 99.9% 감소)
@@ -192,7 +192,7 @@ List<Object[]> getBoardListWithCommentAndBoardLikeByUserId(@Param("userId") Inte
 <details>
 <summary>📈 k6 결과 그래프 & Hibernate Stats 상세 보기</summary>
 
-### 개선 전후 그래프 비교
+# 개선 전후 그래프 비교
 
 <details>
 <summary>개선 전 지표</summary>
@@ -200,7 +200,7 @@ List<Object[]> getBoardListWithCommentAndBoardLikeByUserId(@Param("userId") Inte
 <img width="2947" height="1913" alt="image (1)" src="https://github.com/user-attachments/assets/63be8612-8595-4dcc-8924-b3f362b74f26" />
 <img width="2955" height="495" alt="image (2)" src="https://github.com/user-attachments/assets/f0f724fa-0417-4de1-9818-aa3a7f282ba2" />
 
-### 분석
+## 분석
 
 ```markdown
 1. 테스트 개요
@@ -226,13 +226,11 @@ p(99) (99% 요청): 2.37s
 초당 요청 수 (RPS): 약 91.9req/s
 총 요청 수: 21,910건
 사용자 시나리오 반복 수: 6,303회
-분석:
-500명의 동시 접속자가 약 2만 건 이상의 요청을 처리했습니다.
-응답 시간이 느려졌음에도 불구하고 에러 없이 모든 요청을 처리해냈지만, 사용자 체감 속도는 확연히 느려졌을 것입니다.
 ```
 
-### Hibernate Stats
+## Hibernate Stats
 <img width="1555" height="528" alt="image (3)" src="https://github.com/user-attachments/assets/cac2c559-60b2-4bcf-b94b-b6101a7b5eba" />
+
 ```json
 {
   "queryExecutionMaxTime": 410,
@@ -245,6 +243,7 @@ p(99) (99% 요청): 2.37s
 }
 ```
 
+---
 
 ### 쿼리 별 실행 횟수 
 <details>
@@ -356,6 +355,106 @@ p(99) (99% 요청): 2.37s
 }
 ```
 </details>
+
+</details>
+
+<details>
+<summary>개선 후 지표</summary>
+<img width="2790" height="1196" alt="image" src="https://github.com/user-attachments/assets/dac260b4-8296-421d-93fb-fd242cc380ed" />
+<img width="2781" height="1929" alt="image (1)" src="https://github.com/user-attachments/assets/7f057318-0504-4b11-a56d-5e2ab083235b" />
+<img width="2779" height="508" alt="image (2)" src="https://github.com/user-attachments/assets/9e02584c-9f18-4267-a5b1-ba2fe4973cf4" />
+
+---
+
+## Hibernate Stats
+<img width="1560" height="542" alt="image (3)" src="https://github.com/user-attachments/assets/9111fb8c-bd18-4e4c-891b-2c13892f0ec7" />
+
+
+```json
+{
+  "queryExecutionMaxTime": 185,
+  "queryExecutionCount": 39321,
+  "queryCount": 42,
+  "queryPlanCacheMissCount": 41,
+  "queryPlanCacheHitCount": 78625,
+  "queryExecutionMaxTimeQueryString": "SELECT b, count(c), bl FROM Board b LEFT JOIN Comment c ON c.boardId = b.id  LEFT JOIN BoardLike bl ON bl.boardId = b.id AND bl.userId = :userId  WHERE b.userId = :userId GROUP BY b, bl",
+  "entityLoadCount": 159712
+}
+```
+---
+
+### 쿼리 별 실행 횟수
+
+```json
+{
+  "totalQueries": 42,
+  "queries": [
+    {
+      "executionMaxTime": 185,
+      "executionAvgTime": 24,
+      "executionMinTime": 13,
+      "cacheHitCount": 0,
+      "query": "SELECT b, count(c), bl FROM Board b LEFT JOIN Comment c ON c.boardId = b.id  LEFT JOIN BoardLike bl ON bl.boardId = b.id AND bl.userId = :userId  WHERE b.userId = :userId GROUP BY b, bl",
+      "executionCount": 17437,
+      "cacheMissCount": 0
+    },
+    {
+      "executionMaxTime": 78,
+      "executionAvgTime": 2,
+      "executionMinTime": 1,
+      "cacheHitCount": 0,
+      "query": "select count(*) from Comment c where c.boardId = :boardId",
+      "executionCount": 16327,
+      "cacheMissCount": 0
+    },
+    {
+      "executionMaxTime": 10,
+      "executionAvgTime": 3,
+      "executionMinTime": 2,
+      "cacheHitCount": 0,
+      "query": "select c from Comment c where c.boardId = :boardId",
+      "executionCount": 5550,
+      "cacheMissCount": 0
+    },
+    {
+      "executionMaxTime": 36,
+      "executionAvgTime": 27,
+      "executionMinTime": 21,
+      "cacheHitCount": 0,
+      "query": "[CRITERIA] select u1_0.user_id,u1_0.user_birthday,u1_0.user_email,u1_0.entered_date,u1_0.user_exp,u1_0.user_gender,u1_0.user_gold,u1_0.user_grade,u1_0.is_online,u1_0.user_level,u1_0.map_id,u1_0.map_type,u1_0.user_max_exp,u1_0.user_name,u1_0.user_password,u1_0.user_phone,u1_0.school_id,u1_0.user_status_message from user u1_0",
+      "executionCount": 4,
+      "cacheMissCount": 0
+    },
+    {
+      "executionMaxTime": 86,
+      "executionAvgTime": 86,
+      "executionMinTime": 86,
+      "cacheHitCount": 0,
+      "query": "[CRITERIA] select s1_0.id,s1_0.latitude,s1_0.school_location,s1_0.longitude,s1_0.school_name from school s1_0",
+      "executionCount": 1,
+      "cacheMissCount": 0
+    },
+    {
+      "executionMaxTime": 2,
+      "executionAvgTime": 2,
+      "executionMinTime": 2,
+      "cacheHitCount": 0,
+      "query": "[CRITERIA] select i1_0.id,i1_0.item_idx,i1_0.item_name,i1_0.item_type,i1_0.item_price from item i1_0",
+      "executionCount": 1,
+      "cacheMissCount": 0
+    },
+    {
+      "executionMaxTime": 1,
+      "executionAvgTime": 1,
+      "executionMinTime": 1,
+      "cacheHitCount": 0,
+      "query": "[CRITERIA] select q1_0.id,q1_0.quest_content,q1_0.quest_count,q1_0.exp,q1_0.gold,q1_0.quest_type,q1_0.quest_title from quest q1_0",
+      "executionCount": 1,
+      "cacheMissCount": 0
+    }
+  ]
+}
+```
 
 </details>
 
