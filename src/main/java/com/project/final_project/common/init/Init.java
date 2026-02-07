@@ -38,9 +38,23 @@ public class Init {
   private final ItemService itemService;
   private final QuestService questService;
 
+  // 초기화 실행 여부 플래그 (한 번만 실행되도록)
+  private static volatile boolean initialized = false;
 
+  /**
+   * 애플리케이션 시작 시 초기화 작업 수행
+   * 데이터가 이미 존재하면 건너뜁니다.
+   * 프로파일이 'dev'일 때만 실행됩니다.
+   */
   @PostConstruct
   public void init() {
+    // 이미 초기화되었으면 건너뛰기
+    if (initialized) {
+      log.debug("초기화 작업이 이미 완료되었습니다. 건너뜁니다.");
+      return;
+    }
+
+    log.info("=== 애플리케이션 초기화 시작 ===");
     if (!schoolService.existSchoolDatas()) {
       File excelFile = new File("src/main/resources/schools.xlsx");
 
@@ -108,8 +122,9 @@ public class Init {
       log.info("퀘스트 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
     }
 
-
-
+    // 초기화 완료 플래그 설정
+    initialized = true;
+    log.info("=== 애플리케이션 초기화 완료 ===");
   }
 
   private List<ItemRegisterDTO> extractItemData(BufferedReader reader) throws IOException {

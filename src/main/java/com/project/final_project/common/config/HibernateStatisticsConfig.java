@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
  */
 @Slf4j
 @Configuration
-@EnableScheduling
+// @EnableScheduling  // 스케줄러 비활성화됨
 @RequiredArgsConstructor
 public class HibernateStatisticsConfig {
 
@@ -41,8 +41,9 @@ public class HibernateStatisticsConfig {
 
   /**
    * 5분마다 Hibernate 통계 정보를 로깅합니다.
+   * 스케줄러가 비활성화되어 수동 호출만 가능합니다.
    */
-  @Scheduled(fixedRate = 300000) // 5분 = 300000ms
+  // @Scheduled(fixedRate = 300000)  // 스케줄러 비활성화됨
   public void logHibernateStatistics() {
     if (statistics == null || !statistics.isStatisticsEnabled()) {
       return;

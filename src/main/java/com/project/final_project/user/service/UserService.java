@@ -70,8 +70,47 @@ public class UserService {
         .orElseThrow(() -> new NotFoundException("User not found: " + id));
   }
 
+  /**
+   * [기존 방식 + Observation API] 모든 사용자 목록을 조회합니다.
+   * 단순 findAll()을 사용하며, N+1 문제가 발생할 수 있습니다.
+   * 
+   * 생성되는 메트릭:
+   * - user.list: 실행 시간
+   * - user.list.active: 현재 실행 중인 요청 수
+   * 
+   * 최적화 전 성능 측정용 메서드입니다.
+   */
+  @io.micrometer.observation.annotation.Observed(
+      name = "user.list",
+      contextualName = "get-all-users",
+      lowCardinalityKeyValues = {"endpoint", "user-list", "optimized", "false"}
+  )
+//  @org.springframework.cache.annotation.Cacheable(value = "users", key = "'all'")
   public List<UserDTO> getAllUser() {
     return userRepository.findAll().stream()
+        .map(UserDTO::new)
+        .collect(Collectors.toList());
+  }
+
+  /**
+   * [최적화 + Observation API] 모든 사용자 목록을 조회합니다.
+   * JOIN FETCH를 사용하여 N+1 문제를 해결하고,
+   * Observation API를 사용하여 메트릭을 측정합니다.
+   * 
+   * 생성되는 메트릭:
+   * - user.list.optimized: 실행 시간
+   * - user.list.optimized.active: 현재 실행 중인 요청 수
+   * 
+   * 비교 분석용 메서드입니다.
+   */
+  @io.micrometer.observation.annotation.Observed(
+      name = "user.list.optimized",
+      contextualName = "get-all-users-optimized",
+      lowCardinalityKeyValues = {"endpoint", "user-list", "optimized", "true"}
+  )
+  @org.springframework.cache.annotation.Cacheable(value = "users", key = "'all'")
+  public List<UserDTO> getAllUserOptimized() {
+    return userRepository.findAllWithSchool().stream()
         .map(UserDTO::new)
         .collect(Collectors.toList());
   }

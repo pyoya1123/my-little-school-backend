@@ -44,6 +44,16 @@ public class MockDataGenerator {
     data.schoolId = schoolId;
     return data;
   }
+  
+  /**
+   * 랜덤 학교 ID 생성 (1부터 maxSchoolId까지)
+   */
+  public static Integer generateRandomSchoolId(Integer maxSchoolId) {
+    if (maxSchoolId == null || maxSchoolId <= 0) {
+      return 1;
+    }
+    return random.nextInt(maxSchoolId) + 1;
+  }
 
   /**
    * 게시판 등록 DTO 생성

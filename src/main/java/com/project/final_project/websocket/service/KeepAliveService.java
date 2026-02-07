@@ -17,7 +17,8 @@ public class KeepAliveService {
   @Autowired
   private ObjectMapper jacksonObjectMapper;
 
-  @Scheduled(fixedRate = 50000) // 50초마다 실행
+  // 스케줄러가 비활성화되어 수동 호출만 가능합니다.
+  // @Scheduled(fixedRate = 50000)  // 스케줄러 비활성화됨
   public void sendKeepAlive() {
     UserSessionManager.getAllSessions().values().forEach(session -> {
 

@@ -13,10 +13,10 @@ spring:
       hibernate:
         format_sql: true
         # 프로파일링을 위한 Hibernate 통계 활성화
-        generate_statistics: true
+        generate_statistics: false
         # 쿼리 성능 로깅
-        jdbc:
-          batch_size: 20
+#        jdbc:
+#          batch_size: 20
         # 쿼리 실행 계획 캐싱
         query:
           plan_cache_max_size: 2048
@@ -38,8 +38,11 @@ logging:
     root: INFO
     org.springframework.batch: ERROR
     org.hibernate: INFO  # Hibernate 로그 레벨 변경
-    org.hibernate.SQL: INFO  # SQL 쿼리 로그 비활성화
-    org.hibernate.type.descriptor.sql.BasicBinder: INFO  # 파라미터 바인딩 로그 비활성화
+    org.hibernate.SQL: TRACE  # SQL 쿼리 로그 비활성화
+    org.hibernate.orm.jdbc.bind: TRACE
+#    org.hibernate.type.descriptor.sql.BasicBinder: TRACE  # 파라미터 바인딩 로그 비활성화
+    # Hibernate 세션 메트릭 로깅 비활성화 (불필요한 세션 메트릭 로그 제거)
+    org.hibernate.event.internal.StatisticalLoggingSessionEventListener: OFF
     # 프로파일링을 위한 로깅 레벨 설정
     com.project.final_project.common.config.HibernateStatisticsConfig: INFO
     com.project.final_project.common.interceptor.PerformanceInterceptor: INFO
@@ -92,6 +95,17 @@ management:
     tags:
       application: ${spring.application.name:final_project}
       environment: ${spring.profiles.active:dev}
+  # Observation API 설정
+  observation:
+    # 메트릭 이름 패턴 설정
+    metrics:
+      # 태그 이름을 카멜케이스로 변환
+      naming:
+        tag-key-convention: camelCase
+    # 분산 추적 설정 (선택사항 - OpenTelemetry 연동 시)
+    tracing:
+      sampling:
+        probability: 1.0  # 100% 샘플링 (개발 환경)
     # JVM 메트릭 수집
     jvm:
       enabled: true

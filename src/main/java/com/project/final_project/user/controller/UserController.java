@@ -47,9 +47,24 @@ public class UserController {
     return new UserDTO(foundUser);
   }
 
+  /**
+   * [기존 방식] 모든 사용자 목록 조회
+   * 단순 findAll() 사용, N+1 문제 가능성 있음
+   */
   @GetMapping("/list")
   public ResponseResult<List<UserDTO>> getAllUsers() {
     List<UserDTO> allUser = userService.getAllUser();
+    return success(allUser);
+  }
+
+  /**
+   * [최적화 버전] 모든 사용자 목록 조회
+   * JOIN FETCH 사용 + Observation API 메트릭 측정
+   * 비교 분석용 엔드포인트
+   */
+  @GetMapping("/list/optimized")
+  public ResponseResult<List<UserDTO>> getAllUsersOptimized() {
+    List<UserDTO> allUser = userService.getAllUserOptimized();
     return success(allUser);
   }
 
