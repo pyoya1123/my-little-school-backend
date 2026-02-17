@@ -59,6 +59,9 @@ dependencies {
 
     // MySQL
     runtimeOnly 'mysql:mysql-connector-java:8.0.32'
+    
+    // H2 Database (테스트용 인메모리 DB)
+    testRuntimeOnly 'com.h2database:h2'
 
     // OpenAPI
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'

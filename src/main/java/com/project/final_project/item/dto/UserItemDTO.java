@@ -1,5 +1,6 @@
 package com.project.final_project.item.dto;
 
+import com.project.final_project.item.domain.ItemType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ public class UserItemDTO {
   private Integer itemIdx;
   private String itemName;
   private Integer price;
-  private String itemType;
+  private ItemType itemType;
   private Integer count;
 
   public UserItemDTO(ItemDTO dto, Integer inventoryId, Integer count) {

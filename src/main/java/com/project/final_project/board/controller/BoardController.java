@@ -32,8 +32,8 @@ public class BoardController {
 
   @GetMapping("/all-list/{userId}")
   public List<BoardListResponseDTO> getAllBoards(@PathVariable("userId") Integer userId) {
-//    return boardService.getBoardListWithCommentAndBoardLikeByUserId(userId);
     return boardService.getBoardListWithCommentAndBoardLikeByUserId(userId);
+//    return boardService.getBoardListWithCommentAndBoardLikeByUserId(userId);
   }
 
   @GetMapping("/list/{userId}")

@@ -1,16 +1,11 @@
 package com.project.final_project.quest.domain;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
@@ -48,8 +43,8 @@ public class Quest {
   @Column(name = "exp")
   private Integer exp;
 
-  @OneToMany(mappedBy = "questId", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<QuestItemRewardInfo> itemRewards = new ArrayList<>();
+  @OneToMany(mappedBy = "quest", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<QuestReward> rewards = new ArrayList<>();
 
 
   public Quest(String title, String content, Integer count, String questType, Integer gold,
@@ -63,13 +58,13 @@ public class Quest {
   }
 
   public Quest(String title, String content, Integer count, String questType, Integer gold,
-      Integer exp, List<QuestItemRewardInfo> itemRewards) {
+      Integer exp, List<QuestReward> rewards) {
     this.title = title;
     this.content = content;
     this.count = count;
     this.questType = questType;
     this.gold = gold;
     this.exp = exp;
-    this.itemRewards = itemRewards;
+    this.rewards = rewards;
   }
 }

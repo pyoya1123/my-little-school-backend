@@ -20,15 +20,15 @@ public class QuestController {
   private final QuestService questService;
 
 
-  @Operation(summary = "각 유저에 대해 퀘스트 등록", description = "특정 유저에 대한 퀘스트를 등록합니다")
-  @ApiResponses({
-      @ApiResponse(responseCode = "200", description = "퀘스트가 성공적으로 등록되었습니다."),
-      @ApiResponse(responseCode = "400", description = "요청 데이터가 유효하지 않습니다.")
-  })
-  @PostMapping
-  public QuestDTO registerQuest(@RequestBody QuestRegisterRequestDTO dto) {
-    return questService.registerQuest(dto);
-  }
+//  @Operation(summary = "각 유저에 대해 퀘스트 등록", description = "특정 유저에 대한 퀘스트를 등록합니다")
+//  @ApiResponses({
+//      @ApiResponse(responseCode = "200", description = "퀘스트가 성공적으로 등록되었습니다."),
+//      @ApiResponse(responseCode = "400", description = "요청 데이터가 유효하지 않습니다.")
+//  })
+//  @PostMapping
+//  public QuestDTO registerQuest(@RequestBody QuestRegisterRequestDTO dto) {
+//    return questService.registerQuest(dto);
+//  }
 
 
   @Operation(summary = "모든 퀘스트 목록 조회", description = "등록된 모든 퀘스트 목록을 반환합니다.")

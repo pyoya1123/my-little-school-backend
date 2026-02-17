@@ -1,4 +1,4 @@
-package com.project.final_project.quest.dto.questitemrewardinfo;
+package com.project.final_project.quest.dto.questReward;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class QuestItemRewardInfoRegisterDTO {
-
+public class QuestRewardUpdateDTO {
+  private Integer QuestRewardId;
   private Integer questId;
   private Integer itemIdx;
   private Integer count;
-
 }

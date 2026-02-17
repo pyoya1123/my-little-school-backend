@@ -11,11 +11,8 @@ import com.project.final_project.friendship.service.FriendshipService;
 import com.project.final_project.furniture.service.FurnitureService;
 import com.project.final_project.gallery.service.GalleryService;
 import com.project.final_project.guestbook.service.GuestBookService;
-import com.project.final_project.inventory.service.InventoryService;
 import com.project.final_project.mapcontest.service.MapContestService;
 import com.project.final_project.note.service.NoteService;
-import com.project.final_project.quest.dto.quest.QuestDTO;
-import com.project.final_project.quest.dto.userquest.UserQuestRegisterRequestDTO;
 import com.project.final_project.quest.service.QuestService;
 import com.project.final_project.quest.service.UserQuestService;
 import com.project.final_project.school.domain.School;
@@ -52,7 +49,6 @@ public class UserService {
   private final SchoolRepository schoolRepository;
   private final QuestService questService;
   private final UserQuestService userQuestService;
-  private final InventoryService inventoryService;
   private final AvatarService avatarService;
   private final BoardService boardService;
   private final ChatLogService chatLogService;
@@ -240,9 +236,6 @@ public class UserService {
     // 쪽지 삭제
     guestBookService.deleteGuestBookListByUserId(id);
 
-    // 인벤토리 삭제
-    inventoryService.deleteInventoryByUserId(id);
-
     // 맵콘테스트 삭제
 //    if(!mapContestService.getMapContestListByUserId(id).isEmpty()) {
 //      mapContestService.deleteMapContestListByUserId(id);
@@ -326,7 +319,11 @@ public class UserService {
   }
 
   public User getUserByEmail(String email) {
-    return userRepository.findByUserEmail(email);
+    User user = userRepository.findByUserEmail(email);
+    if (user == null) {
+      throw new NotFoundException("유저가 존재하지 않습니다.");
+    }
+    return user;
   }
 
   public UserProfileDTO getProfile(Integer userId) {

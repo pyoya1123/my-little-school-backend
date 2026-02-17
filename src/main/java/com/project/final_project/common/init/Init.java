@@ -1,22 +1,22 @@
 package com.project.final_project.common.init;
 
-import ch.qos.logback.classic.Level;
-import ch.qos.logback.classic.LoggerContext;
-import com.project.final_project.item.dto.ItemRegisterDTO;
-import com.project.final_project.item.service.ItemService;
-import com.project.final_project.quest.domain.Quest;
-import com.project.final_project.quest.domain.QuestItemRewardInfo;
-import com.project.final_project.quest.service.QuestService;
+import com.project.final_project.board.dto.BoardDTO;
+import com.project.final_project.board.dto.BoardRegisterDTO;
+import com.project.final_project.board.service.BoardService;
+import com.project.final_project.comment.dto.CommentRequestDTO;
+import com.project.final_project.comment.service.CommentService;
+import com.project.final_project.common.util.MockDataGenerator;
 import com.project.final_project.school.dto.SchoolRegisterDTO;
+import com.project.final_project.school.repository.SchoolRepository;
 import com.project.final_project.school.service.SchoolService;
+import com.project.final_project.user.dto.UserDTO;
+import com.project.final_project.user.dto.UserRegisterDTO;
+import com.project.final_project.user.service.UserService;
 import jakarta.annotation.PostConstruct;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +24,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Slf4j
 @Component
@@ -35,26 +32,38 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Init {
 
   private final SchoolService schoolService;
-  private final ItemService itemService;
-  private final QuestService questService;
+  private final SchoolRepository schoolRepository;
+  private final UserService userService;
+  private final BoardService boardService;
+  private final CommentService commentService;
 
   // 초기화 실행 여부 플래그 (한 번만 실행되도록)
   private static volatile boolean initialized = false;
 
   /**
    * 애플리케이션 시작 시 초기화 작업 수행
-   * 데이터가 이미 존재하면 건너뜁니다.
-   * 프로파일이 'dev'일 때만 실행됩니다.
    */
   @PostConstruct
   public void init() {
-    // 이미 초기화되었으면 건너뛰기
     if (initialized) {
       log.debug("초기화 작업이 이미 완료되었습니다. 건너뜁니다.");
       return;
     }
 
     log.info("=== 애플리케이션 초기화 시작 ===");
+    
+    // 1. 학교 데이터 초기화
+    // initSchools();
+    
+    // 2. 테스트 데이터 생성 (유저, 게시글, 댓글)
+    // initTestData();
+
+    // 초기화 완료 플래그 설정
+    initialized = true;
+    log.info("=== 애플리케이션 초기화 완료 ===");
+  }
+  
+  private void initSchools() {
     if (!schoolService.existSchoolDatas()) {
       File excelFile = new File("src/main/resources/schools.xlsx");
 
@@ -80,116 +89,110 @@ public class Init {
     } else {
       log.info("학교 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
     }
+  }
 
+  private void initTestData() {
+    long totalSchoolCount = schoolRepository.count();
+    if (totalSchoolCount == 0) {
+      log.warn("학교 데이터가 없어 테스트 데이터 생성을 건너뜁니다.");
+      return;
+    }
 
-    if (!itemService.existItemDatas()) {
-      File itemFile = new File("src/main/resources/itemList.txt");
-
-      if (!itemFile.exists()) {
-        log.warn("아이템 파일이 존재하지 않습니다: {}", itemFile.getPath());
-        return;
-      }
-
-      try (BufferedReader reader = new BufferedReader(new FileReader(itemFile))) {
-
-        // 텍스트 파일 데이터를 읽어서 DTO 리스트로 변환
-        List<ItemRegisterDTO> items = extractItemData(reader);
-        for (ItemRegisterDTO item : items) {
-          itemService.registerItem(item); // 아이템 데이터 등록
+    log.info("=== 테스트 데이터 검증 및 보정 시작 ===");
+    
+    int targetUserCount = 2000;
+    int targetBoardsPerUser = 5;
+    int targetCommentsPerBoard = 3;
+    
+    // 1. 유저 수 확인 및 보충
+    List<UserDTO> allUsers = userService.getAllUser();
+    int currentUserCount = allUsers.size();
+    
+    if (currentUserCount < targetUserCount) {
+      int usersToCreate = targetUserCount - currentUserCount;
+      log.info("유저 부족 (현재: {}, 목표: {}). {}명 추가 생성 중...", currentUserCount, targetUserCount, usersToCreate);
+      
+      for (int i = 0; i < usersToCreate; i++) {
+        try {
+          Integer schoolId = MockDataGenerator.generateRandomSchoolId((int) totalSchoolCount);
+          MockDataGenerator.UserRegisterData mockData = MockDataGenerator.generateUserRegisterData(schoolId);
+          
+          UserRegisterDTO dto = new UserRegisterDTO(
+              mockData.name, mockData.grade, mockData.birthday, mockData.gender,
+              mockData.email, mockData.password, mockData.phone, mockData.statusMessage,
+              null, mockData.interest, mockData.schoolId
+          );
+          
+          UserDTO createdUser = userService.registerUser(dto);
+          allUsers.add(createdUser); // 리스트에도 추가
+          
+          if ((i + 1) % 500 == 0) {
+            log.info("추가 유저 {}명 생성 완료", i + 1);
+          }
+        } catch (Exception e) {
+          log.error("유저 생성 중 오류 발생: {}", e.getMessage());
         }
-
-        log.info("아이템 데이터가 성공적으로 저장되었습니다.");
-
-      } catch (IOException e) {
-        log.error("아이템 데이터 초기화 중 오류 발생", e);
       }
     } else {
-      log.info("아이템 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
+      log.info("유저 수 충분함 (현재: {}). 유저 생성 건너뜀.", currentUserCount);
     }
-
-
-
-    if (!questService.existsQuests()) {
-      // Initialize Quests
-//      List<Quest> quests = createQuests();
-
-//      for (Quest quest : quests) {
-//        questService.saveQuest(quest);
-//      }
-
-      log.info("퀘스트 데이터가 성공적으로 저장되었습니다.");
-    } else {
-      log.info("퀘스트 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
+    
+    // 2. 각 유저별 게시글 및 댓글 확인
+    log.info("각 유저의 게시글 및 댓글 수 확인 중...");
+    int processedUsers = 0;
+    
+    for (UserDTO user : allUsers) {
+      try {
+        // 해당 유저의 게시글 목록 조회 (개수 확인용)
+        // 주의: getBoardListByUserId가 무거운 쿼리라면 성능 이슈 가능성 있음
+        var boards = boardService.getBoardListByUserId(user.getId());
+        int currentBoardCount = boards.size();
+        
+        // 게시글 부족하면 추가
+        if (currentBoardCount < targetBoardsPerUser) {
+          int boardsToCreate = targetBoardsPerUser - currentBoardCount;
+          for (int j = 0; j < boardsToCreate; j++) {
+            MockDataGenerator.BoardRegisterData mockBoard = MockDataGenerator.generateBoardRegisterData(user.getId());
+            BoardRegisterDTO boardDto = new BoardRegisterDTO(mockBoard.title, mockBoard.content, mockBoard.userId);
+            BoardDTO createdBoard = boardService.registerBoard(boardDto);
+            
+            // 새로 만든 게시글은 댓글도 새로 생성
+            createCommentsForBoard(createdBoard.getBoardId(), targetCommentsPerBoard);
+          }
+        }
+        
+        // 기존 게시글들의 댓글 수 확인 및 보충
+        for (var board : boards) {
+          // getBoardListByUserId 결과인 BoardListResponseDTO에 이미 commentCount가 있다면 사용
+          // 여기서는 BoardListResponseDTO의 구조를 모르므로 commentService 사용
+          Long commentCount = commentService.getCommentCountByBoardId(board.getBoardId());
+          
+          if (commentCount < targetCommentsPerBoard) {
+            long commentsToCreate = targetCommentsPerBoard - commentCount;
+            createCommentsForBoard(board.getBoardId(), (int) commentsToCreate);
+          }
+        }
+        
+        processedUsers++;
+        if (processedUsers % 500 == 0) {
+          log.info("유저 {}명 데이터 검증 완료", processedUsers);
+        }
+        
+      } catch (Exception e) {
+        log.error("유저 {} 데이터 처리 중 오류: {}", user.getId(), e.getMessage());
+      }
     }
-
-    // 초기화 완료 플래그 설정
-    initialized = true;
-    log.info("=== 애플리케이션 초기화 완료 ===");
+    
+    log.info("=== 테스트 데이터 검증 및 보정 완료 ===");
   }
-
-  private List<ItemRegisterDTO> extractItemData(BufferedReader reader) throws IOException {
-    // JSON 데이터를 읽기 위한 StringBuilder
-    StringBuilder jsonBuilder = new StringBuilder();
-    String line;
-
-    while ((line = reader.readLine()) != null) {
-      jsonBuilder.append(line);
+  
+  private void createCommentsForBoard(Integer boardId, int count) {
+    for (int k = 0; k < count; k++) {
+      MockDataGenerator.CommentRegisterData mockComment = MockDataGenerator.generateCommentRegisterData(boardId);
+      CommentRequestDTO commentDto = new CommentRequestDTO(mockComment.content, mockComment.boardId);
+      commentService.insertComment(commentDto);
     }
-
-    // JSON 데이터를 파싱
-    ObjectMapper objectMapper = new ObjectMapper();
-    List<ItemRegisterDTO> items;
-
-    try {
-      items = objectMapper.readValue(jsonBuilder.toString(), new TypeReference<List<ItemRegisterDTO>>() {});
-    } catch (Exception e) {
-      log.error("JSON 데이터 파싱 오류", e);
-      items = new ArrayList<>(); // 오류 발생 시 빈 리스트 반환
-    }
-
-    return items;
   }
-
-
-  private List<Quest> createQuests() {
-    // Define quests
-    List<Quest> quests = new ArrayList<>();
-
-    quests.add(new Quest("나만의 프로필을 완성하세요!", "프로필 설정하기", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("나의 첫 친구는...?", "첫 친구 추가하기", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("친구와 비밀 이야기를 해봅시다!", "친구에게 쪽지 보내기", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("나만의 교실을 만들자!", "교실 처음 꾸미기", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("나의 지식 뽐내기!1", "첫 OX 퀴즈 참여", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("나의 지식 뽐내기!2", "첫 골든벨 참여", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("만남의 광장에는 무엇이 있을까?1", "만남의 광장 오브제 상호작용 첫 시도", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("만남의 광장에는 무엇이 있을까?2", "처음 고민상담 게시글 남기기", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("나의 베스트 친구는..?", "AI 추천 친구 받아보기", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("고민 해결!", "처음으로 고민상담 댓글 남기기", 1, "TUTORIAL", 50, 20));
-    quests.add(new Quest("우리 학교 기록하기!", "아카이빙 갤러리에 사진 업로드하기", 1, "TUTORIAL", 50, 20));
-
-    // Define quest rewards
-    List<List<QuestItemRewardInfo>> questRewards = Arrays.asList(
-        Arrays.asList(new QuestItemRewardInfo(1, 1, 2), new QuestItemRewardInfo(1, 4, 2)),
-        Arrays.asList(new QuestItemRewardInfo(2, 5, 1)),
-        Arrays.asList(new QuestItemRewardInfo(3, 15, 1), new QuestItemRewardInfo(3, 16, 1)),
-        Arrays.asList(new QuestItemRewardInfo(4, 1, 1), new QuestItemRewardInfo(4, 3, 1)),
-        Arrays.asList(new QuestItemRewardInfo(5, 12, 3), new QuestItemRewardInfo(5, 13, 3)),
-        Arrays.asList(new QuestItemRewardInfo(6, 4, 2), new QuestItemRewardInfo(6, 1, 2)),
-        Arrays.asList(new QuestItemRewardInfo(7, 11, 3)),
-        Arrays.asList(new QuestItemRewardInfo(8, 7, 1)),
-        Arrays.asList(new QuestItemRewardInfo(9, 2, 1)),
-        Arrays.asList(new QuestItemRewardInfo(10, 7, 1)),
-        Arrays.asList(new QuestItemRewardInfo(11, 9, 3), new QuestItemRewardInfo(11, 10, 3))
-    );
-
-    // Associate rewards with quests
-    for (int i = 0; i < quests.size(); i++) {
-      quests.get(i).setItemRewards(questRewards.get(i));
-    }
-
-    return quests;
-  }
-
 
   // 엑셀 데이터를 읽어서 SchoolRegisterDTO 리스트로 변환
   private List<SchoolRegisterDTO> extractSchoolData(Workbook workbook) {
@@ -212,27 +215,4 @@ public class Init {
 
     return schools;
   }
-
-  // Hibernate SQL 로그 비활성화 메서드
-  private void disableHibernateQueryLogging() {
-    LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-    // Hibernate 및 SQL 관련 모든 로거 비활성화
-    loggerContext.getLogger("org.hibernate").setLevel(Level.OFF);
-    loggerContext.getLogger("org.hibernate.SQL").setLevel(Level.OFF);
-    loggerContext.getLogger("org.hibernate.type.descriptor.sql.BasicBinder").setLevel(Level.OFF);
-    loggerContext.getLogger("org.hibernate.stat").setLevel(Level.OFF);
-    loggerContext.getLogger("org.hibernate.tool.hbm2ddl").setLevel(Level.OFF);
-    loggerContext.getLogger("javax.sql").setLevel(Level.OFF); // JDBC 관련 로그 비활성화
-  }
-
-  // Hibernate SQL 로그 다시 활성화 메서드
-  private void enableHibernateQueryLogging() {
-    LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();
-    loggerContext.getLogger("org.hibernate.SQL").setLevel(Level.DEBUG);
-    loggerContext.getLogger("org.hibernate.type.descriptor.sql.BasicBinder").setLevel(Level.DEBUG);
-    loggerContext.getLogger("org.hibernate.stat").setLevel(Level.DEBUG);
-    loggerContext.getLogger("org.hibernate.tool.hbm2ddl").setLevel(Level.DEBUG);
-    loggerContext.getLogger("javax.sql").setLevel(Level.DEBUG); // JDBC 로그 활성화
-  }
-
 }

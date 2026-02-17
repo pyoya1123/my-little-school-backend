@@ -21,24 +21,25 @@ import lombok.Setter;
 public class Item {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   @Column(name = "item_idx")
   private Integer itemIdx;
 
   @Column(name = "item_name")
-  private String itemName;
+  private String name;
 
   @Column(name = "item_price")
   private Integer price;
 
   @Column(name = "item_type")
-  private String itemType;
+  private ItemType itemType;
 
   public Item(ItemRegisterDTO dto) {
     this.id = dto.getId();
     this.itemIdx = dto.getItemIdx();
-    this.itemName = dto.getItemName();
+    this.name = dto.getItemName();
     this.price = dto.getPrice();
     this.itemType = dto.getItemType();
   }

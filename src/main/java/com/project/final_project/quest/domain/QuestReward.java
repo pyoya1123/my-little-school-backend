@@ -1,11 +1,14 @@
 package com.project.final_project.quest.domain;
 
-import com.project.final_project.quest.dto.questitemrewardinfo.QuestItemRewardInfoDTO;
+import com.project.final_project.item.domain.Item;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,30 +16,31 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "quest_item_reward_info")
+@Table(name = "quest_reward")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class QuestItemRewardInfo {
+public class QuestReward {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "quest_id")
-  private Integer questId;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "quest_id")
+  private Quest quest;
 
-  @Column(name = "item_idx")
-  private Integer itemIdx;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "item_id")
+  private Item item;
 
   @Column(name = "item_count")
   private Integer itemCount;
 
-  public QuestItemRewardInfo(Integer questId, Integer itemIdx, Integer itemCount) {
-    this.questId = questId;
-    this.itemIdx = itemIdx;
+  public QuestReward(Quest quest, Item item, Integer itemCount) {
+    this.quest = quest;
+    this.item = item;
     this.itemCount = itemCount;
   }
 }
-

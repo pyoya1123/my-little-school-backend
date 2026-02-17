@@ -1,9 +1,12 @@
 package com.project.final_project.quest.service;
 
+import com.project.final_project.item.domain.Item;
+import com.project.final_project.item.repository.ItemRepository;
 import com.project.final_project.quest.domain.Quest;
-import com.project.final_project.quest.domain.QuestItemRewardInfo;
+import com.project.final_project.quest.domain.QuestReward;
 import com.project.final_project.quest.dto.quest.QuestDTO;
 import com.project.final_project.quest.dto.quest.QuestRegisterRequestDTO;
+import com.project.final_project.quest.dto.quest.QuestRewardRequestDTO;
 import com.project.final_project.quest.dto.quest.QuestUpdateRequestDTO;
 import com.project.final_project.quest.repository.QuestRepository;
 import java.util.ArrayList;
@@ -17,14 +20,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class QuestService {
 
   private final QuestRepository questRepository;
+  private final ItemRepository itemRepository;
 
   public QuestDTO registerQuest(QuestRegisterRequestDTO dto) {
 
-    List<QuestItemRewardInfo> rewardInfo =
-        dto.getRewardInfo() == null ? new ArrayList<>() : dto.getRewardInfo();
-
     Quest newQuest = new Quest(dto.getTitle(), dto.getContent(), dto.getCount(),
-        dto.getQuestType(), dto.getGold(), dto.getExp(), rewardInfo);
+        dto.getQuestType(), dto.getGold(), dto.getExp());
+
+    if (dto.getRewardInfo() != null) {
+      for (QuestRewardRequestDTO rewardDto : dto.getRewardInfo()) {
+        Item item = itemRepository.findById(rewardDto.getItemIdx())
+            .orElseThrow(() -> new IllegalArgumentException("Item not found: " + rewardDto.getItemIdx()));
+
+        QuestReward reward = new QuestReward(newQuest, item, rewardDto.getCount());
+        newQuest.getRewards().add(reward);
+      }
+    }
+
     return new QuestDTO(questRepository.save(newQuest));
   }
 

@@ -31,17 +31,17 @@ public class ItemService {
       foundItem.setItemIdx(dto.getItemIdx());
     }
 
-    if(dto.getItemName() != null){
-      foundItem.setItemName(dto.getItemName());
-    }
+//    if(dto.getItemName() != null){
+//      foundItem.setItemName(dto.getItemName());
+//    }
 
     if(dto.getPrice() != null){
       foundItem.setPrice(dto.getPrice());
     }
 
-    if(dto.getItemType() != null){
-      foundItem.setItemType(dto.getItemType());
-    }
+//    if(dto.getItemType() != null){
+//      foundItem.setItemType(dto.getItemType());
+//    }
 
     return new ItemDTO(foundItem);
   }

@@ -1,8 +1,7 @@
 package com.project.final_project.quest.dto.quest;
 
 import com.project.final_project.quest.domain.Quest;
-import com.project.final_project.quest.domain.QuestItemRewardInfo;
-import com.project.final_project.quest.dto.questitemrewardinfo.QuestItemRewardInfoDTO;
+import com.project.final_project.quest.dto.questReward.QuestRewardDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
@@ -21,7 +20,7 @@ public class QuestDTO {
   private Integer count;
   private Integer gold;
   private Integer exp;
-  private List<QuestItemRewardInfoDTO> rewardInfo;
+  private List<QuestRewardDTO> reward;
 
   public QuestDTO(Quest quest) {
     this.questId = quest.getId();
@@ -31,8 +30,8 @@ public class QuestDTO {
     this.count = quest.getCount();
     this.gold = quest.getGold();
     this.exp = quest.getExp();
-    this.rewardInfo = quest.getItemRewards().stream()
-        .map(QuestItemRewardInfoDTO::new)
+    this.reward = quest.getRewards().stream()
+        .map(QuestRewardDTO::new)
         .collect(Collectors.toList());
   }
 
