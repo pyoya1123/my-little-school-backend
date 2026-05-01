@@ -557,6 +557,86 @@ k6 run load-test-script.js
 BASE_URL=http://localhost:8080 k6 run load-test-script.js
 ```
 
+### Prometheus + Grafana 모니터링 실행 방법
+
+```bash
+# 1) 애플리케이션 실행 (Actuator 메트릭 노출)
+bash ./gradlew bootRun
+
+# 2) Prometheus + Grafana 실행
+docker compose up -d
+```
+
+- Prometheus: `http://localhost:9090`
+- Grafana: `http://localhost:3000` (ID/PW: `admin` / `admin`)
+- Prometheus 스크랩 대상: `http://host.docker.internal:8080/actuator/prometheus`
+- 기본 대시보드: `My Little School - Backend Overview` (자동 프로비저닝)
+
+#### 모니터링 검증 결과 (Prometheus + Grafana)
+
+스크린샷 기준, 부하 테스트 구간(`Last 5 minutes`)에서 Prometheus 수집 상태와 Grafana 대시보드 지표를 함께 확인했습니다.
+
+| 항목 | 측정값 |
+|------|--------|
+| Prometheus Target 상태 | `prometheus 1/1 UP`, `spring-boot-actuator 1/1 UP` |
+| JVM Process CPU Usage | `1.86%` |
+| System CPU Usage | `30.8%` |
+| Process Resident Memory | `310 MB` |
+| HTTP Throughput (RPS) | `331 req/s` |
+| JVM Heap Used (Last / Max) | `217 MiB / 364 MiB` |
+| JVM Heap Max | `6.00 GiB` |
+| Heap Usage % (Last / Max) | `3.52% / 5.93%` |
+| Process CPU % (Last / Max) | `1.79% / 2.03%` |
+| JVM Non-Heap Used | `146 MiB` |
+| DB Connection Pool (Hikari) | `Active 1 (Max 3)`, `Idle 9 (Max 10)`, `Pending 0` |
+| HTTP P95 Latency (Last / Max) | `9.59 ms / 32.5 ms` |
+
+정리하면, 테스트 구간에서 CPU/메모리 사용량은 안정적으로 유지되었고, DB 커넥션 풀 대기(`Pending`)가 0으로 관측되어 커넥션 병목 없이 요청을 처리했습니다.
+
+#### CPU/메모리 확인 방법 (Grafana)
+
+1. Grafana 접속 후 Home 대시보드(`My Little School - Backend Overview`) 확인
+2. CPU 패널 확인
+   - `JVM Process CPU Usage` (메트릭: `process_cpu_usage`)
+   - `System CPU Usage` (메트릭: `system_cpu_usage`)
+3. 메모리 패널 확인
+   - `JVM Heap Memory` (메트릭: `jvm_memory_used_bytes`, `jvm_memory_max_bytes`)
+   - `JVM Non-Heap Memory` (메트릭: `jvm_memory_used_bytes{area="nonheap"}`)
+   - `Process Resident Memory` (메트릭: `process_resident_memory_bytes`)
+
+#### 직접 쿼리해서 확인 (Grafana Explore / Prometheus)
+
+```promql
+# CPU
+100 * avg(process_cpu_usage)
+100 * avg(system_cpu_usage)
+
+# 메모리
+sum(jvm_memory_used_bytes{area="heap"})
+sum(jvm_memory_max_bytes{area="heap"})
+100 * sum(jvm_memory_used_bytes{area="heap"}) / sum(jvm_memory_max_bytes{area="heap"})
+sum(jvm_memory_used_bytes{area="nonheap"})
+process_resident_memory_bytes
+```
+
+#### 부하 테스트 구간 피크값만 확인 (PromQL)
+
+```promql
+# Peak RPS
+max_over_time((sum(rate(http_server_requests_seconds_count{uri!~"/actuator.*"}[1m])))[$__range:1m])
+
+# Peak CPU (%)
+max_over_time((100 * avg(process_cpu_usage))[$__range:1m])
+
+# Peak Heap Memory (MB)
+max_over_time((sum(jvm_memory_used_bytes{area="heap"}) / 1024 / 1024)[$__range:1m])
+```
+
+```bash
+# 종료
+docker compose down
+```
+
 ---
 <br>
 

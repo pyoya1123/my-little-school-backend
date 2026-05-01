@@ -91,6 +91,10 @@ management:
     export:
       prometheus:
         enabled: true
+    distribution:
+      # P95/P99 같은 서버 요청 지연시간 percentile 계산을 위한 히스토그램 버킷 활성화
+      percentiles-histogram:
+        http.server.requests: true
     # 커스텀 메트릭 태그 설정
     tags:
       application: ${spring.application.name:final_project}
@@ -126,4 +130,3 @@ management:
     # 프로세스 메트릭 수집
     process:
       enabled: true
-
