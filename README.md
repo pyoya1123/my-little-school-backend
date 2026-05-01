@@ -123,7 +123,7 @@
 ## 테스트 환경 및 도구
 - Tool: k6 (부하 테스트), Hibernate Statistics (쿼리 분석), Spring Actuator
 - Server: Mac Mini M4 (Local), MySQL 8.0
-- Dataset: User 20,000명, Board 100,000개, Comment 300,000개 (Dump Data)
+- Dataset: User 2,000명, Board 10,000개, Comment 30,000개 (유저당 게시글 5개, 게시글당 댓글 3개 기준)
 - Scenario: 메인 피드(게시글 목록) 조회 API를 대상으로 동시 접속자(VU)를 단계별로 증가
   
 ---
@@ -494,7 +494,7 @@ p(99) (99% 요청): 2.37s
 | **테스트 도구** | k6 |
 | **서버** | Mac Mini M4 (로컬) |
 | **데이터베이스** | MySQL 8.0 |
-| **테스트 데이터** | 유저 20,000명, 게시글 100,000개, 댓글 300,000개 |
+| **테스트 데이터** | 유저 2,000명, 게시글 10,000개, 댓글 30,000개 |
 
 <br>
 
@@ -599,7 +599,7 @@ src/main/java/com/project/final_project/
 
 ### 2. 대용량 데이터 생성 시 타임아웃
 
-**문제**: 테스트 데이터 10만 건 생성 시 타임아웃  
+**문제**: 테스트 데이터 수만 건 생성 시 타임아웃  
 **원인**: 개별 INSERT 쿼리로 인한 오버헤드  
 **해결**: Batch Insert 및 트랜잭션 분리
 
@@ -608,4 +608,3 @@ src/main/java/com/project/final_project/
 **문제**: 동시 접속자 증가 시 WebSocket 연결 실패  
 **원인**: Tomcat 기본 스레드 풀 한계  
 **해결**: 스레드 풀 크기 조정 및 비동기 처리 적용
-
