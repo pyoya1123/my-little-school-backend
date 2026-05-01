@@ -572,6 +572,14 @@ docker compose up -d
 - Prometheus 스크랩 대상: `http://host.docker.internal:8080/actuator/prometheus`
 - 기본 대시보드: `My Little School - Backend Overview` (자동 프로비저닝)
 
+#### 모니터링 화면
+
+##### Prometheus Targets (스크랩 상태)
+![Prometheus Targets](docs/images/monitoring/prometheus-targets.png)
+
+##### Grafana Dashboard (CPU/메모리/처리량)
+![Grafana Dashboard](docs/images/monitoring/grafana-dashboard.png)
+
 #### 모니터링 검증 결과 (Prometheus + Grafana)
 
 스크린샷 기준, 부하 테스트 구간(`Last 5 minutes`)에서 Prometheus 수집 상태와 Grafana 대시보드 지표를 함께 확인했습니다.
