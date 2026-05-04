@@ -1,8 +1,5 @@
 package com.project.final_project.mapcontest.service;
 
-import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.project.final_project.cloudinary.service.CloudinaryService;
 import com.project.final_project.furniture.repository.FurnitureRepository;
 import com.project.final_project.furniture.service.FurnitureService;
