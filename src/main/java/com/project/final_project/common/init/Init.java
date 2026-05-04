@@ -53,7 +53,7 @@ public class Init {
     log.info("=== 애플리케이션 초기화 시작 ===");
     
     // 1. 학교 데이터 초기화
-    // initSchools();
+     initSchools();
     
     // 2. 테스트 데이터 생성 (유저, 게시글, 댓글)
     // initTestData();

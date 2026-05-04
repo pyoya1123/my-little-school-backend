@@ -35,7 +35,7 @@
 - 2024.09 ~ 2024.12 (4개월)
 
 ## 팀 구성
-- Backend 1명, Unity 3명, 기획 1명, TA 1명
+- Backend 1명, Unity 3명, 기획 1명, TA 1명, AI 1명
 
 ---
 <br>
@@ -122,7 +122,7 @@
 ## 테스트 환경 및 도구
 - Tool: k6 (부하 테스트), Hibernate Statistics (쿼리 분석), Spring Actuator
 - Server: Mac Mini M4 (Local), MySQL 8.0
-- Dataset: User 20,000명, Board 100,000개, Comment 300,000개 (Dump Data)
+- Dataset: User 2,000명, Board 10,000개, Comment 30,000개 (유저당 게시글 5개, 게시글당 댓글 3개 기준)
 - Scenario: 메인 피드(게시글 목록) 조회 API를 대상으로 동시 접속자(VU)를 단계별로 증가
   
 ---
@@ -493,7 +493,7 @@ p(99) (99% 요청): 2.37s
 | **테스트 도구** | k6 |
 | **서버** | Mac Mini M4 (로컬) |
 | **데이터베이스** | MySQL 8.0 |
-| **테스트 데이터** | 유저 20,000명, 게시글 100,000개, 댓글 300,000개 |
+| **테스트 데이터** | 유저 2,000명, 게시글 10,000개, 댓글 30,000개 |
 
 <br>
 
@@ -556,6 +556,94 @@ k6 run load-test-script.js
 BASE_URL=http://localhost:8080 k6 run load-test-script.js
 ```
 
+### Prometheus + Grafana 모니터링 실행 방법
+
+```bash
+# 1) 애플리케이션 실행 (Actuator 메트릭 노출)
+bash ./gradlew bootRun
+
+# 2) Prometheus + Grafana 실행
+docker compose up -d
+```
+
+- Prometheus: `http://localhost:9090`
+- Grafana: `http://localhost:3000` (ID/PW: `admin` / `admin`)
+- Prometheus 스크랩 대상: `http://host.docker.internal:8080/actuator/prometheus`
+- 기본 대시보드: `My Little School - Backend Overview` (자동 프로비저닝)
+
+#### 모니터링 화면
+
+##### Prometheus Targets (스크랩 상태)
+![Prometheus Targets](docs/images/monitoring/prometheus-targets.png)
+
+##### Grafana Dashboard (CPU/메모리/처리량)
+![Grafana Dashboard](docs/images/monitoring/grafana-dashboard.png)
+
+#### 모니터링 검증 결과 (Prometheus + Grafana)
+
+스크린샷 기준, 부하 테스트 구간(`Last 5 minutes`)에서 Prometheus 수집 상태와 Grafana 대시보드 지표를 함께 확인했습니다.
+
+| 항목 | 측정값 |
+|------|--------|
+| Prometheus Target 상태 | `prometheus 1/1 UP`, `spring-boot-actuator 1/1 UP` |
+| JVM Process CPU Usage | `1.86%` |
+| System CPU Usage | `30.8%` |
+| Process Resident Memory | `310 MB` |
+| HTTP Throughput (RPS) | `331 req/s` |
+| JVM Heap Used (Last / Max) | `217 MiB / 364 MiB` |
+| JVM Heap Max | `6.00 GiB` |
+| Heap Usage % (Last / Max) | `3.52% / 5.93%` |
+| Process CPU % (Last / Max) | `1.79% / 2.03%` |
+| JVM Non-Heap Used | `146 MiB` |
+| DB Connection Pool (Hikari) | `Active 1 (Max 3)`, `Idle 9 (Max 10)`, `Pending 0` |
+| HTTP P95 Latency (Last / Max) | `9.59 ms / 32.5 ms` |
+
+정리하면, 테스트 구간에서 CPU/메모리 사용량은 안정적으로 유지되었고, DB 커넥션 풀 대기(`Pending`)가 0으로 관측되어 커넥션 병목 없이 요청을 처리했습니다.
+
+#### CPU/메모리 확인 방법 (Grafana)
+
+1. Grafana 접속 후 Home 대시보드(`My Little School - Backend Overview`) 확인
+2. CPU 패널 확인
+   - `JVM Process CPU Usage` (메트릭: `process_cpu_usage`)
+   - `System CPU Usage` (메트릭: `system_cpu_usage`)
+3. 메모리 패널 확인
+   - `JVM Heap Memory` (메트릭: `jvm_memory_used_bytes`, `jvm_memory_max_bytes`)
+   - `JVM Non-Heap Memory` (메트릭: `jvm_memory_used_bytes{area="nonheap"}`)
+   - `Process Resident Memory` (메트릭: `process_resident_memory_bytes`)
+
+#### 직접 쿼리해서 확인 (Grafana Explore / Prometheus)
+
+```promql
+# CPU
+100 * avg(process_cpu_usage)
+100 * avg(system_cpu_usage)
+
+# 메모리
+sum(jvm_memory_used_bytes{area="heap"})
+sum(jvm_memory_max_bytes{area="heap"})
+100 * sum(jvm_memory_used_bytes{area="heap"}) / sum(jvm_memory_max_bytes{area="heap"})
+sum(jvm_memory_used_bytes{area="nonheap"})
+process_resident_memory_bytes
+```
+
+#### 부하 테스트 구간 피크값만 확인 (PromQL)
+
+```promql
+# Peak RPS
+max_over_time((sum(rate(http_server_requests_seconds_count{uri!~"/actuator.*"}[1m])))[$__range:1m])
+
+# Peak CPU (%)
+max_over_time((100 * avg(process_cpu_usage))[$__range:1m])
+
+# Peak Heap Memory (MB)
+max_over_time((sum(jvm_memory_used_bytes{area="heap"}) / 1024 / 1024)[$__range:1m])
+```
+
+```bash
+# 종료
+docker compose down
+```
+
 ---
 <br>
 
@@ -598,7 +686,7 @@ src/main/java/com/project/final_project/
 
 ### 2. 대용량 데이터 생성 시 타임아웃
 
-**문제**: 테스트 데이터 10만 건 생성 시 타임아웃  
+**문제**: 테스트 데이터 수만 건 생성 시 타임아웃  
 **원인**: 개별 INSERT 쿼리로 인한 오버헤드  
 **해결**: Batch Insert 및 트랜잭션 분리
 
@@ -607,4 +695,3 @@ src/main/java/com/project/final_project/
 **문제**: 동시 접속자 증가 시 WebSocket 연결 실패  
 **원인**: Tomcat 기본 스레드 풀 한계  
 **해결**: 스레드 풀 크기 조정 및 비동기 처리 적용
-
