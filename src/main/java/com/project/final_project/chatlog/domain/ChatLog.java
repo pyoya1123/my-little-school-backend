@@ -12,7 +12,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.redis.core.RedisHash;
 
 @Entity
 @Builder
@@ -20,7 +19,6 @@ import org.springframework.data.redis.core.RedisHash;
 @AllArgsConstructor
 @Getter
 @Setter
-//@RedisHash(value = "chatlog", timeToLive = 300)
 public class ChatLog {
 
   @Id
