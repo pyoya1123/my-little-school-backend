@@ -537,8 +537,7 @@ stages: [
 
 1. **N+1 쿼리 해결**: Join 구조 최적화로 쿼리 수 99% 감소
 2. **인덱스 최적화**: 자주 조회되는 컬럼에 인덱스 추가
-3. **Connection Pool 튜닝**: HikariCP 설정 최적화
-4. **Hibernate Statistics**: 쿼리 분석으로 병목 지점 파악
+3. **Hibernate Statistics**: 쿼리 분석으로 병목 지점 파악
 
 <br>
 
