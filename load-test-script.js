@@ -102,8 +102,27 @@ export default function (data) {
   // 랜덤 사용자 선택
   const userId = testUserIds[Math.floor(Math.random() * testUserIds.length)];
 
+  group('사용자 조회 시나리오', () => {
+    // 1. 사용자 프로필 조회
+    const profileRes = http.get(`${BASE_URL}/user/profile/${userId}`, {
+      tags: { name: 'UserProfileScenario' }
+    });
+
+    check(profileRes, {
+      '사용자 프로필 조회 성공': (r) => r.status === 200,
+      // N+1 문제로 인한 성능 저하 고려하여 임계값 완화
+      '응답 시간 < 4s': (r) => r.timings.duration < 4000,
+    });
+
+    requestCount.add(1);
+    requestDuration.add(profileRes.timings.duration);
+    errorRate.add(profileRes.status !== 200);
+
+    sleep(0.5);
+  });
+
   group('게시판 조회 시나리오', () => {
-    // 1. 전체 게시판 목록 조회
+    // 2. 전체 게시판 목록 조회
     const listRes = http.get(`${BASE_URL}/board/all-list/${userId}`, {
       tags: { name: 'BoardListScenario' }
     });
@@ -121,7 +140,7 @@ export default function (data) {
 
     sleep(1);
 
-    // 2. 특정 게시판 상세 조회
+    // 3. 특정 게시판 상세 조회
     // 수집된 게시글 ID가 있다면 그 중에서 랜덤 선택, 없으면 1~100,000 범위 사용
     let boardId;
     if (testBoardIds && testBoardIds.length > 0) {
@@ -148,25 +167,6 @@ export default function (data) {
     });
 
     sleep(1);
-  });
-
-  group('사용자 조회 시나리오', () => {
-    // 3. 사용자 프로필 조회
-    const profileRes = http.get(`${BASE_URL}/user/profile/${userId}`, {
-      tags: { name: 'UserProfileScenario' }
-    });
-
-    check(profileRes, {
-      '사용자 프로필 조회 성공': (r) => r.status === 200,
-      // N+1 문제로 인한 성능 저하 고려하여 임계값 완화
-      '응답 시간 < 4s': (r) => r.timings.duration < 4000,
-    });
-
-    requestCount.add(1);
-    requestDuration.add(profileRes.timings.duration);
-    errorRate.add(profileRes.status !== 200);
-
-    sleep(0.5);
   });
 
   // Think Time (실제 사용자 행동 시뮬레이션)

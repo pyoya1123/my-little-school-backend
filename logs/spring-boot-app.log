@@ -28725,3 +28725,6 @@ Caused by: java.io.IOException: 현재 연결은 사용자의 호스트 시스�
 2026-05-17T23:03:49.281+09:00  INFO 25116 --- [http-nio-8080-exec-26] .a.HibernateStatisticsObservationHandler : [Observation] spring.security.filterchains 종료 - 쿼리: 0, 엔티티 로드: 0, 컬렉션 로드: 0
 2026-05-17T23:03:49.281+09:00  INFO 25116 --- [http-nio-8080-exec-26] .a.HibernateStatisticsObservationHandler : [Observation] http.server.requests 종료 - 쿼리: 0, 엔티티 로드: 0, 컬렉션 로드: 0
 2026-05-17T23:03:49.281+09:00  INFO 25116 --- [http-nio-8080-exec-26] .a.HibernateStatisticsObservationHandler : [Observation] http.server.requests 종료 - 쿼리: 0, 엔티티 로드: 0, 컬렉션 로드: 0
+2026-05-17T23:38:13.924+09:00  INFO 25116 --- [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-05-17T23:38:13.997+09:00  INFO 25116 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-05-17T23:38:14.072+09:00  INFO 25116 --- [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
