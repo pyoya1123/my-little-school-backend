@@ -171,11 +171,11 @@ public List<BoardListResponseDTO> getAllBoards(Integer userId) {
 <br>
 
 ## 2. 해결 과정 (Solution)
-반복되는 하위 엔티티 조회 쿼리를 하나로 합치기 위해 Fetch Join을 적용하여 최적화했습니다. 
+반복되는 하위 엔티티 조회 쿼리를 하나로 합치기 위해 Join 구조를 최적화했습니다. 
 단순히 데이터를 가져오는 것을 넘어, 불필요한 조인을 줄이고 필요한 데이터만 한 번에 조회하도록 쿼리를 튜닝했습니다.
 
 <details>
-<summary>🔻 [코드 보기] 개선 후: Fetch Join 적용</summary>
+<summary>🔻 [코드 보기] 개선 후: 조인 구조 최적화</summary>
 	
 ```json	
 // BoardRepository.java
@@ -535,10 +535,9 @@ stages: [
 
 ### 주요 성능 개선 포인트
 
-1. **N+1 쿼리 해결**: Fetch Join으로 쿼리 수 99% 감소
+1. **N+1 쿼리 해결**: Join 구조 최적화로 쿼리 수 99% 감소
 2. **인덱스 최적화**: 자주 조회되는 컬럼에 인덱스 추가
-3. **Connection Pool 튜닝**: HikariCP 설정 최적화
-4. **Hibernate Statistics**: 쿼리 분석으로 병목 지점 파악
+3. **Hibernate Statistics**: 쿼리 분석으로 병목 지점 파악
 
 <br>
 
@@ -677,20 +676,8 @@ src/main/java/com/project/final_project/
 
 ## 🔧 트러블슈팅
 
-### 1. N+1 문제로 인한 응답 지연
+### N+1 문제로 인한 응답 지연
 
 **문제**: 게시글 목록 조회 시 평균 2초 이상 소요  
 **원인**: Lazy Loading으로 인한 N+1 쿼리  
-**해결**: Fetch Join 및 @EntityGraph 적용으로 쿼리 1회로 최적화
-
-### 2. 대용량 데이터 생성 시 타임아웃
-
-**문제**: 테스트 데이터 수만 건 생성 시 타임아웃  
-**원인**: 개별 INSERT 쿼리로 인한 오버헤드  
-**해결**: Batch Insert 및 트랜잭션 분리
-
-### 3. WebSocket 연결 제한
-
-**문제**: 동시 접속자 증가 시 WebSocket 연결 실패  
-**원인**: Tomcat 기본 스레드 풀 한계  
-**해결**: 스레드 풀 크기 조정 및 비동기 처리 적용
+**해결**: 조인 구조 최적화를 통해 쿼리 1회로 감소
